@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Search Report | Can't Wait to Cre8</title>
+<link rel="icon" type="image/png" href="/cre8/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#111014;--paper:#fbf8f3;--line:#e6e0d6;--muted:#6b6672;--hot:#ff3d7f;--sun:#ffb21e;--ok:#18a957;--bad:#e5484d;--grad:linear-gradient(90deg,#ff3d7f,#ffb21e)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.55;font-size:15.5px}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+header{background:var(--ink);color:#fff;padding:26px 0 30px}
+header .top{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+header img{height:44px;border-radius:9px;background:#fff}
+header .top span{color:#b9b4c0;font-size:13px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--hot)}
+h1{font-family:"Archivo Black",sans-serif;font-size:clamp(28px,5vw,44px);line-height:1.1;margin:6px 0 8px}
+header p{color:#cfcad6}
+.monthbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:16px}
+select{font:inherit;padding:9px 12px;border-radius:10px;border:1px solid #3a3742;background:#1d1b22;color:#fff}
+.btn{border:0;border-radius:999px;padding:9px 16px;font:inherit;font-weight:700;cursor:pointer;background:var(--grad);color:#fff}
+section{margin-top:26px}
+h2{font-family:"Archivo Black",sans-serif;font-size:21px;margin-bottom:4px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:12px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:-24px}
+@media(max-width:760px){.kpis{grid-template-columns:1fr 1fr}}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 10px 26px rgba(17,16,20,.05)}
+.kpi small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.kpi b{display:block;font-family:"Archivo Black",sans-serif;font-size:30px;line-height:1.1;margin:4px 0}
+.kpi .d{font-size:13px;font-weight:700}
+.up{color:var(--ok)}.down{color:var(--bad)}.flat{color:var(--muted)}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;overflow-x:auto}
+@media(max-width:600px){.card{padding:12px}table{font-size:13.5px}th,td{padding:7px 4px}}
+.chart svg{width:100%;display:block}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th{text-align:left;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.06em;padding:8px 6px;border-bottom:1px solid var(--line)}
+td{padding:9px 6px;border-bottom:1px solid #f0ebe2;vertical-align:top}
+td.n,th.n{text-align:right;white-space:nowrap}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.two{grid-template-columns:1fr}}
+.work{list-style:none}
+.work li{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #f0ebe2}
+.work .day{flex:none;width:58px;color:var(--muted);font-size:13px;font-weight:600;padding-top:2px}
+.work .k{display:inline-block;font-size:11.5px;font-weight:700;background:#fff0f5;color:#b3164f;border-radius:999px;padding:2px 9px;margin-right:6px}
+.work a{color:var(--hot)}
+.count{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.count span{background:#faf7f2;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600}
+.yes{color:var(--ok);font-weight:800}.no{color:#b8b0a3;font-weight:800}
+.note{color:var(--muted);font-size:13.5px;margin-top:10px}
+.empty{color:var(--muted);text-align:center;padding:20px 0}
+footer{margin:34px 0 40px;color:var(--muted);font-size:13px;text-align:center}
+.missing{text-align:center;padding:90px 20px;color:var(--muted)}
+.trunc{max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(max-width:600px){.trunc{max-width:130px}}
+@media print{.monthbar,.btn{display:none!important}body{background:#fff}header{background:#fff;color:var(--ink)}header p,header .top span{color:var(--muted)}.kpis{margin-top:10px}}
+</style>
+</head>
+<body>
+<div id="app"><p class="missing">Loading your report...</p></div>
+<script>
+(function(){
+  var $ = function(s){ return document.querySelector(s); };
+  var mm = location.pathname.match(/\/report\/(\d+)\/([a-f0-9]{32})/), API = mm ? '/api/cre8/report/' + mm[1] + '/' + mm[2] : '';
+  var MON = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]; }); }
+  function mname(m){ return MON[Number(m.slice(5)) - 1] + ' ' + m.slice(0, 4); }
+  function n(v){ return Math.round(v || 0).toLocaleString('en-US'); }
+  function pct(v){ return ((v || 0) * 100).toFixed(1) + '%'; }
+  function delta(cur, prev, lowerBetter, fmt){
+    if(prev == null || cur == null) return '<span class="d flat">No earlier month to compare</span>';
+    var diff = cur - prev; if(Math.abs(diff) < 1e-9) return '<span class="d flat">Same as last month</span>';
+    var good = lowerBetter ? diff < 0 : diff > 0, rel = prev ? Math.abs(diff / prev * 100).toFixed(0) + '%' : fmt(Math.abs(diff));
+    return '<span class="d ' + (good ? 'up' : 'down') + '">' + (diff > 0 ? '▲ ' : '▼ ') + rel + ' vs last month</span>';
+  }
+  // Average position: a lower number is better, so say it in plain words
+  function posDelta(cur, prev){
+    if(prev == null || cur == null) return '<span class="d flat">No earlier month to compare</span>';
+    var diff = prev - cur; if(Math.abs(diff) < 0.05) return '<span class="d flat">Same as last month</span>';
+    return '<span class="d ' + (diff > 0 ? 'up' : 'down') + '">' + (diff > 0 ? '\u25B2 ' : '\u25BC ') + Math.abs(diff).toFixed(1) + ' spots ' + (diff > 0 ? 'higher' : 'lower') + ' than last month</span>';
+  }
+  function chart(daily){
+    if(!daily.length) return '<div class="empty">No daily search data for this month yet.</div>';
+    var W = 900, H = 230, L = 40, R = 16, T = 16, B = 34, max = Math.max(1, Math.max.apply(null, daily.map(function(d){ return d.clicks; })));
+    var step = Math.max(1, Math.ceil(max / 4)), top = step * 4, x = function(i){ return L + (daily.length === 1 ? (W - L - R) / 2 : i * (W - L - R) / (daily.length - 1)); }, y = function(v){ return T + (1 - v / top) * (H - T - B); };
+    var pts = daily.map(function(d, i){ return x(i).toFixed(1) + ',' + y(d.clicks).toFixed(1); }).join(' ');
+    var grid = [0, 1, 2, 3, 4].map(function(k){ var v = step * k; return '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(v) + '" y2="' + y(v) + '" stroke="#efe9df"/><text x="' + (L - 8) + '" y="' + (y(v) + 4) + '" text-anchor="end" font-size="12" fill="#6b6672">' + v + '</text>'; }).join('');
+    var labels = daily.map(function(d, i){ return (i % Math.ceil(daily.length / 6) === 0 || i === daily.length - 1) ? '<text x="' + x(i) + '" y="' + (H - 10) + '" text-anchor="middle" font-size="12" fill="#6b6672">' + Number(d.key.slice(8)) + '</text>' : ''; }).join('');
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Clicks from Google search per day"><defs><linearGradient id="gl" x1="0" x2="1"><stop offset="0" stop-color="#ff3d7f"/><stop offset="1" stop-color="#ffb21e"/></linearGradient><linearGradient id="ga" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ff3d7f" stop-opacity=".18"/><stop offset="1" stop-color="#ff3d7f" stop-opacity="0"/></linearGradient></defs>' + grid +
+      '<polygon points="' + x(0) + ',' + y(0) + ' ' + pts + ' ' + x(daily.length - 1) + ',' + y(0) + '" fill="url(#ga)"/><polyline points="' + pts + '" fill="none" stroke="url(#gl)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>' + labels + '</svg>';
+  }
+  function table(rows, label, isUrl){
+    if(!rows || !rows.length) return '<div class="empty">Nothing yet for this month.</div>';
+    return '<table><tr><th>' + label + '</th><th class="n">Clicks</th><th class="n">Shown</th><th class="n">Avg spot</th></tr>' + rows.map(function(r){
+      var k = isUrl ? r.key.replace(/^https?:\/\/[^/]+/, '') || '/' : r.key;
+      return '<tr><td><div class="trunc" title="' + esc(r.key) + '">' + esc(k) + '</div></td><td class="n">' + n(r.clicks) + '</td><td class="n">' + n(r.impressions) + '</td><td class="n">' + (r.position ? r.position.toFixed(1) : '-') + '</td></tr>'; }).join('') + '</table>';
+  }
+  function render(d){
+    var c = d.client, s = d.snap && d.snap.data, p = d.prevSnap && d.prevSnap.data, t = s ? s.totals : null, pt = p ? p.totals : null;
+    var months = d.months.indexOf(d.month) < 0 ? [d.month].concat(d.months) : d.months;
+    var counts = {}; d.work.forEach(function(w){ counts[w.kind] = (counts[w.kind] || 0) + 1; });
+    var ai = d.ai || [], cell = function(v){ return v === true ? '<span class="yes">✓ Shown</span>' : v === false ? '<span class="no">Not yet</span>' : '<span class="no">-</span>'; };
+    var html = '<header><div class="wrap"><div class="top"><img src="/cre8/logo.png" alt=""><div><b>Can\'t Wait to Cre8</b><br><span>' + esc(c.plan ? c.plan + ' plan' : 'Local Search') + '</span></div></div>' +
+      '<span class="eyebrow">Search Report</span><h1>' + esc(c.business || c.name) + '</h1><p>' + esc(mname(d.month)) + (c.site ? ' • ' + esc(c.site) : '') + (s && s.partial ? ' • month in progress, through ' + esc(s.end) : '') + '</p>' +
+      '<div class="monthbar"><select id="mpick" aria-label="Choose a month">' + months.map(function(m){ return '<option value="' + m + '"' + (m === d.month ? ' selected' : '') + '>' + mname(m) + '</option>'; }).join('') + '</select><button class="btn" type="button" onclick="window.print()">Print or Save as PDF</button></div></div></header>' +
+      '<main class="wrap">' +
+      (t ? '<div class="kpis">' +
+        '<div class="kpi"><small>Clicks from Google</small><b>' + n(t.clicks) + '</b>' + delta(t.clicks, pt && pt.clicks, false, n) + '</div>' +
+        '<div class="kpi"><small>Times shown in search</small><b>' + n(t.impressions) + '</b>' + delta(t.impressions, pt && pt.impressions, false, n) + '</div>' +
+        '<div class="kpi"><small>Click rate</small><b>' + pct(t.ctr) + '</b>' + delta(t.ctr, pt && pt.ctr, false, pct) + '</div>' +
+        '<div class="kpi"><small>Average spot in results</small><b>' + (t.position ? t.position.toFixed(1) : '-') + '</b>' + posDelta(t.position, pt && pt.position) + '</div></div>'
+        : '<div class="kpis"><div class="kpi" style="grid-column:1/-1"><small>Google search numbers</small><b style="font-size:20px">Coming soon</b><span class="d flat">Search numbers for this month have not been pulled yet.</span></div></div>') +
+      (s ? '<section><h2>Clicks from Google, day by day</h2><p class="sub">How many people clicked through to your site from a Google search each day.</p><div class="card chart">' + chart(s.daily) + '</div></section>' +
+        '<section class="two"><div><h2>What people searched</h2><p class="sub">The searches that showed your site most.</p><div class="card">' + table(s.queries, 'Search', false) + '</div></div>' +
+        '<div><h2>Pages people found</h2><p class="sub">Your pages that got the most search clicks.</p><div class="card">' + table(s.pages, 'Page', true) + '</div></div></section>' : '') +
+      '<section><h2>Work completed this month</h2><p class="sub">Everything we did for your search presence in ' + esc(mname(d.month)) + '.</p><div class="card">' +
+        (d.work.length ? '<div class="count">' + Object.keys(counts).map(function(k){ return '<span>' + counts[k] + ' × ' + esc(k) + '</span>'; }).join('') + '</div><ul class="work">' + d.work.map(function(w){ return '<li><span class="day">' + esc(MON[Number(w.day.slice(5, 7)) - 1].slice(0, 3) + ' ' + Number(w.day.slice(8))) + '</span><span><span class="k">' + esc(w.kind) + '</span>' + esc(w.note) + (w.url ? ' <a href="' + esc(w.url) + '" target="_blank" rel="noopener">View</a>' : '') + '</span></li>'; }).join('') + '</ul>'
+          : '<div class="empty">Work for this month will be listed here.</div>') + '</div></section>' +
+      (ai.length ? '<section><h2>AI answer check</h2><p class="sub">We asked AI tools the questions your customers ask and recorded whether your business came up in the answer.</p><div class="card"><table><tr><th>Question</th><th>Google AI</th><th>ChatGPT</th><th>Perplexity</th></tr>' +
+        ai.map(function(r){ return '<tr><td>' + esc(r.q) + '</td><td>' + cell(r.google) + '</td><td>' + cell(r.chatgpt) + '</td><td>' + cell(r.perplexity) + '</td></tr>'; }).join('') + '</table>' +
+        '<p class="note">AI answers change often and differ from person to person, so treat this as a monthly snapshot, not a ranking.</p></div></section>' : '') +
+      '<p class="note" style="margin-top:22px">Search numbers come directly from your Google Search Console. Search results usually take 2 to 3 months to respond to new work, and no one can guarantee a ranking or a spot in AI answers. This report shows exactly what we did and what changed.</p>' +
+      '</main><footer>Can\'t Wait to Cre8 • 37 Center Ave, Leonardo, NJ • 732-720-9211</footer>';
+    $('#app').innerHTML = html;
+    $('#mpick').onchange = function(){ load(this.value); };
+  }
+  function load(m){
+    if(!API){ $('#app').innerHTML = '<p class="missing">This report link is not complete.</p>'; return; }
+    fetch(API + (m ? '?m=' + m : ''), { cache: 'no-store' }).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.message || 'Not found'); return j; }); })
+      .then(render).catch(function(e){ $('#app').innerHTML = '<p class="missing">' + esc(e.message) + '</p>'; });
+  }
+  load(new URLSearchParams(location.search).get('m'));
+})();
+</script>
+</body>
+</html>

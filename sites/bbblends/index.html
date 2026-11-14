@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>BB Blends | Cold-Pressed Juice &amp; Tropical Fruit Market in Keyport, NJ</title>
+<meta name="description" content="Concept website preview for BB Blends, a family-owned juicery, wellness bodega and tropical fruit market in Keyport, NJ. Designed by Can't Wait to Cre8.">
+<link rel="icon" type="image/png" href="/bbblends/favicon.png">
+<link rel="apple-touch-icon" href="/bbblends/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#E8592A; --orange-d:#C9461C; --mango:#FFB627; --leaf:#1F5A3D; --leaf-d:#143D29;
+  --cream:#FFF6EA; --ink:#2A1A12; --muted:#6E5A4E; --line:#EADBC8; --card:#FFFFFF;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+html,body{overflow-x:clip}
+body{font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif;line-height:1.08;letter-spacing:-.01em}
+h2{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;margin-bottom:14px}
+h3{font-size:1.3rem;font-weight:800}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+section{padding:88px 0}
+.eyebrow{display:inline-block;font-weight:700;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:12px}
+.sub{color:var(--muted);max-width:620px;font-size:1.08rem}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:15px 26px;border-radius:999px;font-weight:700;text-decoration:none;border:2px solid transparent;transition:transform .15s,box-shadow .15s,background .15s;cursor:pointer;font-size:1rem;font-family:inherit}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.16)}
+.btn-white{background:#fff;color:var(--orange-d)}
+.btn-line{border-color:rgba(255,255,255,.75);color:#fff}
+.btn-orange{background:var(--orange);color:#fff}
+.btn-leaf{background:var(--leaf);color:#fff}
+
+/* concept note */
+.concept{background:var(--ink);color:#F5E6D6;font-size:.85rem;text-align:center;padding:9px 16px}
+.concept a{color:var(--mango);font-weight:700}
+
+/* nav */
+nav{position:sticky;top:0;z-index:50;background:rgba(232,89,42,.97);backdrop-filter:blur(8px);box-shadow:0 2px 14px rgba(0,0,0,.08)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:70px}
+.nlogo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-family:'Fraunces',serif;font-weight:800;font-size:1.25rem}
+.nlogo img{height:50px;width:auto}
+.nlinks{display:flex;gap:26px;align-items:center}
+.nlinks a{color:#fff;text-decoration:none;font-weight:600;font-size:.97rem}
+.nlinks a:not(.btn):hover{text-decoration:underline;text-underline-offset:5px}
+.nlinks .btn{padding:10px 20px}
+.nlinks a.btn-white{color:var(--orange-d)}
+.mbtn{display:none;background:none;border:0;width:44px;height:44px;cursor:pointer}
+.mbtn span{display:block;width:24px;height:2.5px;background:#fff;margin:5px auto;border-radius:2px;transition:.25s}
+@media(max-width:860px){
+  .mbtn{display:block}
+  .nlinks{position:absolute;top:70px;left:0;right:0;flex-direction:column;background:var(--orange);padding:10px 20px 22px;gap:4px;align-items:stretch;display:none}
+  .nlinks.open{display:flex}
+  .nlinks a{padding:12px 4px;border-bottom:1px solid rgba(255,255,255,.2)}
+  .nlinks .btn{justify-content:center;margin-top:10px;border-bottom:0}
+}
+
+/* hero */
+.hero{background:var(--orange);color:#fff;padding:56px 0 110px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:70px;background:var(--cream);clip-path:ellipse(75% 100% at 50% 100%)}
+.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center;position:relative;z-index:1}
+.hero h1{font-size:clamp(2.5rem,6.2vw,4.6rem);font-weight:800;margin-bottom:20px}
+.hero h1 em{font-style:italic;color:var(--mango)}
+.hero p{font-size:1.15rem;max-width:540px;opacity:.95;margin-bottom:28px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+.status{display:inline-flex;align-items:center;gap:9px;background:rgba(0,0,0,.18);padding:8px 16px;border-radius:999px;font-weight:600;font-size:.92rem;margin-bottom:22px}
+.status i{width:10px;height:10px;border-radius:50%;background:#bbb;box-shadow:0 0 0 0 rgba(120,255,160,.7)}
+.status.open i{background:#5BE38A;animation:pulse 1.8s infinite}
+.status.closed i{background:#FFC9B5}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(120,255,160,0)}100%{box-shadow:0 0 0 0 rgba(120,255,160,0)}}
+.hero-art{position:relative;height:520px}
+.hero-art .logo-big{position:absolute;width:250px;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;background:var(--orange);border-radius:50%;padding:34px 38px 30px;border:6px solid #fff;box-shadow:0 18px 40px rgba(0,0,0,.28);animation:bob 5s ease-in-out infinite}
+@keyframes bob{50%{transform:translate(-50%,-54%)}}
+.hero-art .ph{position:absolute;border-radius:26px;overflow:hidden;border:6px solid #fff;box-shadow:0 18px 40px rgba(0,0,0,.25)}
+.hero-art .ph img{width:100%;height:100%;object-fit:cover}
+.hero-art .p1{width:230px;height:290px;left:0;top:10px;transform:rotate(-6deg)}
+.hero-art .p2{width:220px;height:270px;right:0;top:0;transform:rotate(5deg)}
+.hero-art .p3{width:250px;height:210px;left:50%;bottom:0;transform:translateX(-50%) rotate(-2deg)}
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-art{height:420px;max-width:460px;width:100%;margin:0 auto}
+  .hero-art .p1{width:170px;height:220px}
+  .hero-art .p2{width:165px;height:210px}
+  .hero-art .p3{width:200px;height:165px}
+  .hero-art .logo-big{width:180px;padding:24px 28px 22px}
+}
+
+/* marquee */
+.marquee{background:var(--leaf);color:#fff;overflow:hidden;padding:16px 0;white-space:nowrap}
+.marquee .track{display:inline-flex;gap:38px;animation:scroll 38s linear infinite;font-family:'Fraunces',serif;font-weight:700;font-size:1.25rem;font-style:italic}
+.marquee span::after{content:"✦";margin-left:38px;color:var(--mango);font-style:normal}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* menu */
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin:28px 0 30px}
+.tab{background:#fff;border:2px solid var(--line);padding:10px 20px;border-radius:999px;font-weight:700;cursor:pointer;font-family:inherit;font-size:.95rem;color:var(--ink);transition:.15s}
+.tab[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.item{background:var(--card);border-radius:22px;overflow:hidden;border:1px solid var(--line);display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+.item:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(42,26,18,.12)}
+.item.hide{display:none}
+.item .img{aspect-ratio:4/3;overflow:hidden;background:#f3e6d6}
+.item .img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.item:hover .img img{transform:scale(1.06)}
+.item .noimg{aspect-ratio:4/3;display:grid;place-items:center;font-size:4rem}
+.item .b{padding:20px 22px 22px;flex:1;display:flex;flex-direction:column}
+.item .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:6px}
+.price{font-weight:800;color:var(--orange-d);white-space:nowrap}
+.item p{color:var(--muted);font-size:.96rem}
+.chip{align-self:flex-start;margin-top:14px;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:#FFF0D6;color:#9A5A00;padding:5px 11px;border-radius:999px}
+.menu-note{margin-top:22px;color:var(--muted);font-size:.92rem}
+.menu-note a{color:var(--orange-d);font-weight:700}
+
+/* market */
+.market{background:var(--leaf);color:#fff;position:relative}
+.market .eyebrow{color:var(--mango)}
+.market .sub{color:#D7E8DD}
+.market-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.fruits{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 30px}
+.fruit{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);padding:9px 16px;border-radius:999px;font-weight:600;font-size:.95rem;cursor:default;transition:.2s}
+.fruit:hover{background:var(--mango);color:var(--leaf-d);border-color:var(--mango);transform:translateY(-2px)}
+.mosaic{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:220px 220px;gap:14px}
+.mosaic figure{border-radius:20px;overflow:hidden;position:relative}
+.mosaic figure:first-child{grid-row:span 2}
+.mosaic img{width:100%;height:100%;object-fit:cover}
+.mosaic figcaption{position:absolute;left:10px;bottom:10px;background:rgba(20,61,41,.85);padding:5px 12px;border-radius:999px;font-size:.82rem;font-weight:600}
+@media(max-width:900px){.market-grid{grid-template-columns:1fr}.mosaic{grid-template-rows:180px 180px}}
+
+/* story */
+.story-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+.story-img{border-radius:28px;overflow:hidden;aspect-ratio:4/5;box-shadow:0 22px 50px rgba(42,26,18,.18)}
+.story-img img{width:100%;height:100%;object-fit:cover}
+.story p{margin-bottom:16px;color:#4A382D}
+blockquote{font-family:'Fraunces',serif;font-style:italic;font-weight:700;font-size:1.5rem;line-height:1.35;border-left:5px solid var(--orange);padding:6px 0 6px 22px;margin:26px 0;color:var(--ink)}
+blockquote cite{display:block;font-family:'DM Sans',sans-serif;font-style:normal;font-weight:600;font-size:.9rem;color:var(--muted);margin-top:10px}
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}
+.pillar{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+.pillar b{display:block;font-size:1.6rem;margin-bottom:4px}
+.pillar span{font-weight:700;font-size:.95rem}
+@media(max-width:900px){.story-grid{grid-template-columns:1fr}.story-img{max-width:440px}.pillars{grid-template-columns:1fr}}
+
+/* events */
+.events{background:var(--mango)}
+.events .eyebrow{color:var(--leaf-d)}
+.events-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.events ul{list-style:none;margin:22px 0}
+.events li{padding:10px 0 10px 34px;position:relative;font-weight:500;border-bottom:1px dashed rgba(42,26,18,.2)}
+.events li::before{content:"🍹";position:absolute;left:0}
+form.card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 20px 46px rgba(42,26,18,.16)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{display:block;font-weight:700;font-size:.88rem;margin:14px 0 6px}
+input,select,textarea{width:100%;padding:13px 14px;border:2px solid var(--line);border-radius:12px;font:inherit;font-size:1rem;background:#FFFCF7;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--orange)}
+textarea{min-height:100px;resize:vertical}
+form .btn{width:100%;justify-content:center;margin-top:20px}
+.formmsg{display:none;margin-top:16px;background:#E8F5EC;color:var(--leaf-d);padding:14px;border-radius:12px;font-weight:600;font-size:.95rem}
+@media(max-width:900px){.events-grid{grid-template-columns:1fr}}
+@media(max-width:520px){.row{grid-template-columns:1fr}}
+
+/* visit */
+.visit-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:36px;align-items:stretch}
+.vcard{background:#fff;border:1px solid var(--line);border-radius:24px;padding:30px}
+.hours{width:100%;border-collapse:collapse;margin:16px 0 20px}
+.hours td{padding:9px 0;border-bottom:1px solid var(--line)}
+.hours td:last-child{text-align:right;font-weight:600}
+.hours tr.today td{color:var(--orange-d);font-weight:800}
+.vcard .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.vcard .btns .btn{padding:12px 20px;font-size:.95rem}
+.map{border-radius:24px;overflow:hidden;border:1px solid var(--line);min-height:380px}
+.map iframe{width:100%;height:100%;min-height:380px;border:0;display:block}
+@media(max-width:900px){.visit-grid{grid-template-columns:1fr}}
+
+/* order band */
+.order{background:var(--orange);color:#fff;text-align:center;padding:80px 0}
+.order img{width:120px;margin:0 auto 18px}
+.order p{max-width:560px;margin:0 auto 26px;font-size:1.1rem;opacity:.95}
+
+footer{background:var(--ink);color:#CDB9A8;padding:44px 0;font-size:.92rem}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+footer a{color:#fff}
+footer .credit{color:var(--mango)}
+
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}.marquee .track,.hero-art .logo-big,.status.open i{animation:none}}
+</style>
+</head>
+<body>
+
+<div class="concept">Concept preview designed by <a href="https://cantwaittocre8.com/websites">Can't Wait to Cre8</a>. This is not the official BB Blends website.</div>
+
+<nav>
+  <div class="wrap">
+    <a href="#top" class="nlogo"><img src="/bbblends/logo-white.png" alt="BB Blends logo"><span>BB Blends</span></a>
+    <button class="mbtn" id="mbtn" aria-label="Open menu" aria-expanded="false" aria-controls="nlinks"><span></span><span></span><span></span></button>
+    <div class="nlinks" id="nlinks">
+      <a href="#menu">Menu</a>
+      <a href="#market">Fruit Market</a>
+      <a href="#story">Our Story</a>
+      <a href="#events">Events</a>
+      <a href="#visit">Visit</a>
+      <a href="https://www.hotplate.com/bbblends/f61e0ad9-4aa6-482f-a766-02573d3dddc9" class="btn btn-white" target="_blank" rel="noopener">Order Pickup</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="status" id="status"><i></i><span id="statusText">Keyport, NJ</span></div>
+      <h1>Cold-pressed juice &amp; <em>tropical fruit</em>, fresh in Keyport.</h1>
+      <p>BB Blends is a family-owned juicery, wellness bodega and tropical fruit market near the Keyport waterfront. Raw juices, wellness shots, fresh sugar cane and the fruit you can't find at the supermarket.</p>
+      <div class="hero-ctas">
+        <a href="https://www.hotplate.com/bbblends/f61e0ad9-4aa6-482f-a766-02573d3dddc9" class="btn btn-white" target="_blank" rel="noopener">Order for Pickup</a>
+        <a href="#menu" class="btn btn-line">See the Menu</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="ph p1"><img src="/bbblends/juices.jpg" alt=""></div>
+      <div class="ph p2"><img src="/bbblends/soursop-cup.jpg" alt=""></div>
+      <div class="ph p3"><img src="/bbblends/mangoes.jpg" alt=""></div>
+      <img class="logo-big" src="/bbblends/logo-white.png" alt="">
+    </div>
+  </div>
+</header>
+
+<div class="marquee" aria-hidden="true"><div class="track">
+  <span>Soursop</span><span>Passion Fruit</span><span>Mangosteen</span><span>Rambutan</span><span>Lychee</span><span>Dragon Fruit</span><span>Mamey</span><span>Fresh Coconut</span><span>Sugar Cane</span><span>Haden Mango</span>
+  <span>Soursop</span><span>Passion Fruit</span><span>Mangosteen</span><span>Rambutan</span><span>Lychee</span><span>Dragon Fruit</span><span>Mamey</span><span>Fresh Coconut</span><span>Sugar Cane</span><span>Haden Mango</span>
+</div></div>
+
+<section id="menu">
+  <div class="wrap">
+    <span class="eyebrow reveal">The Menu</span>
+    <h2 class="reveal">Pressed, poured &amp; blended to order</h2>
+    <p class="sub reveal">Raw cold-pressed juices, wellness shots, house-made teas and tropical treats made with the same fruit you see on our shelves.</p>
+    <div class="tabs reveal" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-f="all">All</button>
+      <button class="tab" role="tab" aria-selected="false" data-f="juice">Juices</button>
+      <button class="tab" role="tab" aria-selected="false" data-f="wellness">Wellness</button>
+      <button class="tab" role="tab" aria-selected="false" data-f="treat">Tropical Treats</button>
+    </div>
+    <div class="menu-grid">
+      <article class="item reveal" data-c="juice">
+        <div class="img"><img src="/bbblends/juices.jpg" alt="Bottles of BB Blends cold-pressed juice" loading="lazy"></div>
+        <div class="b"><div class="top"><h3>Cold-Pressed Juices</h3></div>
+        <p>Raw, cold-pressed bottles like The Glow Up and orange watermelon. Nothing heated, nothing watered down.</p><span class="chip">Raw &amp; cold-pressed</span></div>
+      </article>
+      <article class="item reveal" data-c="juice">
+        <div class="img"><img src="/bbblends/sugarcane.jpg" alt="Fresh juice poured over ice with lime" loading="lazy"></div>
+        <div class="b"><div class="top"><h3>Fresh Sugar Cane Juice</h3><span class="price">$8.00</span></div>
+        <p>Pressed fresh from the cane and poured over ice. A Caribbean classic you rarely find this side of the island.</p><span class="chip">Fan favorite</span></div>
+      </article>
+      <article class="item reveal" data-c="treat">
+        <div class="img"><img src="/bbblends/soursop-cup.jpg" alt="Soursop mango cup topped with fresh fruit" loading="lazy"></div>
+        <div class="b"><div class="top"><h3>Soursop Mango Cup</h3><span class="price">$18.00</span></div>
+        <p>A 9 oz cup of creamy soursop and sweet mango, finished with fresh fruit on top.</p><span class="chip">9 oz cup</span></div>
+      </article>
+      <article class="item reveal" data-c="wellness">
+        <div class="img"><img src="/bbblends/shots.jpg" alt="Bright orange wellness shot blend being mixed fresh" loading="lazy"></div>
+        <div class="b"><div class="top"><h3>Wellness Shots</h3></div>
+        <p>Blended fresh in small batches. Grab one with your juice or take a few home.</p><span class="chip">Daily ritual</span></div>
+      </article>
+      <article class="item reveal" data-c="wellness">
+        <div class="img"><img src="/bbblends/teas.jpg" alt="Bundles of dried soursop leaves for house-made herbal tea" loading="lazy"></div>
+        <div class="b"><div class="top"><h3>House-Made Herbal Teas</h3></div>
+        <p>Brewed in house with real herbs like soursop leaf, made the way family recipes intended.</p><span class="chip">Made in house</span></div>
+      </article>
+      <article class="item reveal" data-c="juice">
+        <div class="img"><img src="/bbblends/counter.jpg" alt="Lemonades and fruit cups lined up on the BB Blends counter" loading="lazy"></div>
+        <div class="b"><div class="top"><h3>Lemonades</h3></div>
+        <p>Bright, fresh-squeezed lemonades lined up on the counter and ready for a hot Keyport afternoon.</p><span class="chip">Fresh squeezed</span></div>
+      </article>
+      <article class="item reveal" data-c="treat">
+        <div class="img"><img src="/bbblends/tropical.jpg" alt="Cup of fresh cut tropical fruit" loading="lazy"></div>
+        <div class="b"><div class="top"><h3>Blend Bowls &amp; Fruit Cups</h3></div>
+        <p>Fresh cut tropical fruit and blended bowls for an easy, real-food bite.</p><span class="chip">Grab &amp; go</span></div>
+      </article>
+    </div>
+    <p class="menu-note reveal">The lineup changes with the season. See today's menu and prices on <a href="https://www.hotplate.com/bbblends/f61e0ad9-4aa6-482f-a766-02573d3dddc9" target="_blank" rel="noopener">our ordering page</a>.</p>
+  </div>
+</section>
+
+<section id="market" class="market">
+  <div class="wrap market-grid">
+    <div>
+      <span class="eyebrow reveal">Tropical Fruit Market</span>
+      <h2 class="reveal">The fruit you've been looking for</h2>
+      <p class="sub reveal">Exotic produce brought in fresh, plus the peppers and sofrito that make home cooking taste like home.</p>
+      <div class="fruits reveal">
+        <span class="fruit">Soursop</span><span class="fruit">Passion Fruit</span><span class="fruit">Mangosteen</span><span class="fruit">Rambutan</span><span class="fruit">Lychee</span><span class="fruit">Dragon Fruit</span><span class="fruit">Seeded Melons</span><span class="fruit">Haden Mango</span><span class="fruit">Mamey</span><span class="fruit">Fresh Coconut</span><span class="fruit">Aji Dulce</span><span class="fruit">Red Jalapeños</span><span class="fruit">Fresh Sofrito</span>
+      </div>
+      <a href="#visit" class="btn btn-white reveal" style="color:var(--leaf)">Come See What's In</a>
+    </div>
+    <div class="mosaic reveal">
+      <figure><img src="/bbblends/mamey.jpg" alt="Fresh mamey cut open showing bright orange flesh" loading="lazy"><figcaption>Mamey</figcaption></figure>
+      <figure><img src="/bbblends/coconut.jpg" alt="Fresh young coconut opened by hand" loading="lazy"><figcaption>Fresh coconut</figcaption></figure>
+      <figure><img src="/bbblends/sofrito.jpg" alt="Containers of fresh house sofrito" loading="lazy"><figcaption>Fresh sofrito</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="story" class="story">
+  <div class="wrap story-grid">
+    <div class="story-img reveal"><img src="/bbblends/mango.jpg" alt="Slicing a ripe mango at the BB Blends market" loading="lazy"></div>
+    <div>
+      <span class="eyebrow reveal">Our Story</span>
+      <h2 class="reveal">A family dream, poured fresh</h2>
+      <p class="reveal">BB Blends is family owned and rooted in Keyport. What started as a love for real fruit and real juice became a juicery, a wellness bodega and a tropical market under one roof.</p>
+      <blockquote class="reveal">"I've always dreamed of creating a place of wellness that feels welcoming and accessible…"<cite>BB Blends founder</cite></blockquote>
+      <p class="reveal">You'll also find products from local vendors on our shelves, like handmade soaps, because good neighbors help each other grow.</p>
+      <div class="pillars">
+        <div class="pillar reveal"><b>🥭</b><span>Real fruit, never shortcuts</span></div>
+        <div class="pillar reveal"><b>🏡</b><span>Family owned in Keyport</span></div>
+        <div class="pillar reveal"><b>🤝</b><span>Local vendors on our shelves</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="events" class="events">
+  <div class="wrap events-grid">
+    <div>
+      <span class="eyebrow reveal">Events &amp; Catering</span>
+      <h2 class="reveal">Bring BB Blends to your event</h2>
+      <p class="sub reveal" style="color:#4A382D">From campus days like Kean Day at Kean University to private parties and corporate wellness events, we bring the juice bar to you.</p>
+      <ul class="reveal">
+        <li>Campus and school events</li>
+        <li>Corporate wellness days</li>
+        <li>Birthdays, showers and private parties</li>
+        <li>Community festivals and pop-ups</li>
+      </ul>
+    </div>
+    <form class="card reveal" id="eventForm" novalidate>
+      <h3>Request a date</h3>
+      <div class="row">
+        <div><label for="ef-name">Your name</label><input id="ef-name" name="name" required autocomplete="name"></div>
+        <div><label for="ef-phone">Phone</label><input id="ef-phone" name="phone" type="tel" autocomplete="tel"></div>
+      </div>
+      <label for="ef-email">Email</label><input id="ef-email" name="email" type="email" required autocomplete="email">
+      <div class="row">
+        <div><label for="ef-date">Event date</label><input id="ef-date" name="date" type="date"></div>
+        <div><label for="ef-guests">Guests</label><select id="ef-guests" name="guests"><option>Under 50</option><option>50 to 150</option><option>150 to 300</option><option>300+</option></select></div>
+      </div>
+      <label for="ef-msg">Tell us about it</label><textarea id="ef-msg" name="message" placeholder="Type of event, location, what you'd like served"></textarea>
+      <button class="btn btn-leaf" type="submit">Send Request</button>
+      <div class="formmsg" id="formMsg" role="status">Preview only: on the live site this request goes straight to the BB Blends inbox and an admin dashboard.</div>
+    </form>
+  </div>
+</section>
+
+<section id="visit">
+  <div class="wrap">
+    <span class="eyebrow reveal">Visit Us</span>
+    <h2 class="reveal">Stop by the shop</h2>
+    <div class="visit-grid" style="margin-top:26px">
+      <div class="vcard reveal">
+        <h3>29 American Legion Dr<br>Keyport, NJ</h3>
+        <p style="color:var(--muted);margin-top:6px">Near the Keyport waterfront</p>
+        <table class="hours" id="hours">
+          <tr data-d="2"><td>Tuesday</td><td>11 AM – 7 PM</td></tr>
+          <tr data-d="3"><td>Wednesday</td><td>11 AM – 7 PM</td></tr>
+          <tr data-d="4"><td>Thursday</td><td>11 AM – 7 PM</td></tr>
+          <tr data-d="5"><td>Friday</td><td>11 AM – 7 PM</td></tr>
+          <tr data-d="6"><td>Saturday</td><td>11 AM – 7 PM</td></tr>
+          <tr data-d="0"><td>Sunday</td><td>10 AM – 5 PM</td></tr>
+          <tr data-d="1"><td>Monday</td><td>See Instagram</td></tr>
+        </table>
+        <div class="btns">
+          <a class="btn btn-orange" href="https://www.google.com/maps/dir/?api=1&amp;destination=29+American+Legion+Dr+Keyport+NJ" target="_blank" rel="noopener">Get Directions</a>
+          <a class="btn btn-leaf" href="https://www.instagram.com/bb.blends/" target="_blank" rel="noopener">@bb.blends</a>
+        </div>
+      </div>
+      <div class="map reveal"><iframe title="Map to BB Blends, 29 American Legion Dr, Keyport NJ" src="https://maps.google.com/maps?q=29%20American%20Legion%20Dr%2C%20Keyport%2C%20NJ&amp;z=15&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+    </div>
+  </div>
+</section>
+
+<section class="order">
+  <div class="wrap">
+    <img src="/bbblends/logo-white.png" alt="" class="reveal">
+    <h2 class="reveal">Skip the line. Order ahead.</h2>
+    <p class="reveal">Pick your juices, shots and fruit cups online and grab them when they're ready.</p>
+    <a href="https://www.hotplate.com/bbblends/f61e0ad9-4aa6-482f-a766-02573d3dddc9" class="btn btn-white reveal" target="_blank" rel="noopener">Order for Pickup</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><b style="color:#fff">BB Blends</b> &bull; Cold-Pressed Juice &amp; Blends<br>29 American Legion Dr, Keyport, NJ &bull; <a href="https://www.instagram.com/bb.blends/" target="_blank" rel="noopener">Instagram</a></div>
+    <div class="credit">Concept website by <a href="https://cantwaittocre8.com/websites" style="color:var(--mango)">Can't Wait to Cre8</a><br><span style="color:#CDB9A8">Not affiliated with or endorsed by BB Blends.</span></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var btn=document.getElementById('mbtn'),links=document.getElementById('nlinks');
+  btn.addEventListener('click',function(){var o=links.classList.toggle('open');btn.setAttribute('aria-expanded',o)});
+  links.addEventListener('click',function(e){if(e.target.tagName==='A'){links.classList.remove('open');btn.setAttribute('aria-expanded','false')}});
+
+  // Open now, in Keyport time
+  var hrs={0:[10,17],2:[11,19],3:[11,19],4:[11,19],5:[11,19],6:[11,19]};
+  function fmt(h){return (h>12?h-12:h)+(h>=12?' PM':' AM')}
+  try{
+    var parts=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',weekday:'short',hour:'numeric',minute:'numeric',hour12:false}).formatToParts(new Date());
+    var get=function(t){return (parts.find(function(p){return p.type===t})||{}).value};
+    var day=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(get('weekday'));
+    var now=(+get('hour')%24)+(+get('minute'))/60;
+    var row=document.querySelector('#hours tr[data-d="'+day+'"]'); if(row) row.className='today';
+    var st=document.getElementById('status'),tx=document.getElementById('statusText'),h=hrs[day];
+    if(h&&now>=h[0]&&now<h[1]){st.classList.add('open');tx.textContent='Open now until '+fmt(h[1])}
+    else if(h&&now<h[0]){st.classList.add('closed');tx.textContent='Opens today at '+fmt(h[0])}
+    else{
+      for(var i=1;i<=7;i++){var d=(day+i)%7;if(hrs[d]){st.classList.add('closed');tx.textContent='Opens '+(i===1?'tomorrow':['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d])+' at '+fmt(hrs[d][0]);break}}
+    }
+  }catch(e){}
+
+  // Menu filter
+  var tabs=document.querySelectorAll('.tab'),items=document.querySelectorAll('.item');
+  tabs.forEach(function(t){t.addEventListener('click',function(){
+    tabs.forEach(function(x){x.setAttribute('aria-selected',x===t)});
+    var f=t.getAttribute('data-f');
+    items.forEach(function(it){it.classList.toggle('hide',f!=='all'&&it.getAttribute('data-c')!==f);it.classList.add('in')});
+  })});
+
+  // Event form (preview)
+  var form=document.getElementById('eventForm');
+  form.addEventListener('submit',function(e){e.preventDefault();
+    if(!form.name.value.trim()||!/^\S+@\S+\.\S+$/.test(form.email.value)){(form.name.value.trim()?form.email:form.name).focus();return}
+    document.getElementById('formMsg').style.display='block';
+  });
+
+  // Reveal on scroll
+  var els=document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+    els.forEach(function(el){io.observe(el)});
+  } else els.forEach(function(el){el.classList.add('in')});
+})();
+</script>
+</body>
+</html>

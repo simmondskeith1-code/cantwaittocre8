@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="noindex">
+<title>Cre8 Sales Team Admin | Live Above</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Teko:wght@500&family=Poppins:wght@400;500;600&display=swap">
+<style>
+  :root { --bg:#0d0d0d; --surface:#171616; --surface-2:#1f1d1d; --line:#2c2828; --fg:#f4f1f1; --dim:#a69e9e; --red:#db0101; --hot:#ff3d7f; --sun:#ffb21e; --ok:#22c55e; --bad:#ef4444; }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.5 'Poppins', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  main { max-width: 1000px; margin: 0 auto; padding: 22px 16px 60px; }
+  .eyebrow { color: var(--hot); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; }
+  h1 { font-family: 'Teko', sans-serif; font-weight: 500; text-transform: uppercase; font-size: 46px; margin: 4px 0 0; line-height: 1; }
+  h2 { font-family: 'Teko', sans-serif; font-weight: 500; text-transform: uppercase; font-size: 32px; margin: 36px 0 4px; line-height: 1; }
+  .dim { color: var(--dim); font-size: 13px; }
+  input, select, textarea { background: var(--surface); color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font: inherit; }
+  button { background: var(--red); color: #fff; border: 0; border-radius: 8px; padding: 10px 16px; font: inherit; font-weight: 600; cursor: pointer; }
+  button.ghost { background: transparent; border: 1px solid var(--line); color: var(--fg); }
+  button.sm { padding: 6px 10px; font-size: 12.5px; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 14px; }
+  .row input { flex: 1 1 200px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 16px; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: 13px; color: var(--dim); }
+  .stat b { display: block; font-family: 'Teko', sans-serif; font-size: 34px; font-weight: 500; line-height: 1; color: var(--fg); }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; margin-top: 10px; }
+  .warn { border-color: #7a5a12; background: #241c0c; color: #ffd27a; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; color: var(--dim); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+  td { padding: 10px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .tbl { overflow-x: auto; }
+  .bar { height: 8px; background: var(--surface-2); border-radius: 9px; overflow: hidden; min-width: 70px; margin-top: 4px; }
+  .bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--hot), var(--sun)); }
+  .pill { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 3px 8px; border-radius: 99px; background: var(--surface-2); color: var(--dim); }
+  .pill.ok { background: rgba(34,197,94,.18); color: #6ee79a; }
+  .pill.bad { background: rgba(239,68,68,.18); color: #ff8a8a; }
+  .pill.hot { background: rgba(255,61,127,.18); color: #ff7aa6; }
+  .pill.sun { background: rgba(255,178,30,.18); color: #ffc85c; }
+  .weak { display: grid; gap: 10px; margin-top: 10px; }
+  .weak .hd { display: flex; justify-content: space-between; font-size: 14px; }
+  .weak .bar { height: 12px; }
+  .weak .bar i.lo { background: var(--bad); } .weak .bar i.mid { background: var(--sun); } .weak .bar i.hi { background: var(--ok); }
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+  .chip { background: var(--surface); border: 1px solid var(--line); color: var(--dim); border-radius: 99px; padding: 6px 12px; font-size: 13px; cursor: pointer; }
+  .chip.on { background: var(--hot); border-color: var(--hot); color: #fff; }
+  .top { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .name { font-weight: 600; font-size: 16px; }
+  .body { white-space: pre-wrap; background: var(--surface-2); border-radius: 8px; padding: 10px 12px; margin-top: 8px; font-size: 14px; }
+  .empty { color: var(--dim); text-align: center; padding: 24px 0; }
+  #msg { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: var(--hot); padding: 9px 18px; border-radius: 99px; display: none; z-index: 9; }
+  a { color: var(--fg); }
+</style>
+</head>
+<body>
+<script>(function(){var f;try{f=window.self!==window.top;}catch(e){f=true;}
+if(f){document.documentElement.className+=' la-embed';}
+else if(!/[?&]standalone=1/.test(location.search)){location.replace(/^hq\./.test(location.hostname)?'/admin':'/admin.html#cre8sales');}})();</script>
+<style>.la-embed main{padding-top:6px}.la-embed .eyebrow:first-child,.la-embed h1{display:none}</style>
+<main>
+  <div class="eyebrow">Can't Wait to Cre8</div>
+  <h1>Sales Team</h1>
+  <p class="dim">Drill scores, quiz results, onboarding progress, visit logs and feedback from the <a href="/cre8-sales" target="_blank" rel="noopener">sales playbook</a>.</p>
+  <div class="row" id="login"><input type="password" id="key" placeholder="Admin key" autocomplete="current-password"><button id="go">Open</button></div>
+  <div id="app" hidden>
+    <div id="codeWarn"></div>
+    <div class="card"><div class="top"><div><div class="name">Founding slots left</div><div class="dim">Reps see this on the playbook before they quote. Set it to 0 when the 5th founding client signs.</div></div>
+      <div class="row" style="margin:0"><input type="number" id="slots" min="0" max="99" style="width:90px;flex:none"><button id="saveSlots">Save</button></div></div></div>
+    <div class="stats" id="stats"></div>
+    <div class="row"><button class="ghost" id="refresh">Refresh</button><span class="dim" id="updated"></span></div>
+
+    <h2>Reps</h2>
+    <p class="dim">One row per rep. Onboarding is their latest progress send. Drill shows best and latest.</p>
+    <div class="card tbl"><table><thead><tr><th>Rep</th><th>Onboarding</th><th>Drill (best / latest)</th><th>Quiz</th><th>Visits</th><th>Calls</th><th>Signed</th><th>Last active</th></tr></thead><tbody id="reps"></tbody></table></div>
+
+    <h2>Weak spots</h2>
+    <p class="dim">Share of reps who picked the best answer, using each rep's latest drill. Coach the red ones first.</p>
+    <div class="card weak" id="weak"></div>
+
+    <h2>Visit log</h2>
+    <p class="dim">The first rep to log a business owns it for 60 days. Duplicates are flagged.</p>
+    <div class="filters" id="leadFilters"></div>
+    <div class="row"><input type="text" id="q" placeholder="Search business, rep, town"></div>
+    <div id="leads"></div>
+
+    <h2>Feedback</h2>
+    <div id="feedback"></div>
+
+    <h2>Site Builder concepts</h2>
+    <p class="dim" id="sgInfo">Concept websites reps designed with the Site Builder. Links work for anyone you send them to and are never indexed.</p>
+    <div id="concepts"></div>
+  </div>
+</main>
+<div id="msg"></div>
+<script>
+(function () {
+  var $ = function (s) { return document.querySelector(s); };
+  var KEY = '', DATA = null, LF = 'all';
+  var OBJ = { have_site: 'We already have a website', price: "That's way too expensive", word_of_mouth: 'All word of mouth', nephew: 'My nephew does websites / Wix', no_time: "I don't have time", send_info: 'Just email me info', partner: 'Talk to my partner', burned: 'Burned by a web company', guarantee: 'Can you guarantee customers?', monthly: 'Why a monthly fee?' };
+  var OUTCOMES = ['Owner not in', 'Not interested', 'Follow up', 'Discovery call booked', 'Signed, send deposit invoice'];
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function flash(t) { var m = $('#msg'); m.textContent = t; m.style.display = 'block'; clearTimeout(flash.t); flash.t = setTimeout(function () { m.style.display = 'none'; }, 2200); }
+  function when(d) { return new Date(d).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }); }
+  function ago(d) { var s = (Date.now() - new Date(d)) / 1000; return s < 3600 ? Math.max(1, Math.round(s / 60)) + 'm ago' : s < 86400 ? Math.round(s / 3600) + 'h ago' : Math.round(s / 86400) + 'd ago'; }
+  function api(path, opt) {
+    opt = opt || {}; opt.headers = Object.assign({ 'x-admin-key': KEY }, opt.headers || {});
+    return fetch(path, opt).then(function (r) { if (r.status === 401) throw new Error('Wrong admin key'); if (!r.ok) throw new Error('Request failed'); return r; });
+  }
+  function repKey(e) { return (e.rep_email || e.rep_name).toLowerCase().trim(); }
+  function bizKey(n) { return String(n || '').toLowerCase().replace(/[^a-z0-9]/g, ''); }
+
+  function draw() {
+    var E = DATA.entries.slice().sort(function (a, b) { return a.id - b.id; }); // oldest first
+    var reps = {}, owner = {};
+    E.forEach(function (e) {
+      var k = repKey(e), r = reps[k] || (reps[k] = { name: e.rep_name, email: e.rep_email, drills: [], quiz: null, check: null, leads: 0, calls: 0, signed: 0, last: e.created });
+      r.name = e.rep_name; if (e.rep_email) r.email = e.rep_email; r.last = e.created;
+      if (e.kind === 'drill') r.drills.push(e);
+      if (e.kind === 'quiz') r.quiz = e;
+      if (e.kind === 'checklist') r.check = e;
+      if (e.kind === 'lead') {
+        r.leads++; var o = (e.data || {}).outcome || '';
+        if (/booked/i.test(o)) r.calls++; if (/signed/i.test(o)) r.signed++;
+        var bk = bizKey((e.data || {}).business); if (bk && !owner[bk]) owner[bk] = { rep: e.rep_name, k: k, at: e.created };
+      }
+    });
+    var list = Object.keys(reps).map(function (k) { return reps[k]; });
+    var leads = E.filter(function (e) { return e.kind === 'lead'; });
+    var certified = list.filter(function (r) { return r.quiz && r.quiz.score >= 7; }).length;
+    var drillPass = list.filter(function (r) { return r.drills.some(function (d) { return d.total && d.score / d.total >= 0.8; }); }).length;
+    var calls = leads.filter(function (e) { return /booked/i.test((e.data || {}).outcome); }).length;
+    var signed = leads.filter(function (e) { return /signed/i.test((e.data || {}).outcome); }).length;
+    $('#stats').innerHTML = [[list.length, 'Reps'], [certified, 'Certified (quiz)'], [drillPass, 'Passed drill'], [leads.length, 'Visits logged'], [calls, 'Calls booked'], [signed, 'Signed']]
+      .map(function (s) { return '<div class="stat"><b>' + s[0] + '</b>' + s[1] + '</div>'; }).join('');
+    $('#updated').textContent = 'Updated ' + new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+    list.sort(function (a, b) { return new Date(b.last) - new Date(a.last); });
+    $('#reps').innerHTML = list.length ? list.map(function (r) {
+      var ck = r.check, pct = ck && ck.total ? Math.round(ck.score / ck.total * 100) : 0;
+      var best = r.drills.reduce(function (m, d) { return Math.max(m, d.total ? Math.round(d.score / d.total * 100) : 0); }, 0);
+      var last = r.drills.length ? r.drills[r.drills.length - 1] : null, lp = last && last.total ? Math.round(last.score / last.total * 100) : null;
+      var q = r.quiz;
+      return '<tr><td><b>' + esc(r.name) + '</b>' + (r.email ? '<br><a class="dim" href="mailto:' + esc(r.email) + '">' + esc(r.email) + '</a>' : '') + '</td>' +
+        '<td>' + (ck ? pct + '%<div class="bar"><i style="width:' + pct + '%"></i></div>' : '<span class="dim">not sent</span>') + '</td>' +
+        '<td>' + (r.drills.length ? '<span class="pill ' + (best >= 80 ? 'ok' : 'bad') + '">' + best + '%</span> / ' + lp + '%<br><span class="dim">' + r.drills.length + ' attempt' + (r.drills.length > 1 ? 's' : '') + '</span>' : '<span class="dim">none</span>') + '</td>' +
+        '<td>' + (q ? '<span class="pill ' + (q.score >= 7 ? 'ok' : 'bad') + '">' + q.score + '/' + q.total + '</span>' : '<span class="dim">none</span>') + '</td>' +
+        '<td>' + r.leads + '</td><td>' + r.calls + '</td><td>' + r.signed + '</td><td class="dim">' + ago(r.last) + '</td></tr>';
+    }).join('') : '<tr><td colspan="8" class="empty">No reps yet. Send them the playbook link.</td></tr>';
+
+    // weak spots from each rep's latest drill
+    var tally = {};
+    list.forEach(function (r) { var d = r.drills[r.drills.length - 1]; if (!d) return; ((d.data || {}).answers || []).forEach(function (a) { var t = tally[a.id] || (tally[a.id] = { n: 0, best: 0 }); if (a.pick) { t.n++; if (a.best) t.best++; } }); });
+    var ids = Object.keys(OBJ).filter(function (id) { return tally[id] && tally[id].n; }).sort(function (a, b) { return tally[a].best / tally[a].n - tally[b].best / tally[b].n; });
+    $('#weak').innerHTML = ids.length ? ids.map(function (id) {
+      var t = tally[id], p = Math.round(t.best / t.n * 100);
+      return '<div><div class="hd"><span>"' + esc(OBJ[id]) + '"</span><b>' + p + '% <span class="dim">(' + t.best + ' of ' + t.n + ')</span></b></div><div class="bar"><i class="' + (p < 50 ? 'lo' : p < 80 ? 'mid' : 'hi') + '" style="width:' + Math.max(3, p) + '%"></i></div></div>';
+    }).join('') : '<div class="empty">No drill scores sent yet.</div>';
+
+    // leads
+    $('#leadFilters').innerHTML = ['all', 'follow-ups due'].concat(OUTCOMES).map(function (o) { return '<button class="chip' + (o === LF ? ' on' : '') + '" data-lf="' + esc(o) + '">' + esc(o) + '</button>'; }).join('');
+    var term = $('#q').value.trim().toLowerCase(), today = new Date().toISOString().slice(0, 10);
+    var rows = leads.slice().reverse().filter(function (e) {
+      var d = e.data || {};
+      if (LF === 'follow-ups due') { if (!d.followup || d.followup > today || /not interested|signed/i.test(d.outcome)) return false; }
+      else if (LF !== 'all' && d.outcome !== LF) return false;
+      return !term || [d.business, d.address, e.rep_name, d.contact].join(' ').toLowerCase().indexOf(term) > -1;
+    });
+    $('#leads').innerHTML = rows.length ? rows.map(function (e) {
+      var d = e.data || {}, own = owner[bizKey(d.business)], dup = own && own.k !== repKey(e);
+      var oc = /signed/i.test(d.outcome) ? 'ok' : /booked/i.test(d.outcome) ? 'hot' : /follow/i.test(d.outcome) ? 'sun' : '';
+      var due = d.followup && d.followup <= today && !/not interested|signed/i.test(d.outcome);
+      return '<div class="card"><div class="top"><div><div class="name">' + esc(d.business) + ' <span class="pill ' + oc + '">' + esc(d.outcome || '') + '</span>' + (dup ? ' <span class="pill bad">Claimed by ' + esc(own.rep) + '</span>' : '') + '</div>' +
+        '<div class="dim">' + esc(e.rep_name) + ' &bull; ' + when(e.created) + (d.address ? ' &bull; ' + esc(d.address) : '') + '</div></div>' +
+        '<div style="text-align:right">' + (d.followup ? '<span class="pill ' + (due ? 'bad' : '') + '">' + (due ? 'Due ' : 'Next ') + esc(d.followup) + '</span>' : '') + '</div></div>' +
+        ((d.contact || d.phone) ? '<div style="margin-top:6px;font-size:14px">' + esc(d.contact) + (d.phone ? ' &bull; ' + esc(d.phone) : '') + '</div>' : '') +
+        (d.notes ? '<div class="body">' + esc(d.notes) + '</div>' : '') +
+        '<div class="row" style="margin-top:8px"><button class="ghost sm" data-del="' + e.id + '">Delete</button></div></div>';
+    }).join('') : '<div class="empty">No visits here.</div>';
+
+    var fb = E.filter(function (e) { return e.kind === 'feedback'; }).reverse();
+    $('#feedback').innerHTML = fb.length ? fb.map(function (e) {
+      var d = e.data || {};
+      return '<div class="card"><div class="top"><div><div class="name">' + esc(e.rep_name) + (d.rating ? ' <span style="color:var(--sun)">' + '★★★★★'.slice(0, d.rating) + '</span><span class="dim">' + '★★★★★'.slice(0, 5 - d.rating) + '</span>' : '') + '</div><div class="dim">' + when(e.created) + '</div></div></div>' +
+        (d.unclear ? '<div class="body"><b>Unclear or wrong:</b>\n' + esc(d.unclear) + '</div>' : '') + (d.ideas ? '<div class="body"><b>Add this:</b>\n' + esc(d.ideas) + '</div>' : '') +
+        '<div class="row" style="margin-top:8px"><button class="ghost sm" data-del="' + e.id + '">Delete</button></div></div>';
+    }).join('') : '<div class="empty">No feedback yet.</div>';
+  }
+
+  function load() {
+    if (!KEY) return;
+    return api('/api/admin/cre8/sales').then(function (r) { return r.json(); }).then(function (d) {
+      DATA = d; try { sessionStorage.setItem('la_cre8_admin', KEY); } catch (e) {}
+      $('#login').hidden = true; $('#app').hidden = false;
+      $('#slots').value = d.foundingLeft == null ? 5 : d.foundingLeft;
+      $('#codeWarn').innerHTML = d.codeSet ? '' : '<div class="card warn"><b>The playbook is open to anyone with the link.</b> Add CRE8_SALES_CODE in Render (Environment) to require a team code. Your pay plan and scripts are on that page.</div>';
+      draw(); loadConcepts();
+    }).catch(function (e) { flash(e.message); });
+  }
+  function loadConcepts() {
+    return api('/api/admin/cre8/sales/sitegen').then(function (r) { return r.json(); }).then(function (d) {
+      $('#sgInfo').innerHTML = (d.configured ? '' : '<b style="color:#ffc85c">ANTHROPIC_API_KEY is not set in Render, so the Site Builder cannot design yet.</b><br>') +
+        'Designs today: <b>' + d.today + '</b> of ' + d.dailyCap + ' (change the cap with CRE8_SITEGEN_DAILY). Links work for anyone you send them to and are never indexed.';
+      var c = d.concepts || [];
+      $('#concepts').innerHTML = c.length ? c.map(function (g) {
+        var pc = g.status === 'done' ? 'ok' : g.status === 'failed' ? 'bad' : 'sun';
+        return '<div class="card"><div class="top"><div><div class="name">' + esc(g.business) + ' <span class="pill ' + pc + '">' + esc(g.status) + '</span>' + (g.tier && g.tier !== 'launch' ? ' <span class="pill hot">' + (g.tier === 'signature' ? 'Signature' : 'Growth') + '</span>' : '') + (g.parent_id ? ' <span class="pill">revision</span>' : '') + '</div>' +
+          '<div class="dim">' + esc(g.rep_name) + ' &bull; ' + when(g.created) + (g.kind ? ' &bull; ' + esc(g.kind) : '') + (g.town ? ' &bull; ' + esc(g.town) : '') + ' &bull; ' + g.images + ' image' + (g.images === 1 ? '' : 's') + '</div></div></div>' +
+          (g.notes ? '<div class="body"><b>Changes asked for:</b> ' + esc(g.notes) + '</div>' : '') + (g.error ? '<div class="body" style="color:#ff8a8a">' + esc(g.error) + '</div>' : '') +
+          '<div class="row" style="margin-top:8px">' + (g.url ? '<a class="ghost sm" style="text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12.5px;font-weight:600" href="' + esc(g.url) + '" target="_blank" rel="noopener">Open concept</a>' : '') +
+          '<button class="ghost sm" data-delgen="' + g.id + '">Delete</button></div></div>';
+      }).join('') : '<div class="empty">No concepts yet.</div>';
+    }).catch(function () {});
+  }
+  document.addEventListener('click', function (e) {
+    var g = e.target.closest('[data-delgen]'); if (!g) return;
+    if (!confirm('Delete this concept and its photos? The link will stop working.')) return;
+    api('/api/admin/cre8/sales/sitegen/' + g.dataset.delgen, { method: 'DELETE' }).then(function () { flash('Deleted'); loadConcepts(); }).catch(function (er) { flash(er.message); });
+  });
+  document.addEventListener('click', function (e) {
+    var f = e.target.closest('[data-lf]'); if (f) { LF = f.dataset.lf; draw(); return; }
+    var d = e.target.closest('[data-del]'); if (!d) return;
+    if (!confirm('Delete this entry?')) return;
+    api('/api/admin/cre8/sales/' + d.dataset.del, { method: 'DELETE' }).then(function () { flash('Deleted'); load(); }).catch(function (er) { flash(er.message); });
+  });
+  $('#saveSlots').onclick = function () {
+    api('/api/admin/cre8/sales/config', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ foundingLeft: $('#slots').value }) })
+      .then(function () { flash('Saved. Reps now see ' + $('#slots').value + ' slots left.'); }).catch(function (er) { flash(er.message); });
+  };
+  $('#q').addEventListener('input', function () { if (DATA) draw(); });
+  $('#go').onclick = function () { KEY = $('#key').value.trim(); load(); };
+  $('#key').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('#go').click(); });
+  $('#refresh').onclick = function () { load(); flash('Refreshed'); };
+  try { var saved = sessionStorage.getItem('la_cre8_admin') || sessionStorage.getItem('la_admin_key'); if (saved) { KEY = saved; load(); } } catch (e) {}
+})();
+</script>
+</body>
+</html>
