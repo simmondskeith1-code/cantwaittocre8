@@ -108,7 +108,7 @@ else if(!/[?&]standalone=1/.test(location.search)){location.replace(/^hq\./.test
       field('Quantity', q.quantity) + field('Need by', need) + field('For', d.occasion) + field('Products', (d.products || []).join(', ')) + field('Method', d.method) +
       field('Garment', garment) + field('Color', d.garment_color) + field('Locations', (d.locations || []).join(', ')) + field('Sizes', sizes) +
       field('Design', d.design_status) + field('Budget', d.budget) + field('Delivery', d.delivery) + field('Heard via', d.referral) +
-      field('Mockup', [d.mockup_color, d.mockup_garment].filter(Boolean).join(' ')) + field('Mockup front', d.mockup_front) + field('Mockup back', d.mockup_back) + field('Engraving item', d.engrave_item) + field('Engraving text', d.engrave_text) + field('Engraving font', d.engrave_font) + field('Engraving placement', d.engrave_design) + '</div>' +
+      field('Mockup', [d.mockup_color, d.mockup_garment].filter(Boolean).join(' ')) + field('Mockup front', d.mockup_front) + field('Mockup back', d.mockup_back) + field('Print finish', d.finish) + field('Their own item', d.own_item) + field('Engraving item', d.engrave_item) + field('Engraving text', d.engrave_text) + field('Engraving font', d.engrave_font) + field('Engraving placement', d.engrave_design) + '</div>' +
       (files ? '<div class="files">' + files + '</div>' : '<div class="dim" style="margin-top:10px">No files uploaded.</div>') +
       '<div class="edit"><select data-status>' + opts + '</select><textarea data-notes placeholder="Private notes: price quoted, proof sent, payment...">' + esc(q.notes) + '</textarea></div>' +
       '<div class="actions"><button data-save>Save</button><button class="ghost" data-del>Delete</button></div></div>';

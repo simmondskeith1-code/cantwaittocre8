@@ -147,7 +147,7 @@
   }
   apparelBoxes.forEach(function(b){ b.addEventListener('change', toggleGarment); });
   /* Engraving mockup shows for laser engraving or any engravable item */
-  var ENGRAVE_PRODUCTS = ['Tumblers / Drinkware', 'Wood (signs, puzzles, plaques)', 'Metal / Glass / Acrylic', 'Leather'];
+  var ENGRAVE_PRODUCTS = ['Tumblers / Drinkware', 'Wood (signs, puzzles, plaques)', 'Metal / Glass / Acrylic', 'Leather', 'Journals / Notebooks'];
   function toggleEngrave(){
     var sec = document.getElementById('engraveSection'); if(!sec) return;
     var m = document.querySelector('input[name=method]:checked');
@@ -156,7 +156,21 @@
     sec.classList.toggle('hidden', !on); renumber();
     if(!on) ['eg_item', 'eg_text', 'eg_font', 'eg_design'].forEach(function(id){ var f = document.getElementById(id); if(f) f.value = ''; });
     if(on && !was && window.Cre8Engrave) window.Cre8Engrave.init();
+    // journals picked: open the engraving preview on the leather journal
+    var jb = document.querySelector('input[name="product[]"][value="Journals / Notebooks"]');
+    if(on && jb && jb.checked && window.Cre8Engrave && window.Cre8Engrave.pick) window.Cre8Engrave.pick('journal');
   }
+  /* Bring your own item: ask what it is. Print finish (flat or raised texture) shows for printing */
+  function toggleExtras(){
+    var own = document.querySelector('input[name="product[]"][value="Your Own Item"]');
+    var ow = document.getElementById('ownItemWrap'); if(ow){ ow.classList.toggle('hidden', !(own && own.checked)); if(!(own && own.checked)) document.getElementById('ownItem').value = ''; }
+    var m = document.querySelector('input[name=method]:checked'), fw = document.getElementById('finishWrap');
+    if(fw){ var show = !!(m && (m.value === 'Full Color Print' || m.value === 'Not sure, recommend one')); fw.classList.toggle('hidden', !show);
+      if(!show){ var flat = document.querySelector('input[name=finish][value=Flat]'); if(flat) flat.checked = true; }
+      document.querySelectorAll('input[name=finish]').forEach(function(r){ r.disabled = !show; }); } // hidden = not sent with the quote
+  }
+  document.querySelectorAll('input[name="product[]"], input[name=method]').forEach(function(b){ b.addEventListener('change', toggleExtras); });
+  toggleExtras();
   document.querySelectorAll('input[name="product[]"], input[name=method]').forEach(function(b){ b.addEventListener('change', toggleEngrave); });
   renumber();
 
@@ -822,7 +836,7 @@
 
     /* Deep links: /how-it-works?make=hats&method=Embroidery#create preselects the order */
     var MAKE = { shirts: ['Apparel', 'tee'], hoodies: ['Apparel', 'hoodie'], hats: ['Hats', 'hat'], beanies: ['Beanies', 'beanie'], tumblers: ['Tumblers / Drinkware'],
-      wood: ['Wood (signs, puzzles, plaques)'], stickers: ['Stickers / Decals'], signs: ['Signs / Banners'] };
+      wood: ['Wood (signs, puzzles, plaques)'], stickers: ['Stickers / Decals'], signs: ['Signs / Banners'], journals: ['Journals / Notebooks'], own: ['Your Own Item'] };
     window.cre8Preselect = function(make, method){
       var m = MAKE[make];
       if(m){

@@ -227,5 +227,11 @@
     });
   }
 
-  window.Cre8Engrave = { init: init, setImages: setImages, snapshot: snapshot, products: PRODUCTS };
+  // select an item by id (for example 'journal' when the customer picks Journals / Notebooks)
+  function pick(id){
+    var i = -1; PRODUCTS.forEach(function(p, k){ if(p.id === id) i = k; });
+    if(i < 0 || !ready || state.p === i) return;
+    var b = $('egProducts') && $('egProducts').children[i]; if(b) b.click();
+  }
+  window.Cre8Engrave = { init: init, setImages: setImages, snapshot: snapshot, products: PRODUCTS, pick: pick };
 })();

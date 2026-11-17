@@ -105,6 +105,8 @@ function parseDetails(b) {
     delivery: line(b.delivery, 40),
     contact_preference: line(b.contact_preference, 20),
     referral: line(b.referral, 60),
+    own_item: line(b.own_item, 200), // customer's own product to brand
+    finish: b.finish === 'Raised texture' ? 'Raised texture' : (b.finish ? 'Flat' : ''), // print finish
     // From the mockup tool on the site: garment, color and the design's size and position per side (in inches)
     mockup_garment: line(b.mockup_garment, 40),
     mockup_color: line(b.mockup_color, 40),
@@ -125,7 +127,7 @@ function summaryRows(q) {
   return [
     ['Name', q.name], ['Business or group', q.organization], ['Email', q.email], ['Phone', q.phone],
     ['Best way to reach', d.contact_preference], ['For', d.occasion], ['Products', (d.products || []).join(', ')],
-    ['Method', d.method], ['Garment', garment], ['Garment color', d.garment_color],
+    ['Method', d.method], ['Print finish', d.finish], ['Their own item', d.own_item], ['Garment', garment], ['Garment color', d.garment_color],
     ['Print locations', (d.locations || []).join(', ')], ['Sizes', sizes], ['Quantity', q.quantity],
     ['Need by', q.need_by ? new Date(q.need_by).toISOString().slice(0, 10) : ''], ['Budget', d.budget],
     ['Pickup or ship', d.delivery], ['Design status', d.design_status], ['Heard about us', d.referral],

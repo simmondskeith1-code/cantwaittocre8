@@ -117,13 +117,13 @@
         <div class="wwd-panel" data-scene="laser">
           <h3>Laser Engraving</h3>
           <p>Permanent, clean detail on wood, metal, glass, leather and acrylic.</p>
-          <ul><li>Tumblers and drinkware</li><li>Wood signs, plaques and puzzles</li><li>Gifts, awards and keepsakes</li></ul>
+          <ul><li>Tumblers and drinkware</li><li>Wood signs, plaques and puzzles</li><li>Personalized journals and notebooks</li><li>Gifts, awards and keepsakes</li></ul>
           <a class="btn btn-hot" href="{{BASE}}/how-it-works?make=tumblers&amp;method=Laser%20Engraving#create" data-make="tumblers" data-method="Laser Engraving">Start an Engraving Order</a>
         </div>
         <div class="wwd-panel" data-scene="color">
           <h3>Full Color Printing</h3>
-          <p>Photo quality color with no limit on detail, gradients or number of colors.</p>
-          <ul><li>Photo shirts and memorial tees</li><li>Stickers, decals and labels</li><li>Signs, banners and promo items</li></ul>
+          <p>Photo quality color with no limit on detail, gradients or number of colors. Add raised texture and the print stands up off the surface so you can feel it.</p>
+          <ul><li>Photo shirts and memorial tees</li><li>Personalized journals and notebooks</li><li>Stickers, decals and labels</li><li>Signs, banners and promo items</li><li>Bring your own item and we brand it</li></ul>
           <a class="btn btn-hot" href="{{BASE}}/how-it-works?make=stickers&amp;method=Full%20Color%20Print#create" data-make="stickers" data-method="Full Color Print">Start a Full Color Order</a>
         </div>
       </div>
@@ -209,9 +209,16 @@
             <label class="chip"><input type="checkbox" name="product[]" value="Wood (signs, puzzles, plaques)"><span>🪵 Wood</span></label>
             <label class="chip"><input type="checkbox" name="product[]" value="Metal / Glass / Acrylic"><span>✨ Metal / Glass / Acrylic</span></label>
             <label class="chip"><input type="checkbox" name="product[]" value="Leather"><span>👜 Leather</span></label>
+            <label class="chip"><input type="checkbox" name="product[]" value="Journals / Notebooks"><span>📓 Journals / Notebooks</span></label>
             <label class="chip"><input type="checkbox" name="product[]" value="Stickers / Decals"><span>🏷️ Stickers / Decals</span></label>
             <label class="chip"><input type="checkbox" name="product[]" value="Signs / Banners"><span>🪧 Signs / Banners</span></label>
+            <label class="chip"><input type="checkbox" name="product[]" value="Your Own Item"><span>📦 Bring Your Own Item</span></label>
             <label class="chip"><input type="checkbox" name="product[]" value="Other"><span>Something else</span></label>
+          </div>
+          <div class="field hidden" id="ownItemWrap" style="margin-top:12px">
+            <label for="ownItem">What are you bringing in?</label>
+            <input type="text" id="ownItem" name="own_item" maxlength="200" placeholder="Example: 12 Yeti tumblers, a leather wallet, a wood cutting board">
+            <p class="hint">Drop it off at 37 Center Ave, Leonardo. We check the material first and test on a hidden spot or a spare before we brand the real thing.</p>
           </div>
           <div class="field" style="margin-top:16px">
             <label>Decoration method</label>
@@ -221,6 +228,14 @@
               <label class="chip"><input type="radio" name="method" value="Laser Engraving"><span>Laser Engraving</span></label>
               <label class="chip"><input type="radio" name="method" value="Not sure, recommend one"><span>Not sure, recommend one</span></label>
             </div>
+          </div>
+          <div class="field hidden" id="finishWrap" style="margin-top:16px">
+            <label>Print finish</label>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="finish" value="Flat" checked><span>Flat</span></label>
+              <label class="chip"><input type="radio" name="finish" value="Raised texture"><span>Raised Texture</span></label>
+            </div>
+            <p class="hint">Raised texture builds the print up so you can feel it: fur, scales, wood grain, a logo that stands off the surface. It shines on journals, wood, leather and hard goods, takes a little longer, and costs a little more. We confirm the price in your quote.</p>
           </div>
         </fieldset>
 
