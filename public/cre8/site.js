@@ -21,7 +21,7 @@
   /* Tap a photo to see it bigger, in place */
   var viewer = document.createElement('div'); viewer.className = 'viewer';
   var vClose = el('button', null, '✕'); vClose.type = 'button'; vClose.setAttribute('aria-label', 'Close');
-  viewer.appendChild(vClose); viewer.appendChild(el('img'));
+  viewer.appendChild(vClose); var vImg = el('img'); vImg.alt = ''; viewer.appendChild(vImg);
   document.body.appendChild(viewer);
   viewer.addEventListener('click', function(){ viewer.classList.remove('open'); });
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') viewer.classList.remove('open'); });
@@ -258,7 +258,7 @@
     BODY.hoodie = BODY.crew;
     // The back neckline sits higher than the front
     function bodyPath(view){
-      var d = BODY[state.type];
+      var d = BODY[state.type] || BODY.hat; // beanie is photo-based; never hand the SVG an undefined path
       if(view !== 'back') return d;
       return d.replace('Q200,78', 'Q200,54').replace('Q200,92', 'Q200,62');
     }
@@ -904,7 +904,7 @@
         card.appendChild(el('div', 'stars', stars(Number(v.rating) || 0)));
         card.appendChild(el('p', null, v.text));
         var who = el('div', 'who'), photo = googleUrl(v.photo);
-        if(photo){ var im = el('img'); im.src = photo; im.alt = ''; im.referrerPolicy = 'no-referrer'; who.appendChild(im); }
+        if(photo){ var im = el('img'); im.alt = ''; im.referrerPolicy = 'no-referrer'; im.onerror = function(){ this.remove(); }; im.src = photo; who.appendChild(im); }
         var nm = el('div', null, v.name); nm.appendChild(el('div', 'src', (v.when || '') + ' on Google')); who.appendChild(nm);
         card.appendChild(who); grid.appendChild(card);
       });
@@ -924,19 +924,34 @@
       /* Same photos as the Apparel section, but Google holds the full-size originals, so they replace it */
       var good = d.photos.filter(function(ph){ return googleUrl(ph.url); });
       if(!good.length) return;
-      var gal = document.getElementById('gallery'); clear(gal);
-      good.forEach(function(ph){
-        var item = el('div', 'gitem'), im = el('img');
-        im.src = googleUrl(ph.url); im.alt = "Custom work by Can't Wait to Cre8"; im.loading = 'lazy'; im.referrerPolicy = 'no-referrer';
-        item.appendChild(im);
+      /* Google photo links expire. Load each one first and only swap out our own photos once enough of them
+         actually load, so a stale or blocked link never leaves an empty gap in the gallery. */
+      var gal = document.getElementById('gallery'), loaded = [], left = good.length, swapped = false;
+      function build(ph, im){
+        var item = el('div', 'gitem');
+        im.alt = "Custom work by Can't Wait to Cre8"; item.appendChild(im);
         if(ph.author){
           var tag = el('span', 'tag', 'Photo: '), link = googleUrl(ph.authorUrl);
           if(link){ var a = el('a', null, ph.author); a.href = link; a.target = '_top'; a.rel = 'noopener noreferrer'; a.style.color = '#fff'; tag.appendChild(a); }
           else tag.appendChild(document.createTextNode(ph.author));
           item.appendChild(tag);
         }
-        gal.appendChild(item);
+        return item;
+      }
+      function finish(){
+        if(swapped || left > 0) return;
+        swapped = true;
+        var keep = good.map(function(ph, i){ return loaded[i] ? build(ph, loaded[i]) : null; }).filter(Boolean);
+        if(keep.length < 3) return; // too few came through: keep our own photos
+        clear(gal); keep.forEach(function(n){ gal.appendChild(n); });
+      }
+      good.forEach(function(ph, i){
+        var im = new Image(); im.referrerPolicy = 'no-referrer'; im.decoding = 'async';
+        im.onload = function(){ if(im.naturalWidth > 0) loaded[i] = im; left--; finish(); };
+        im.onerror = function(){ left--; finish(); };
+        im.src = googleUrl(ph.url);
       });
+      setTimeout(function(){ left = 0; finish(); }, 8000); // a hung photo never blocks the swap
     })
     .catch(function(){});
 
