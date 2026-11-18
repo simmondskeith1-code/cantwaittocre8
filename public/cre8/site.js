@@ -23,17 +23,31 @@
   var vClose = el('button', null, '✕'); vClose.type = 'button'; vClose.setAttribute('aria-label', 'Close');
   viewer.appendChild(vClose); var vImg = el('img'); vImg.alt = ''; viewer.appendChild(vImg);
   document.body.appendChild(viewer);
-  viewer.addEventListener('click', function(){ viewer.classList.remove('open'); });
-  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') viewer.classList.remove('open'); });
+  var framed = false; try { framed = window.self !== window.top; } catch(x) { framed = true; }
+  if(!framed) viewer.classList.add('overlay'); // own domain: full-screen overlay; inside a frame: open where tapped
+  var lastPhoto = null;
+  function closeViewer(){ if(!viewer.classList.contains('open')) return; viewer.classList.remove('open'); if(lastPhoto) lastPhoto.focus(); }
+  viewer.addEventListener('click', closeViewer);
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') return closeViewer();
+    // photos open from the keyboard too
+    var it = e.target.closest && e.target.closest('.gallery .gitem');
+    if(it && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); it.click(); }
+  });
+  // every gallery photo, including ones added later from Google, is focusable and named
+  function tagPhotos(){ document.querySelectorAll('.gallery .gitem').forEach(function(it){ if(it.hasAttribute('tabindex')) return; var im = it.querySelector('img'); it.tabIndex = 0; it.setAttribute('role', 'button'); it.setAttribute('aria-label', 'View larger: ' + ((im && im.alt) || 'photo')); }); }
+  tagPhotos(); if('MutationObserver' in window) document.querySelectorAll('.gallery').forEach(function(g){ new MutationObserver(tagPhotos).observe(g, { childList: true }); });
   document.addEventListener('click', function(e){
     if(!e.target.closest('.gallery') || e.target.closest('a')) return;
-    var img = e.target.closest('.gitem') && e.target.closest('.gitem').querySelector('img');
+    var item = e.target.closest('.gitem'), img = item && item.querySelector('img');
     if(!img) return;
+    lastPhoto = item;
     viewer.querySelector('img').src = img.src; viewer.querySelector('img').alt = img.alt;
     /* GoDaddy's frame is page height, so position the viewer where the tap happened, not at the frame top */
     var y = window.scrollY + img.getBoundingClientRect().top - 40;
     viewer.style.top = Math.max(0, y) + 'px';
     viewer.classList.add('open');
+    vClose.focus();
   });
 
   /* Jump links: GoDaddy runs this page in a frame, where plain #links do nothing, so scroll with code */
