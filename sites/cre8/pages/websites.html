@@ -76,7 +76,7 @@
             <span class="t-card"><b class="t-name">Launch Site</b><span class="t-was">Standard $1,500</span><span class="t-price">$950</span><span class="t-sub">Up to 3 pages &bull; about 2 weeks</span>
               <ul><li>Mobile-first custom design</li><li>Contact form to your inbox</li><li>Google reviews and map</li><li>Search basics: titles, sitemap, business info for Google</li><li>Domain and email-safe setup</li></ul></span></label>
           <label class="tier pop"><input type="radio" name="b_pkg" value="grow" data-price="2000" data-standard="3200" data-label="Growth Site">
-            <span class="t-card"><span class="t-flag">Most popular</span><b class="t-name">Growth Site</b><span class="t-was">Standard $3,200</span><span class="t-price">$2,000</span><span class="t-sub">Up to 6 pages &bull; 3 to 4 weeks</span>
+            <span class="t-card"><span class="t-flag">Recommended</span><b class="t-name">Growth Site</b><span class="t-was">Standard $3,200</span><span class="t-price">$2,000</span><span class="t-sub">Up to 6 pages &bull; 3 to 4 weeks</span>
               <ul><li>Everything in Launch</li><li>Quote or booking form with file uploads</li><li>Your own admin dashboard for leads</li><li>One interactive feature (calculator, showcase, gallery filters)</li><li>Page slide transitions and scroll effects</li><li>Google Search Console setup</li></ul></span></label>
           <label class="tier"><input type="radio" name="b_pkg" value="signature" data-price="3500" data-standard="5500" data-label="Signature Build">
             <span class="t-card"><b class="t-name">Signature Build</b><span class="t-was">Standard from $5,500</span><span class="t-price">from $3,500</span><span class="t-sub">Custom scope &bull; quoted after discovery</span>
@@ -109,33 +109,16 @@
       </div>
 
       <aside class="b-total" aria-live="polite">
-        <div class="bt-row"><span>Website</span><b id="btSetup">$1,500</b></div>
+        <div class="bt-row"><span>Website</span><b id="btSetup">$950</b></div>
         <div class="bt-row"><span>Add-ons</span><b id="btAdds">$0</b></div>
-        <div class="bt-row big"><span>Upfront total</span><b id="btUpfront">$950</b></div>
-        <div class="bt-row save"><span>Founding savings, first year</span><b id="btSave">$0</b></div>
-        <div class="bt-row"><span>Care plan</span><b id="btCare">$59/mo</b></div>
-        <div class="bt-row"><span>First year total</span><b id="btYear">$2,149</b></div>
-        <p class="bt-note" id="btNote">50% deposit to start (<b id="btDeposit">$750</b>), 50% at launch. First month of care is free. Hosting and domain are in your name and billed to you directly by those providers.</p>
+        <div class="bt-row big"><span>Upfront total</span><b id="btUpfront">$950</b><small class="bt-m" id="btCareM"></small></div>
+        <div class="bt-row save"><span>Founding savings, first year</span><b id="btSave">$770</b></div>
+        <div class="bt-row"><span>Care plan</span><b id="btCare">$39/mo</b></div>
+        <div class="bt-row"><span>First year total</span><b id="btYear">$1,379</b></div>
+        <p class="bt-note" id="btNote">50% deposit to start (<b id="btDeposit">$475</b>), 50% at launch. First month of care is free. Hosting and domain are in your name and billed to you directly by those providers.</p>
         <a href="#inquire" class="btn btn-hot" id="btSend">Get This Quote</a>
       </aside>
     </div>
-  </div>
-</section>
-
-<section id="local-search" class="local-search">
-  <div class="wrap">
-    <h2 class="reveal">Local search plans to keep climbing</h2>
-    <p class="sub reveal">Monthly work on your Google profile, reviews, pages and AI answers, with a Search Report every month that shows exactly what we did and what changed. Every plan includes Growth Care.</p>
-    <div class="ls-grid">
-      <div class="ls reveal"><b class="ls-name">Local Visibility</b><span class="ls-price">$450<small>/mo</small></span>
-        <ul><li>Google Business Profile management: weekly posts, photos, review replies</li><li>Directory listing cleanup so your name, address and phone match everywhere</li><li>Monthly Search Report</li><li>Growth Care included</li></ul></div>
-      <div class="ls pop reveal"><span class="ls-flag">Most chosen</span><b class="ls-name">Local Growth</b><span class="ls-price">$950<small>/mo</small></span>
-        <ul><li>Everything in Local Visibility</li><li>2 new pages or answer-first articles a month</li><li>Review request system with a link and QR code</li><li>2 local link pitches a month (chamber, partners, press)</li><li>Monthly AI answer check on 10 customer questions</li></ul></div>
-      <div class="ls reveal"><b class="ls-name">Local Leader</b><span class="ls-price">$1,600<small>/mo</small></span>
-        <ul><li>Everything in Local Growth</li><li>4 new pages or articles a month</li><li>Competitor tracking</li><li>Quarterly strategy call</li></ul></div>
-    </div>
-    <p class="ls-note reveal">3 month minimum, then month to month. Search results usually take 2 to 3 months to respond. No honest company can guarantee a ranking or a spot in AI answers, and we never will: you get the work, and the proof of it every month.</p>
-    <div class="center-row reveal"><a href="#inquire" class="btn btn-hot">Ask About Local Search</a></div>
   </div>
 </section>
 
@@ -154,14 +137,31 @@
           <div class="field"><label for="s_phone">Phone</label><input type="tel" id="s_phone" name="phone" autocomplete="tel" maxlength="40"></div>
         </div>
         <div class="field"><label for="s_current">Current website, if any</label><input type="text" id="s_current" name="current_site" maxlength="200" placeholder="Example: mybusiness.com"></div>
-        <div class="field"><label for="s_pkg">Your package</label><input type="text" id="s_pkg" name="package_summary" readonly></div>
+        <div class="field"><label for="s_pkg">Your package</label><textarea id="s_pkg" name="package_summary" rows="3" readonly></textarea></div>
         <div class="field"><label for="s_msg">What should your website do for you? <span class="req">*</span></label><textarea id="s_msg" name="goals" required maxlength="2400" placeholder="Example: get more booking requests, show our work, let customers order online."></textarea></div>
         <input type="text" name="website" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="alert hidden" id="s_error" role="alert"></div>
-        <div class="submit-row"><button type="submit" class="btn btn-hot" id="s_submit">Request My Discovery Call</button><small>No cost, no commitment.</small></div>
+        <div class="submit-row"><button type="submit" class="btn btn-hot" id="s_submit">Request My Discovery Call</button><small>No cost, no commitment. Questions first? Call or text <a href="tel:+17327209211">732-720-9211</a>.</small></div>
       </form>
       <div class="success hidden" id="s_success"><div class="big">🚀</div><h2>Request received.</h2><p class="sub" style="margin:10px auto 0">We will reach out within 1 business day to set up your discovery call.</p></div>
     </div>
+  </div>
+</section>
+
+<section id="local-search" class="local-search">
+  <div class="wrap">
+    <h2 class="reveal">Local search plans to keep climbing</h2>
+    <p class="sub reveal">Monthly work on your Google profile, reviews, pages and AI answers, with a Search Report every month that shows exactly what we did and what changed. Every plan includes Growth Care.</p>
+    <div class="ls-grid">
+      <div class="ls reveal"><b class="ls-name">Local Visibility</b><span class="ls-price">$450<small>/mo</small></span>
+        <ul><li>Google Business Profile management: weekly posts, photos, review replies</li><li>Directory listing cleanup so your name, address and phone match everywhere</li><li>Monthly Search Report</li><li>Growth Care included</li></ul></div>
+      <div class="ls pop reveal"><span class="ls-flag">Best fit for most shops</span><b class="ls-name">Local Growth</b><span class="ls-price">$950<small>/mo</small></span>
+        <ul><li>Everything in Local Visibility</li><li>2 new pages or answer-first articles a month</li><li>Review request system with a link and QR code</li><li>2 local link pitches a month (chamber, partners, press)</li><li>Monthly AI answer check on 10 customer questions</li></ul></div>
+      <div class="ls reveal"><b class="ls-name">Local Leader</b><span class="ls-price">$1,600<small>/mo</small></span>
+        <ul><li>Everything in Local Growth</li><li>4 new pages or articles a month</li><li>Competitor tracking</li><li>Quarterly strategy call</li></ul></div>
+    </div>
+    <p class="ls-note reveal">3 month minimum, then month to month. Search results usually take 2 to 3 months to respond. No honest company can guarantee a ranking or a spot in AI answers, and we never will: you get the work, and the proof of it every month.</p>
+    <div class="center-row reveal"><a href="#inquire" class="btn btn-hot">Ask About Local Search</a></div>
   </div>
 </section>
 
@@ -179,3 +179,10 @@
     </div>
   </div>
 </section>
+
+<div class="cta cta-web reveal">
+  <h2>Questions before you pick?</h2>
+  <p>Call or text and talk it through. No cost, no commitment.</p>
+  <p class="cta-call">Call or text <a href="tel:+17327209211" target="_top" rel="noopener noreferrer">732-720-9211</a></p>
+  <a href="#inquire" class="btn">Request My Discovery Call</a>
+</div>

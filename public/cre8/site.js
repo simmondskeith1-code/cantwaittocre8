@@ -1,3 +1,31 @@
+/* Inline form validation shared by every Cre8 form: a message under each problem field,
+   aria-invalid, a summary line, and focus on the first problem. */
+function cre8FieldMsg(el){
+  if(el.validity.valueMissing) return el.type === 'checkbox' ? 'Please check this box to continue.' : 'This one is required.';
+  if(el.validity.typeMismatch && el.type === 'email') return 'Enter an email like name@example.com.';
+  if(el.validity.rangeUnderflow) return 'Pick a later date.';
+  return el.validationMessage;
+}
+function cre8Mark(el){
+  var key = (el.id || el.name) + '-err', box = el.closest('.field') || el.parentNode, err = document.getElementById(key);
+  if(el.checkValidity()){ if(el.hasAttribute('aria-invalid')){ el.removeAttribute('aria-invalid'); el.removeAttribute('aria-describedby'); } if(err) err.remove(); return true; }
+  el.setAttribute('aria-invalid', 'true');
+  if(!err){ err = document.createElement('p'); err.className = 'field-err'; err.id = key; box.appendChild(err); el.setAttribute('aria-describedby', key); }
+  err.textContent = cre8FieldMsg(el); return false;
+}
+function cre8Validate(form, summary){
+  var bad = [];
+  form.querySelectorAll('input,select,textarea').forEach(function(el){ if(el.willValidate && !cre8Mark(el)) bad.push(el); });
+  if(summary){ summary.textContent = bad.length ? (bad.length === 1 ? 'One thing needs a fix before we can send this.' : bad.length + ' things need a fix before we can send this.') : ''; summary.classList.toggle('hidden', !bad.length); }
+  if(!bad.length) return true;
+  bad[0].focus({preventScroll:true}); bad[0].scrollIntoView({block:'center', behavior:'smooth'});
+  return false;
+}
+function cre8Live(form){
+  form.addEventListener('blur', function(e){ var t = e.target; if(t.willValidate && (t.value || t.hasAttribute('aria-invalid'))) cre8Mark(t); }, true);
+  form.addEventListener('change', function(e){ if(e.target.hasAttribute && e.target.hasAttribute('aria-invalid')) cre8Mark(e.target); });
+}
+
 /* Can't Wait to Cre8 site script: shared by every page. Each block only runs when its page elements exist. */
 (function(){
   /* Backend: your Render server. GOOGLE_REVIEW_LINK: paste your "Ask for reviews" link from Google Business Profile. */
@@ -838,30 +866,8 @@
     return fetch(url, { method:'POST', headers:h, body: body ? JSON.stringify(body) : '{}' })
       .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if(!r.ok) throw new Error(j.message || 'Could not send right now.'); return j; }); });
   }
-  /* Inline validation: message under each field, a summary, focus the first problem */
-  function fieldMsg(el){
-    if(el.validity.valueMissing) return el.type === 'checkbox' ? 'Please check this box to continue.' : 'This one is required.';
-    if(el.validity.typeMismatch && el.type === 'email') return 'Enter an email like name@example.com.';
-    if(el.validity.rangeUnderflow) return 'Pick a later date.';
-    return el.validationMessage;
-  }
-  function markField(el){
-    var key = (el.id || el.name) + '-err', box = el.closest('.field') || el.parentNode, err = document.getElementById(key);
-    if(el.checkValidity()){ if(el.hasAttribute('aria-invalid')){ el.removeAttribute('aria-invalid'); el.removeAttribute('aria-describedby'); } if(err) err.remove(); return true; }
-    el.setAttribute('aria-invalid', 'true');
-    if(!err){ err = document.createElement('p'); err.className = 'field-err'; err.id = key; box.appendChild(err); el.setAttribute('aria-describedby', key); }
-    err.textContent = fieldMsg(el); return false;
-  }
-  function checkForm(){
-    var bad = [];
-    form.querySelectorAll('input,select,textarea').forEach(function(el){ if(el.willValidate && !markField(el)) bad.push(el); });
-    if(!bad.length){ note(document.getElementById('sendError'), ''); return true; }
-    note(document.getElementById('sendError'), bad.length === 1 ? 'One thing needs a fix before we can send this.' : bad.length + ' things need a fix before we can send this.');
-    bad[0].focus({preventScroll:true}); bad[0].scrollIntoView({block:'center', behavior:'smooth'});
-    return false;
-  }
-  form.addEventListener('blur', function(e){ var t = e.target; if(t.willValidate && (t.value || t.hasAttribute('aria-invalid'))) markField(t); }, true);
-  form.addEventListener('change', function(e){ if(e.target.hasAttribute('aria-invalid')) markField(e.target); });
+  function checkForm(){ return cre8Validate(form, document.getElementById('sendError')); }
+  cre8Live(form);
 
   /* Draft autosave: a reload or app switch does not wipe the form */
   var DKEY = 'cre8-order-draft';
@@ -1198,6 +1204,7 @@
       bump('btAdds', money(addSum));
       bump('btUpfront', (pkg.value === 'signature' ? 'from ' : '') + money(up));
       bump('btCare', mo ? money(mo) + '/mo' : 'None');
+      var cm = document.getElementById('btCareM'); if(cm) cm.textContent = (mo ? '+ ' + money(mo) + '/mo care' : 'No care plan') + ', first year ' + money(up + mo * 11);
       var note = document.getElementById('btNote');
       if(note) note.lastChild.textContent = mo ? '), 50% at launch. First month of care is free. Hosting and domain are in your name and billed to you directly by those providers.' : '), 50% at launch. No care plan: upkeep is yours after launch, and later fixes or edits are $85/hour, 1 hour minimum. Hosting and domain are in your name and billed to you directly.';
       bump('btYear', money(up + mo * 11));
@@ -1218,9 +1225,10 @@
   var sform = document.getElementById('siteForm');
   if(sform){
     var serr = document.getElementById('s_error');
+    cre8Live(sform);
     sform.addEventListener('submit', function(e){
       e.preventDefault();
-      if(!sform.reportValidity()) return;
+      if(!cre8Validate(sform, serr)) return;
       var btn = document.getElementById('s_submit'); btn.disabled = true; btn.textContent = 'Sending...';
       serr.classList.add('hidden');
       var f = new FormData(sform), g = function(k){ return String(f.get(k) || '').trim(); };
@@ -1237,10 +1245,11 @@
   var cform = document.getElementById('contactForm');
   if(cform){
     var cmsg = document.getElementById('c_msg'), ccount = document.getElementById('c_count'), cerr = document.getElementById('c_error');
-    cmsg.addEventListener('input', function(){ ccount.textContent = cmsg.value.length + ' / 3000'; });
+    cmsg.addEventListener('input', function(){ var n = cmsg.value.length; ccount.textContent = n + ' / 3000'; ccount.classList.toggle('hidden', n < 2500); });
+    ccount.classList.add('hidden'); cre8Live(cform);
     cform.addEventListener('submit', function(e){
       e.preventDefault();
-      if(!cform.reportValidity()) return;
+      if(!cre8Validate(cform, cerr)) return;
       var btn = document.getElementById('c_submit'); btn.disabled = true; btn.textContent = 'Sending...';
       cerr.classList.add('hidden');
       var body = {}; new FormData(cform).forEach(function(v, k){ body[k] = v; });
