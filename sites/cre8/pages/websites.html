@@ -68,7 +68,7 @@
 
     <div class="founding reveal" role="note">
       <span class="f-badge">Founding Client Pricing</span>
-      <p><b>Our first 5 website clients get the prices below.</b> Standard rates (shown in gray) apply after that. Founding clients also keep their care plan rate for their first 12 months.</p>
+      <p><b>Our first 5 website clients get the prices below.</b> Standard rates (crossed out) apply after that. Founding clients also keep their care plan rate for their first 12 months.</p>
     </div>
     <div class="builder reveal" id="builder">
       <div class="b-step">
@@ -95,11 +95,12 @@
           <label class="care-opt"><input type="radio" name="b_care" value="partner" data-price="189" data-standard="299" data-label="Partner Care"><span><b>Partner</b><em><s>$299</s> $189/mo</em><small>Everything in Plus, 4 hours of edits, one new section each quarter, same-day reply on weekdays</small></span></label>
           <label class="care-opt"><input type="radio" name="b_care" value="none" data-price="0" data-standard="0" data-label="No care plan"><span><b>No plan</b><em>$0/mo</em><small>We hand the site over at launch. You handle upkeep. Fixes and edits after launch are $85/hour, 1 hour minimum</small></span></label>
         </div>
-        <label class="addon local-opt"><input type="checkbox" name="b_local" id="bLocal" value="local" data-price="450" data-label="Local Search"><span><b>Optional: Local Search</b><em>from $450/mo</em><small>Monthly work on your Google profile, reviews and new pages, with a Search Report every month. Replaces your care plan (Plus Care is included). 3 month minimum. Results usually take 2 to 3 months, and no one can honestly guarantee a ranking. We confirm the right level on your call.</small></span></label>
+        <label class="addon local-opt"><input type="checkbox" name="b_local" id="bLocal" value="local" data-price="450" data-label="Local Search"><span><b>Optional: Local Search</b><em>from $450/mo</em><small>Monthly work on your Google profile, reviews and new pages, with a Search Report every month. Replaces your care plan (Plus Care is included). 3 month minimum. Results usually take 2 to 3 months, and no one can honestly guarantee a ranking. We confirm the right level on your call. <a href="#faq-seo">More on search</a></small></span></label>
       </div>
 
       <div class="b-step">
-        <h3 class="b-title"><span class="n">3</span>Add to your launch</h3>
+        <details class="extras" id="extras">
+        <summary><h3 class="b-title"><span class="n">3</span>Add extras (optional)</h3><small>Logo, copywriting, photos, payments and extra pages</small></summary>
         <div class="addons">
           <label class="addon"><input type="checkbox" name="b_add" value="logo" data-price="125" data-standard="200" data-label="Logo refresh"><span><b>Logo refresh</b><em><s>$200</s> +$125</em><small>Clean, print-ready and web-ready versions of your logo, including a white version for dark backgrounds</small></span></label>
           <label class="addon"><input type="checkbox" name="b_add" value="copy" data-price="150" data-standard="250" data-label="Copywriting"><span><b>Copywriting</b><em><s>$250</s> +$150</em><small>We write your pages from a short interview</small></span></label>
@@ -109,6 +110,7 @@
           <div class="addon pages" data-price="150" data-standard="250"><span><b>Extra pages</b><em><s>$250</s> +$150 each</em><small>Beyond what your package includes</small></span>
             <div class="stepper"><button type="button" id="pgMinus" aria-label="Fewer pages">−</button><output id="pgCount">0</output><button type="button" id="pgPlus" aria-label="More pages">+</button></div></div>
         </div>
+        </details>
       </div>
 
       <aside class="b-total" aria-live="polite">
@@ -119,8 +121,10 @@
         <div class="bt-row save"><span>Founding savings, first year</span><b id="btSave">$770</b></div>
         <div class="bt-row"><span>Care plan</span><b id="btCare">$39/mo</b></div>
         <div class="bt-row"><span>First year total</span><b id="btYear">$1,379</b></div>
+        <p class="bt-local hidden" id="btLocalNote">Local Search includes Plus Care, so your care plan choice is paused.</p>
         <p class="bt-note" id="btNote">50% deposit to start (<b id="btDeposit">$475</b>), 50% at launch. First month of care is free. Hosting and domain are in your name and billed to you directly by those providers.</p>
-        <a href="#inquire" class="btn btn-hot" id="btSend">Use This Package</a>
+        <p class="bt-how">First year = upfront + 11 months of care (month one is free). <a href="#faq-host">Hosting</a> · <a href="#faq-time">Timeline</a></p>
+        <a href="#inquire" class="btn btn-hot" id="btSend">Use This Package &amp; Book a Call</a>
       </aside>
     </div>
   </div>
@@ -141,7 +145,7 @@
           <div class="field"><label for="s_phone">Phone</label><input type="tel" id="s_phone" name="phone" autocomplete="tel" maxlength="40"></div>
         </div>
         <div class="field"><label for="s_current">Current website, if any</label><input type="text" id="s_current" name="current_site" maxlength="200" placeholder="Example: mybusiness.com"></div>
-        <div class="field"><label for="s_pkg">Your package</label><textarea id="s_pkg" name="package_summary" rows="3" readonly></textarea></div>
+        <div class="field"><label for="s_pkg">Your package <a href="#build" class="pkg-change">Change package</a></label><textarea id="s_pkg" name="package_summary" rows="3" readonly></textarea></div>
         <div class="field"><label for="s_msg">What should your website do for you? <span class="req">*</span></label><textarea id="s_msg" name="goals" required maxlength="2400" placeholder="Example: get more booking requests, show our work, let customers order online."></textarea></div>
         <input type="text" name="website" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="alert hidden" id="s_error" role="alert"></div>
@@ -158,10 +162,10 @@
     <div style="margin-top:30px">
       <details><summary>Who owns the website and domain?</summary><p>You do. Your domain, hosting and code live in accounts in your name. If you ever leave, you keep everything.</p></details>
       <details id="faq-care"><summary>Do I need a care plan?</summary><p>No, it is optional. Sites need security fixes, backups and small changes, and things outside your site change too, like email and domain settings. A plan means someone is responsible for keeping it working. Without one, the site is handed to you at launch and any later fixes or edits are billed at $85/hour with a 1 hour minimum. If you choose a plan, you can cancel with 30 days notice after the first 3 months.</p></details>
-      <details><summary>What does hosting cost?</summary><p>It depends on what your site needs, and we tell you before you commit. It is billed to you directly by the hosting company, with no markup from us.</p></details>
-      <details><summary>How long does it take?</summary><p>About 2 weeks for a Launch Site and 3 to 4 weeks for a Growth Site, counted from when we have your content: logo, photos and text, or the add-ons that cover them.</p></details>
+      <details id="faq-host"><summary>What does hosting cost?</summary><p>It depends on what your site needs, and we tell you before you commit. It is billed to you directly by the hosting company, with no markup from us.</p></details>
+      <details id="faq-time"><summary>How long does it take?</summary><p>About 2 weeks for a Launch Site and 3 to 4 weeks for a Growth Site, counted from when we have your content: logo, photos and text, or the add-ons that cover them.</p></details>
       <details><summary>What if I need changes after launch?</summary><p>Edits are included in every care plan up to its monthly hours. Bigger additions are quoted before any work starts.</p></details>
-      <details><summary>Do you do SEO?</summary><p>Yes. Every site we build launches search-ready: local business data matched to your Google profile, Google verification and page submission set up, service pages and a FAQ that answers real customer questions. After launch, the optional Local Search add-on (from $450/mo) handles your Google profile, reviews and new pages, with a Search Report every month. We never guarantee rankings, because no one honestly can.</p></details>
+      <details id="faq-seo"><summary>Do you do SEO?</summary><p>Yes. Every site we build launches search-ready: local business data matched to your Google profile, Google verification and page submission set up, service pages and a FAQ that answers real customer questions. After launch, the optional Local Search add-on (from $450/mo) handles your Google profile, reviews and new pages, with a Search Report every month. We never guarantee rankings, because no one honestly can.</p></details>
       <details><summary>Can you work with my existing GoDaddy or Wix site?</summary><p>Yes. We move your domain over without touching your email, and we can bring your existing content with us.</p></details>
     </div>
   </div>

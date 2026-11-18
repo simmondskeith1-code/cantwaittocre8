@@ -19,7 +19,20 @@ function cre8Mark(el){
 function cre8Validate(form, summary){
   var bad = [];
   form.querySelectorAll('input,select,textarea').forEach(function(el){ if(el.willValidate && !cre8Mark(el)) bad.push(el); });
-  if(summary){ summary.textContent = bad.length ? (bad.length === 1 ? 'One thing needs a fix before we can send this.' : bad.length + ' things need a fix before we can send this.') : ''; summary.classList.toggle('hidden', !bad.length); }
+  if(summary){
+    while(summary.firstChild) summary.removeChild(summary.firstChild);
+    summary.classList.toggle('alert-err', !!bad.length); summary.classList.toggle('hidden', !bad.length);
+    if(bad.length){
+      summary.appendChild(document.createTextNode(bad.length === 1 ? 'One thing needs a fix before we can send this:' : bad.length + ' things need a fix before we can send this:'));
+      var ul = document.createElement('ul');
+      bad.forEach(function(el){
+        var li = document.createElement('li'), a = document.createElement('a'); a.href = '#' + (el.id || ''); a.textContent = cre8FieldMsg(el);
+        a.addEventListener('click', function(ev){ ev.preventDefault(); el.focus({preventScroll:true}); el.scrollIntoView({block:'center', behavior:'smooth'}); });
+        li.appendChild(a); ul.appendChild(li);
+      });
+      summary.appendChild(ul);
+    }
+  }
   if(!bad.length) return true;
   bad[0].focus({preventScroll:true}); bad[0].scrollIntoView({block:'center', behavior:'smooth'});
   return false;
@@ -891,6 +904,21 @@ function cre8Live(form){
     rd.addEventListener('click', function(){ if(was){ rd.checked = false; was = false; rd.dispatchEvent(new Event('change', {bubbles:true})); } });
   });
   function checkForm(){ rightsRule(); return cre8Validate(form, document.getElementById('sendError')); }
+  /* Required items counter */
+  function reqCount(){
+    var req = Array.prototype.filter.call(form.querySelectorAll('input,select,textarea'), function(el){ return el.required && el.willValidate; });
+    var done = req.filter(function(el){ return el.checkValidity(); }).length, rc = document.getElementById('reqCount');
+    if(rc) rc.textContent = done === req.length ? 'All required items done. Add anything else you like, then send.' : done + ' of ' + req.length + ' required items done';
+  }
+  form.addEventListener('input', reqCount); form.addEventListener('change', reqCount); setTimeout(reqCount, 0);
+  /* Price guide shows the prices for what was picked */
+  var PRICES = { 'Apparel': 'shirts from $12, hoodies from $25', 'Hats': 'hats from $17', 'Beanies': 'beanies from $17', 'Tumblers / Drinkware': 'mugs from $10, tumblers from $14', 'Journals / Notebooks': 'journals from $21', 'Wood (signs, puzzles, plaques)': 'wood from $23', 'Stickers / Decals': 'stickers 25 for $22' };
+  function priceGuide(){
+    var pg = document.getElementById('priceGuide'); if(!pg) return;
+    var picked = Array.prototype.filter.call(form.querySelectorAll('input[name="product[]"]:checked'), function(b){ return PRICES[b.value]; }).map(function(b){ return PRICES[b.value]; });
+    pg.firstChild.textContent = picked.length ? 'Per piece, one design: ' + picked.join('; ') + '. Bulk orders cost less per piece. ' : 'Per piece, one design, from $10. Pick what we are decorating to see your prices. ';
+  }
+  form.addEventListener('change', function(e){ if(e.target.name === 'product[]') priceGuide(); }); setTimeout(priceGuide, 0);
   cre8Live(form);
 
   /* Draft autosave: a reload or app switch does not wipe the form */
@@ -905,6 +933,7 @@ function cre8Live(form){
     try{ localStorage.setItem(DKEY, JSON.stringify(d)); }catch(_){}
   }
   function clearOrder(){
+    var keep = null; try{ keep = localStorage.getItem(DKEY); }catch(_){}
     try{ localStorage.removeItem(DKEY); }catch(_){}
     form.reset();
     form.querySelectorAll('input[type=checkbox],input[type=radio]').forEach(function(el){ el.dispatchEvent(new Event('change', {bubbles:true})); });
@@ -912,6 +941,15 @@ function cre8Live(form){
     var dn = document.getElementById('draftNote'); if(dn) dn.classList.add('hidden');
     try{ localStorage.removeItem(DKEY); }catch(_){}
     window.scrollTo({ top: document.getElementById('create').offsetTop - 80, behavior: 'smooth' });
+    if(keep){
+      var dn2 = document.getElementById('draftNote'); while(dn2.firstChild) dn2.removeChild(dn2.firstChild);
+      dn2.appendChild(document.createTextNode('Form cleared. '));
+      var ub = document.createElement('button'); ub.type = 'button'; ub.textContent = 'Undo';
+      ub.addEventListener('click', function(){ try{ localStorage.setItem(DKEY, keep); }catch(_){} location.reload(); });
+      dn2.appendChild(ub); dn2.classList.remove('hidden');
+      setTimeout(function(){ dn2.classList.add('hidden'); }, 8000);
+    }
+    reqCount && setTimeout(reqCount, 0);
   }
   document.getElementById('orderReset').addEventListener('click', clearOrder);
   /* Same phone rule as the contact page: Text or Call needs a number */
@@ -1182,6 +1220,17 @@ function cre8Live(form){
       swatchRow.style.display = name === 'apparel' ? 'flex' : 'none';
     };
     tabs.forEach(function(t){ t.addEventListener('click', function(){ touched = true; clearInterval(auto); showScene(t.dataset.scene); }); });
+    var tlist = Array.prototype.slice.call(tabs);
+    tlist.forEach(function(t, i){
+      var p = showcase.querySelector('.wwd-panel[data-scene="' + t.dataset.scene + '"]');
+      t.id = 'tab-' + t.dataset.scene; if(p){ p.id = 'panel-' + t.dataset.scene; p.setAttribute('role', 'tabpanel'); p.setAttribute('aria-labelledby', t.id); t.setAttribute('aria-controls', p.id); }
+      t.addEventListener('keydown', function(e){
+        var k = e.key, n = k === 'ArrowRight' ? i + 1 : k === 'ArrowLeft' ? i - 1 : k === 'Home' ? 0 : k === 'End' ? tlist.length - 1 : null;
+        if(n === null) return; e.preventDefault(); n = (n + tlist.length) % tlist.length; tlist[n].focus(); tlist[n].click();
+      });
+    });
+    var rove = function(){ tlist.forEach(function(t){ t.tabIndex = t.classList.contains('on') ? 0 : -1; }); };
+    var _show = showScene; showScene = function(nm){ _show(nm); rove(); }; rove();
     // tapping the scene replays it
     scenes.forEach(function(s){ s.addEventListener('click', function(){ touched = true; clearInterval(auto); showScene(current); }); });
     swatchRow.querySelectorAll('button').forEach(function(b, i){
@@ -1245,6 +1294,7 @@ function cre8Live(form){
       var local = document.getElementById('bLocal'), hasLocal = !!(local && local.checked);
       var setup = Number(pkg.dataset.price), up = setup + addSum, mo = hasLocal ? Number(local.dataset.price) : Number(care.dataset.price);
       builder.querySelector('.care').classList.toggle('care-off', hasLocal);
+      var ln = document.getElementById('btLocalNote'); if(ln) ln.classList.toggle('hidden', !hasLocal);
       bump('btSetup', (pkg.value === 'signature' ? 'from ' : '') + money(setup));
       bump('btAdds', money(addSum));
       bump('btUpfront', (pkg.value === 'signature' ? 'from ' : '') + money(up));
@@ -1265,7 +1315,7 @@ function cre8Live(form){
     };
     var BKEY = 'cre8-builder';
     var saveB = function(){
-      var d = { pkg: pick('b_pkg').value, care: pick('b_care').value, adds: Array.prototype.map.call(builder.querySelectorAll('input[name=b_add]:checked'), function(a){ return a.value; }), pages: extraPages, local: !!(document.getElementById('bLocal') || {}).checked };
+      var d = { pkg: pick('b_pkg').value, care: pick('b_care').value, adds: Array.prototype.map.call(builder.querySelectorAll('input[name=b_add]:checked'), function(a){ return a.value; }), pages: extraPages, local: !!(document.getElementById('bLocal') || {}).checked, prevCare: builder.dataset.prevCare || '' };
       try{ localStorage.setItem(BKEY, JSON.stringify(d)); }catch(_){}
     };
     (function(){
@@ -1274,6 +1324,8 @@ function cre8Live(form){
       var set = function(name, v){ var i = builder.querySelector('input[name=' + name + '][value="' + v + '"]'); if(i) i.checked = true; };
       set('b_pkg', d.pkg); set('b_care', d.care); (d.adds || []).forEach(function(v){ set('b_add', v); });
       extraPages = d.pages || 0; var bl = document.getElementById('bLocal'); if(bl) bl.checked = !!d.local;
+      if(d.prevCare) builder.dataset.prevCare = d.prevCare;
+      if((d.adds && d.adds.length) || d.pages){ var ex = document.getElementById('extras'); if(ex) ex.open = true; }
     })();
     builder.addEventListener('change', function(e){
       if(e.target.id === 'bLocal'){
@@ -1283,6 +1335,14 @@ function cre8Live(form){
       calc(); saveB();
     });
     document.getElementById('bReset').addEventListener('click', function(){
+      var before = null; try{ before = localStorage.getItem(BKEY); }catch(_){}
+      setTimeout(function(){
+        var ln = document.getElementById('btLocalNote'); if(!before || !ln) return;
+        var u = document.getElementById('bUndo'); if(!u){ u = document.createElement('p'); u.id = 'bUndo'; u.className = 'bt-local'; ln.parentNode.insertBefore(u, ln); }
+        u.textContent = 'Builder reset. '; var b = document.createElement('button'); b.type = 'button'; b.className = 'b-reset'; b.textContent = 'Undo';
+        b.addEventListener('click', function(){ try{ localStorage.setItem(BKEY, before); }catch(_){} location.reload(); }); u.appendChild(b); u.classList.remove('hidden');
+        setTimeout(function(){ u.classList.add('hidden'); }, 8000);
+      }, 0);
       builder.querySelector('input[name=b_pkg][value=launch]').checked = true;
       builder.querySelector('input[name=b_care][value=essential]').checked = true;
       builder.querySelectorAll('input[name=b_add]').forEach(function(a){ a.checked = false; });
@@ -1457,3 +1517,9 @@ function cre8Live(form){
   var b = document.getElementById('build'), bar = document.querySelector('.m-bar'); if(!b || !bar || !('IntersectionObserver' in window)) return;
   new IntersectionObserver(function(es){ bar.classList.toggle('m-hide', es[0].isIntersecting); }).observe(b);
 })();
+
+/* Help links open the matching FAQ answer */
+document.addEventListener('click', function(e){
+  var a = e.target.closest && e.target.closest('a[href^="#faq"]'); if(!a) return;
+  var d = document.getElementById(a.getAttribute('href').slice(1)); if(d && d.tagName === 'DETAILS'){ e.preventDefault(); d.open = true; d.scrollIntoView({block:'center', behavior:'smooth'}); var s = d.querySelector('summary'); if(s) s.focus({preventScroll:true}); }
+});

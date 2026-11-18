@@ -143,6 +143,7 @@
     <div class="formcard">
       <form id="orderForm" novalidate>
         <div class="alert hidden" id="draftNote" role="status"></div>
+        <p class="req-count" id="reqCount" aria-live="polite"></p>
 
         <fieldset>
           <legend><span class="n">1</span>Your idea</legend>
@@ -255,6 +256,7 @@
           </div>
           <input type="file" id="fileInput" multiple accept=".png,.jpg,.jpeg,.pdf,.svg,.ai,.eps,.psd,.heic" hidden>
           <div class="previews" id="previews"></div>
+          <p class="help-link"><a href="#faq-files" data-faq>What files work best?</a></p>
           <div class="alert hidden" id="uploadNote" role="status"></div>
         </fieldset>
 
@@ -363,7 +365,7 @@
             <div class="field">
               <label for="qty">Total quantity <span class="req">*</span></label>
               <input type="number" id="qty" name="quantity" min="1" required placeholder="Example: 24">
-              <p class="hint price-guide">Per piece, one design: shirts from $12, hoodies $25, hats and beanies $17, mugs $10, tumblers $14, journals $21, wood $23, stickers 25 for $22. Bulk orders cost less per piece.</p>
+              <p class="hint price-guide" id="priceGuide">Per piece, one design, from $10. Pick what we are decorating to see your prices. <a href="#faq-min" data-faq>Is there a minimum?</a></p>
             </div>
             <div class="field">
               <label for="needBy">Date you need it by</label>
@@ -380,7 +382,7 @@
             <label>Decoration method</label>
             <div class="chips">
               <label class="chip"><input type="radio" name="method" value="Heat Press Printing"><span>Heat Press Printing</span></label>
-              <label class="chip"><input type="radio" name="method" value="Full Color Print"><span>Full Color Print</span></label>
+              <label class="chip"><input type="radio" name="method" value="Full Color Print"><span>Full Color Printing</span></label>
               <label class="chip"><input type="radio" name="method" value="Embroidery"><span>Embroidery</span></label>
               <label class="chip"><input type="radio" name="method" value="Laser Engraving"><span>Laser Engraving</span></label>
               <label class="chip"><input type="radio" name="method" value="Not sure, recommend one"><span>Not sure, recommend one</span></label>
@@ -434,14 +436,6 @@
           </div>
           <div class="row">
             <div class="field">
-              <label>Best way to reach you</label>
-              <div class="chips">
-                <label class="chip"><input type="radio" name="contact_preference" value="Text"><span>Text</span></label>
-                <label class="chip"><input type="radio" name="contact_preference" value="Call"><span>Call</span></label>
-                <label class="chip"><input type="radio" name="contact_preference" value="Email" checked><span>Email</span></label>
-              </div>
-            </div>
-            <div class="field">
               <label for="heard">How did you hear about us?</label>
               <select id="heard" name="referral">
                 <option value="">Select one</option>
@@ -459,6 +453,14 @@
             <div class="field"><label for="email">Email <span class="req">*</span></label><input type="email" id="email" name="email" required autocomplete="email"></div>
             <div class="field"><label for="phone">Phone</label><input type="tel" id="phone" name="phone" autocomplete="tel"></div>
           </div>
+          <div class="field">
+              <label>Best way to reach you</label>
+              <div class="chips">
+                <label class="chip"><input type="radio" name="contact_preference" value="Text"><span>Text</span></label>
+                <label class="chip"><input type="radio" name="contact_preference" value="Call"><span>Call</span></label>
+                <label class="chip"><input type="radio" name="contact_preference" value="Email" checked><span>Email</span></label>
+              </div>
+            </div>
           <div class="field">
             <label class="chip" style="display:flex;gap:10px;align-items:flex-start;font-weight:500">
               <input type="checkbox" name="rights_confirmed" id="rights" value="yes" style="position:static;opacity:1;pointer-events:auto;margin-top:4px">
@@ -491,12 +493,12 @@
     <div style="margin-top:30px">
       <details><summary>Is it really done in 3 days?</summary><p>For orders of 5 pieces or fewer, yes. The 3 day clock starts after you approve your proof and payment is received. Bigger orders and custom design work take longer, and your quote gives you a firm completion date up front.</p></details>
       <details><summary>Do you do embroidery?</summary><p>Yes. Hats, polos, jackets, uniforms and more. Send your logo and we will tell you how it stitches best, including size and thread colors.</p></details>
-      <details><summary>Is there a minimum order?</summary><p>No minimum for most items. One custom piece is fine. Bulk orders get better pricing per piece.</p></details>
+      <details id="faq-min"><summary>Is there a minimum order?</summary><p>No minimum for most items. One custom piece is fine. Bulk orders get better pricing per piece.</p></details>
       <details><summary>What if I don't have a design?</summary><p>Describe your idea and upload anything that inspires you. We can clean up a rough sketch or design from scratch.</p></details>
-      <details><summary>What files work best?</summary><p>Vector files (SVG, AI, EPS, PDF) or high resolution PNGs with a transparent background. Phone photos work too, we will tell you if the quality is too low to print well.</p></details>
+      <details id="faq-files"><summary>What files work best?</summary><p>Vector files (SVG, AI, EPS, PDF) or high resolution PNGs with a transparent background. Phone photos work too, we will tell you if the quality is too low to print well.</p></details>
       <details><summary>Can I bring my own items?</summary><p>Often yes, especially for engraving. Mention it in your description and we will confirm the material works on our machines.</p></details>
-      <details><summary>Will I see it before you print?</summary><p>Always. You get a digital mockup with placement and sizing, and nothing is produced until you approve it.</p></details>
-      <details><summary>How do I pay?</summary><p>Once you approve your proof, we send an invoice. Production starts when payment is received.</p></details>
+      <details id="faq-proof"><summary>Will I see it before you print?</summary><p>Always. You get a digital mockup with placement and sizing, and nothing is produced until you approve it.</p></details>
+      <details id="faq-pay"><summary>How do I pay?</summary><p>Once you approve your proof, we send an invoice. Production starts when payment is received.</p></details>
     </div>
   </div>
 </section>
