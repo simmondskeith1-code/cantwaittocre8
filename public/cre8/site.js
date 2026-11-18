@@ -186,6 +186,11 @@
   function toggleGarment(){
     var on = Array.prototype.some.call(apparelBoxes, function(b){return b.checked;});
     garmentSection.classList.toggle('hidden', !on);
+    // Only show print locations that fit what was picked (no Hat Front on a shirts-only order)
+    document.querySelectorAll('input[name="locations[]"][data-for]').forEach(function(l){
+      var p = document.querySelector('input[name="product[]"][value="' + l.dataset.for + '"]'), show = !!(p && p.checked);
+      l.closest('.chip').classList.toggle('hidden', !show); if(!show) l.checked = false;
+    });
     document.getElementById('mockSection').classList.toggle('hidden', !on);
     renumber();
   }
@@ -576,7 +581,7 @@
       palette().forEach(function(c, i){
         var b = document.createElement('button'); b.type = 'button'; b.className = 'swatch'; b.style.background = c[1];
         b.setAttribute('role', 'radio'); b.setAttribute('aria-label', c[0]); b.title = c[0];
-        b.addEventListener('click', function(){ state.color = i; update(); });
+        b.addEventListener('click', function(){ state.color = i; document.getElementById('garmentColor').dataset.fromMock = '1'; update(); });
         sw.appendChild(b);
       });
     }
@@ -701,8 +706,17 @@
     // Wire up controls
     swatches();
     document.querySelectorAll('#mockBrands button').forEach(function(b){ b.addEventListener('click', function(){ setBrand(b.dataset.brand); }); });
+    // One garment answer: picking a type in the mockup updates the Garment details dropdown
+    var TYPE_PICK = { hoodie: 'Gildan 18500 Heavy Blend Hoodie', crew: 'Gildan 18000 Heavy Blend Crewneck', hat: 'Yupoong 6089 Classic Snapback', beanie: 'Sportsman SP12 Solid 12 Inch Cuffed Beanie', tank: 'Recommend one for me' };
+    function typeOf(t){ t = t.toLowerCase(); return /beanie/.test(t) ? 'beanie' : /hoodie/.test(t) ? 'hoodie' : /crewneck/.test(t) ? 'crew' : /hat|snapback|trucker/.test(t) ? 'hat' : /tank/.test(t) ? 'tank' : /tee/.test(t) ? 'tee' : null; }
+    function dropdownFollows(){
+      var gs = document.getElementById('garment'); if(typeOf(gs.value) === state.type) return;
+      gs.value = state.type === 'tee' ? BRANDS[state.brand].style : TYPE_PICK[state.type];
+      document.getElementById('otherGarmentWrap').classList.add('hidden');
+    }
     document.querySelectorAll('input[name=mk_type]').forEach(function(r){
-      r.addEventListener('change', function(){
+      r.addEventListener('change', function(e){
+        if(e.isTrusted) setTimeout(dropdownFollows, 0);
         var keepName = colorPair()[0];
         state.type = r.value;
         var idx = palette().map(function(c){ return c[0]; }).indexOf(keepName); state.color = idx >= 0 ? idx : 0;
@@ -751,7 +765,12 @@
     function endDrag(){ if(!drag) return; drag = null; update(); }
     stage.addEventListener('pointerup', endDrag);
     stage.addEventListener('pointercancel', endDrag);
-    document.getElementById('garmentColor').addEventListener('input', function(){ this.dataset.fromMock = '0'; });
+    // One garment answer: the color box and the swatches always agree (last change wins)
+    document.getElementById('garmentColor').addEventListener('input', function(){
+      this.dataset.fromMock = '0';
+      var want = this.value.trim().toLowerCase(), idx = palette().map(function(c){ return c[0].toLowerCase(); }).indexOf(want);
+      if(idx > -1 && idx !== state.color){ state.color = idx; update(); }
+    });
 
     // Follow the garment dropdown when it names a type or one of the four tee brands
     document.getElementById('garment').addEventListener('change', function(){

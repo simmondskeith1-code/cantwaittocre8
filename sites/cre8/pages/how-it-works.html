@@ -203,19 +203,11 @@
         <fieldset>
           <legend><span class="n">2</span>What are we decorating?</legend>
           <p class="hint">Pick everything that applies.</p>
-          <div class="chips" id="productChips">
-            <label class="chip"><input type="checkbox" name="product[]" value="Apparel" data-apparel><span>👕 Apparel</span></label>
-            <label class="chip"><input type="checkbox" name="product[]" value="Hats" data-apparel><span>🧢 Hats</span></label>
-            <label class="chip"><input type="checkbox" name="product[]" value="Beanies" data-apparel><span>🧶 Beanies</span></label>
-            <label class="chip"><input type="checkbox" name="product[]" value="Tumblers / Drinkware"><span>🥤 Tumblers / Drinkware</span></label>
-            <label class="chip"><input type="checkbox" name="product[]" value="Wood (signs, puzzles, plaques)"><span>🪵 Wood</span></label>
-            <label class="chip"><input type="checkbox" name="product[]" value="Metal / Glass / Acrylic"><span>✨ Metal / Glass / Acrylic</span></label>
-            <label class="chip"><input type="checkbox" name="product[]" value="Leather"><span>👜 Leather</span></label>
-            <label class="chip"><input type="checkbox" name="product[]" value="Journals / Notebooks"><span>📓 Journals / Notebooks</span></label>
-            <label class="chip"><input type="checkbox" name="product[]" value="Stickers / Decals"><span>🏷️ Stickers / Decals</span></label>
-            <label class="chip"><input type="checkbox" name="product[]" value="Signs / Banners"><span>🪧 Signs / Banners</span></label>
-            <label class="chip"><input type="checkbox" name="product[]" value="Your Own Item"><span>📦 Bring Your Own Item</span></label>
-            <label class="chip"><input type="checkbox" name="product[]" value="Other"><span>Something else</span></label>
+          <div id="productChips" class="chip-groups">
+            <div class="chip-group" role="group" aria-label="Apparel"><p class="cg-t">Apparel</p><div class="chips"><label class="chip"><input type="checkbox" name="product[]" value="Apparel" data-apparel><span>Shirts, hoodies and more</span></label><label class="chip"><input type="checkbox" name="product[]" value="Hats" data-apparel><span>Hats</span></label><label class="chip"><input type="checkbox" name="product[]" value="Beanies" data-apparel><span>Beanies</span></label></div></div>
+            <div class="chip-group" role="group" aria-label="Drinkware and gifts"><p class="cg-t">Drinkware and gifts</p><div class="chips"><label class="chip"><input type="checkbox" name="product[]" value="Tumblers / Drinkware"><span>Tumblers and mugs</span></label><label class="chip"><input type="checkbox" name="product[]" value="Journals / Notebooks"><span>Journals and notebooks</span></label><label class="chip"><input type="checkbox" name="product[]" value="Leather"><span>Leather</span></label><label class="chip"><input type="checkbox" name="product[]" value="Metal / Glass / Acrylic"><span>Metal, glass or acrylic</span></label></div></div>
+            <div class="chip-group" role="group" aria-label="Signs and stickers"><p class="cg-t">Signs and stickers</p><div class="chips"><label class="chip"><input type="checkbox" name="product[]" value="Wood (signs, puzzles, plaques)"><span>Wood signs and plaques</span></label><label class="chip"><input type="checkbox" name="product[]" value="Signs / Banners"><span>Signs and banners</span></label><label class="chip"><input type="checkbox" name="product[]" value="Stickers / Decals"><span>Stickers and decals</span></label></div></div>
+            <div class="chip-group" role="group" aria-label="Something else"><p class="cg-t">Something else</p><div class="chips"><label class="chip"><input type="checkbox" name="product[]" value="Your Own Item"><span>Bring your own item</span></label><label class="chip"><input type="checkbox" name="product[]" value="Other"><span>Something else</span></label></div></div>
           </div>
           <div class="field hidden" id="ownItemWrap" style="margin-top:12px">
             <label for="ownItem">What are you bringing in?</label>
@@ -290,13 +282,13 @@
           <div class="field">
             <label>Print locations</label>
             <div class="chips">
-              <label class="chip"><input type="checkbox" name="locations[]" value="Front Center"><span>Front Center</span></label>
-              <label class="chip"><input type="checkbox" name="locations[]" value="Left Chest"><span>Left Chest</span></label>
-              <label class="chip"><input type="checkbox" name="locations[]" value="Full Back"><span>Full Back</span></label>
-              <label class="chip"><input type="checkbox" name="locations[]" value="Back Neck"><span>Back Neck</span></label>
-              <label class="chip"><input type="checkbox" name="locations[]" value="Sleeve"><span>Sleeve</span></label>
-              <label class="chip"><input type="checkbox" name="locations[]" value="Hat Front"><span>Hat Front</span></label>
-              <label class="chip"><input type="checkbox" name="locations[]" value="Beanie Cuff"><span>Beanie Cuff</span></label>
+              <label class="chip"><input type="checkbox" name="locations[]" value="Front Center" data-for="Apparel"><span>Front Center</span></label>
+              <label class="chip"><input type="checkbox" name="locations[]" value="Left Chest" data-for="Apparel"><span>Left Chest</span></label>
+              <label class="chip"><input type="checkbox" name="locations[]" value="Full Back" data-for="Apparel"><span>Full Back</span></label>
+              <label class="chip"><input type="checkbox" name="locations[]" value="Back Neck" data-for="Apparel"><span>Back Neck</span></label>
+              <label class="chip"><input type="checkbox" name="locations[]" value="Sleeve" data-for="Apparel"><span>Sleeve</span></label>
+              <label class="chip"><input type="checkbox" name="locations[]" value="Hat Front" data-for="Hats"><span>Hat Front</span></label>
+              <label class="chip"><input type="checkbox" name="locations[]" value="Beanie Cuff" data-for="Beanies"><span>Beanie Cuff</span></label>
             </div>
           </div>
           <div class="field">
