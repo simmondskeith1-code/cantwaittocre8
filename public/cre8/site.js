@@ -819,9 +819,56 @@
     return fetch(url, { method:'POST', headers:h, body: body ? JSON.stringify(body) : '{}' })
       .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if(!r.ok) throw new Error(j.message || 'Could not send right now.'); return j; }); });
   }
+  /* Inline validation: message under each field, a summary, focus the first problem */
+  function fieldMsg(el){
+    if(el.validity.valueMissing) return el.type === 'checkbox' ? 'Please check this box to continue.' : 'This one is required.';
+    if(el.validity.typeMismatch && el.type === 'email') return 'Enter an email like name@example.com.';
+    if(el.validity.rangeUnderflow) return 'Pick a later date.';
+    return el.validationMessage;
+  }
+  function markField(el){
+    var key = (el.id || el.name) + '-err', box = el.closest('.field') || el.parentNode, err = document.getElementById(key);
+    if(el.checkValidity()){ if(el.hasAttribute('aria-invalid')){ el.removeAttribute('aria-invalid'); el.removeAttribute('aria-describedby'); } if(err) err.remove(); return true; }
+    el.setAttribute('aria-invalid', 'true');
+    if(!err){ err = document.createElement('p'); err.className = 'field-err'; err.id = key; box.appendChild(err); el.setAttribute('aria-describedby', key); }
+    err.textContent = fieldMsg(el); return false;
+  }
+  function checkForm(){
+    var bad = [];
+    form.querySelectorAll('input,select,textarea').forEach(function(el){ if(el.willValidate && !markField(el)) bad.push(el); });
+    if(!bad.length){ note(document.getElementById('sendError'), ''); return true; }
+    note(document.getElementById('sendError'), bad.length === 1 ? 'One thing needs a fix before we can send this.' : bad.length + ' things need a fix before we can send this.');
+    bad[0].focus({preventScroll:true}); bad[0].scrollIntoView({block:'center', behavior:'smooth'});
+    return false;
+  }
+  form.addEventListener('blur', function(e){ var t = e.target; if(t.willValidate && (t.value || t.hasAttribute('aria-invalid'))) markField(t); }, true);
+  form.addEventListener('change', function(e){ if(e.target.hasAttribute('aria-invalid')) markField(e.target); });
+
+  /* Draft autosave: a reload or app switch does not wipe the form */
+  var DKEY = 'cre8-order-draft';
+  function saveDraft(){
+    var d = {};
+    form.querySelectorAll('input,select,textarea').forEach(function(el){
+      if(!el.name || el.type === 'file' || el.name === 'website' || el.type === 'hidden') return;
+      if(el.type === 'checkbox' || el.type === 'radio'){ if(el.checked) (d[el.name] = d[el.name] || []).push(el.value); }
+      else if(el.value) d[el.name] = el.value;
+    });
+    try{ localStorage.setItem(DKEY, JSON.stringify(d)); }catch(_){}
+  }
+  (function restoreDraft(){
+    var d; try{ d = JSON.parse(localStorage.getItem(DKEY) || 'null'); }catch(_){}
+    if(!d || location.search.indexOf('make=') > -1) return;
+    form.querySelectorAll('input,select,textarea').forEach(function(el){
+      if(!(el.name in d) || el.type === 'file') return;
+      if(el.type === 'checkbox' || el.type === 'radio'){ var on = d[el.name].indexOf(el.value) > -1; if(on !== el.checked){ el.checked = on; el.dispatchEvent(new Event('change', {bubbles:true})); } }
+      else { el.value = d[el.name]; el.dispatchEvent(new Event('input', {bubbles:true})); el.dispatchEvent(new Event('change', {bubbles:true})); }
+    });
+  })();
+  form.addEventListener('input', saveDraft); form.addEventListener('change', saveDraft);
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
-    if(!form.reportValidity()) return;
+    if(!checkForm()) return;
     var btn = document.getElementById('submitBtn');
     btn.disabled = true; btn.textContent = 'Sending...';
     note(document.getElementById('sendError'), '');
@@ -867,6 +914,7 @@
       .then(function(){ status.textContent = 'Finishing up...'; return postJSON(API + '/api/cre8/quote/' + encodeURIComponent(quote.id) + '/done', null, { 'X-Cre8-Token': quote.token }); })
       .then(function(){
         document.getElementById('quoteNum').textContent = '#' + quote.id;
+        try{ localStorage.removeItem(DKEY); }catch(_){}
         form.classList.add('hidden');
         document.getElementById('success').classList.remove('hidden');
         document.getElementById('create').scrollIntoView({behavior:'smooth'});
@@ -1109,12 +1157,6 @@
     });
   }
 
-  /* ===== About: flip cards ===== */
-  document.querySelectorAll('.value').forEach(function(v){
-    var flip = function(){ v.classList.toggle('flip'); };
-    v.addEventListener('click', flip);
-    v.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); flip(); } });
-  });
 
   /* ===== Websites: package builder with live totals ===== */
   var builder = document.getElementById('builder');
@@ -1270,4 +1312,10 @@
     go(location.href, false);
   });
   initPage();
+})();
+
+/* Phone bar: keep "Free Mockup" until the order form is on screen */
+(function(){
+  var c = document.getElementById('create'); if(!c || !('IntersectionObserver' in window)) return;
+  new IntersectionObserver(function(es){ document.body.classList.toggle('at-form', es[0].isIntersecting); }).observe(c);
 })();
