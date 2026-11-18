@@ -2,6 +2,8 @@
    aria-invalid, a summary line, and focus on the first problem. */
 function cre8FieldMsg(el){
   var named = { idea: 'Tell us what you want made.', qty: 'Add how many pieces you need.', quantity: 'Add how many pieces you need.', name: 'Add your name.', email: 'Add an email so we can send your mockup.', message: 'Add a short message.', goals: 'Tell us a little about what the site needs to do.', business: 'Add your business name.' };
+  if(el.name === 'email' && !(el.form && el.form.id === 'orderForm')) named.email = 'Add an email so we can reply.';
+  if(el.name === 'phone') named.phone = 'Add a phone number so we can text or call you.';
   if(el.validity.valueMissing) return el.type === 'checkbox' ? 'Please check this box to continue.' : (named[el.name] || 'This one is required.');
   if(el.validity.typeMismatch && el.type === 'email') return 'Enter an email like name@example.com.';
   if(el.validity.rangeUnderflow) return 'Pick a later date.';
@@ -867,7 +869,20 @@ function cre8Live(form){
     return fetch(url, { method:'POST', headers:h, body: body ? JSON.stringify(body) : '{}' })
       .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if(!r.ok) throw new Error(j.message || 'Could not send right now.'); return j; }); });
   }
-  function checkForm(){ return cre8Validate(form, document.getElementById('sendError')); }
+  /* The artwork rights box is only required once something is uploaded */
+  function rightsRule(){
+    var rb = document.getElementById('rights'), has = !!document.querySelector('#previews > *');
+    if(rb){ rb.required = has; var st = document.getElementById('rightsReq'); if(st) st.classList.toggle('hidden', !has); if(!has) cre8Mark(rb); }
+  }
+  var pv = document.getElementById('previews'); if(pv && 'MutationObserver' in window) new MutationObserver(rightsRule).observe(pv, {childList:true});
+  /* Optional single-choice questions can be cleared by tapping the picked chip again */
+  var md = document.getElementById('moreDetails');
+  if(md) md.querySelectorAll('input[type=radio]').forEach(function(rd){
+    var was = false;
+    rd.closest('label').addEventListener('pointerdown', function(){ was = rd.checked; });
+    rd.addEventListener('click', function(){ if(was){ rd.checked = false; was = false; rd.dispatchEvent(new Event('change', {bubbles:true})); } });
+  });
+  function checkForm(){ rightsRule(); return cre8Validate(form, document.getElementById('sendError')); }
   cre8Live(form);
 
   /* Draft autosave: a reload or app switch does not wipe the form */
@@ -1217,12 +1232,41 @@ function cre8Live(form){
       bump('btSave', money(stdYear - (up + mo * 11)));
       document.getElementById('pgCount').textContent = extraPages;
       var names = adds.map(function(a){ return a.dataset.label; }); if(extraPages) names.push(extraPages + ' extra page' + (extraPages > 1 ? 's' : ''));
-      last = { text: pkg.dataset.label + ' (' + (pkg.value === 'signature' ? 'from ' : '') + money(setup) + ') + ' + (hasLocal ? 'Local Search (from ' + money(mo) + '/mo, includes Growth Care)' : care.dataset.label + (mo ? ' (' + money(mo) + '/mo)' : '')) + (names.length ? ' + ' + names.join(', ') : '') + '. Founding client pricing: estimated upfront ' + money(up) + ', first year ' + money(up + mo * 11) + '.' };
+      last = { text: pkg.dataset.label + ' (' + (pkg.value === 'signature' ? 'from ' : '') + money(setup) + ') + ' + (hasLocal ? 'Local Search (from ' + money(mo) + '/mo, includes Plus Care)' : care.dataset.label + (mo ? ' (' + money(mo) + '/mo)' : '')) + (names.length ? ' + ' + names.join(', ') : '') + '. Founding client pricing: estimated upfront ' + money(up) + ', first year ' + money(up + mo * 11) + '.' };
       var f = document.getElementById('s_pkg'); if(f) f.value = last.text;
     };
-    builder.addEventListener('change', calc);
-    document.getElementById('pgPlus').addEventListener('click', function(){ extraPages = Math.min(20, extraPages + 1); calc(); });
-    document.getElementById('pgMinus').addEventListener('click', function(){ extraPages = Math.max(0, extraPages - 1); calc(); });
+    var BKEY = 'cre8-builder';
+    var saveB = function(){
+      var d = { pkg: pick('b_pkg').value, care: pick('b_care').value, adds: Array.prototype.map.call(builder.querySelectorAll('input[name=b_add]:checked'), function(a){ return a.value; }), pages: extraPages, local: !!(document.getElementById('bLocal') || {}).checked };
+      try{ localStorage.setItem(BKEY, JSON.stringify(d)); }catch(_){}
+    };
+    (function(){
+      var d; try{ d = JSON.parse(localStorage.getItem(BKEY) || 'null'); }catch(_){}
+      if(!d) return;
+      var set = function(name, v){ var i = builder.querySelector('input[name=' + name + '][value="' + v + '"]'); if(i) i.checked = true; };
+      set('b_pkg', d.pkg); set('b_care', d.care); (d.adds || []).forEach(function(v){ set('b_add', v); });
+      extraPages = d.pages || 0; var bl = document.getElementById('bLocal'); if(bl) bl.checked = !!d.local;
+    })();
+    builder.addEventListener('change', function(e){
+      if(e.target.id === 'bLocal' && e.target.checked){ var g = builder.querySelector('input[name=b_care][value=growth]'); if(g) g.checked = true; }
+      calc(); saveB();
+    });
+    document.getElementById('bReset').addEventListener('click', function(){
+      builder.querySelector('input[name=b_pkg][value=launch]').checked = true;
+      builder.querySelector('input[name=b_care][value=essential]').checked = true;
+      builder.querySelectorAll('input[name=b_add]').forEach(function(a){ a.checked = false; });
+      var bl = document.getElementById('bLocal'); if(bl) bl.checked = false;
+      extraPages = 0; calc(); saveB();
+    });
+    document.getElementById('btSend').addEventListener('click', function(){
+      setTimeout(function(){
+        var n = document.getElementById('s_name'), p = document.getElementById('s_pkg');
+        if(p){ p.classList.add('flash'); setTimeout(function(){ p.classList.remove('flash'); }, 1600); }
+        if(n) n.focus({preventScroll:true});
+      }, 450);
+    });
+    document.getElementById('pgPlus').addEventListener('click', function(){ extraPages = Math.min(20, extraPages + 1); calc(); saveB(); });
+    document.getElementById('pgMinus').addEventListener('click', function(){ extraPages = Math.max(0, extraPages - 1); calc(); saveB(); });
     calc();
   }
 
@@ -1251,6 +1295,13 @@ function cre8Live(form){
     var cmsg = document.getElementById('c_msg'), ccount = document.getElementById('c_count'), cerr = document.getElementById('c_error');
     cmsg.addEventListener('input', function(){ var n = cmsg.value.length; ccount.textContent = n + ' / 3000'; ccount.classList.toggle('hidden', n < 2500); });
     ccount.classList.add('hidden'); cre8Live(cform);
+    var cph = document.getElementById('c_phone'), phoneRule = function(){ var p = cform.querySelector('input[name=contact_preference]:checked'); cph.required = !!(p && p.value !== 'Email'); var l = cph.closest('.field').querySelector('label'); if(l) l.innerHTML = cph.required ? 'Phone <span class="req">*</span>' : 'Phone'; if(!cph.required) cre8Mark(cph); };
+    cform.querySelectorAll('input[name=contact_preference]').forEach(function(r){ r.addEventListener('change', phoneRule); }); phoneRule();
+    var tq = new URLSearchParams(location.search).get('topic');
+    if(tq){ var tr = cform.querySelector('input[name=topic][value="' + tq.replace(/"/g, '') + '"]'); if(tr) tr.checked = true; }
+    var CKEY = 'cre8-contact-draft';
+    try{ var cd = JSON.parse(localStorage.getItem(CKEY) || 'null'); if(cd) ['c_name', 'c_email', 'c_phone', 'c_msg'].forEach(function(id){ if(cd[id]) document.getElementById(id).value = cd[id]; }); }catch(_){}
+    cform.addEventListener('input', function(){ var d = {}; ['c_name', 'c_email', 'c_phone', 'c_msg'].forEach(function(id){ d[id] = document.getElementById(id).value; }); try{ localStorage.setItem(CKEY, JSON.stringify(d)); }catch(_){} });
     cform.addEventListener('submit', function(e){
       e.preventDefault();
       if(!cre8Validate(cform, cerr)) return;
@@ -1259,7 +1310,7 @@ function cre8Live(form){
       var body = {}; new FormData(cform).forEach(function(v, k){ body[k] = v; });
       fetch(API + '/api/cre8/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
         .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if(!r.ok) throw new Error(j.message || 'Could not send right now.'); return j; }); })
-        .then(function(){ cform.classList.add('hidden'); document.getElementById('c_success').classList.remove('hidden'); })
+        .then(function(){ try{ localStorage.removeItem('cre8-contact-draft'); }catch(_){} cform.classList.add('hidden'); document.getElementById('c_success').classList.remove('hidden'); })
         .catch(function(err){
           cerr.textContent = err.message + ' You can also call or text 732-720-9211.'; cerr.classList.remove('hidden');
           btn.disabled = false; btn.textContent = 'Send Message';
@@ -1365,4 +1416,10 @@ function cre8Live(form){
       ['budget', 'org', 'heard'].some(function(id){ var e = document.getElementById(id); return e && e.value; });
     if(used) d.open = true;
   }, 0);
+})();
+
+/* Websites: on phones the sticky totals bar and the phone bar would stack; hide the phone bar while the builder is on screen */
+(function(){
+  var b = document.getElementById('build'), bar = document.querySelector('.m-bar'); if(!b || !bar || !('IntersectionObserver' in window)) return;
+  new IntersectionObserver(function(es){ bar.classList.toggle('m-hide', es[0].isIntersecting); }).observe(b);
 })();
