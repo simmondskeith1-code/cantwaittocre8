@@ -18,36 +18,66 @@
   }
   function clear(n){ while(n.firstChild) n.removeChild(n.firstChild); }
   function stars(n){ var r = Math.round(n); return '★★★★★'.slice(0, r) + '☆☆☆☆☆'.slice(0, 5 - r); }
-  /* Tap a photo to see it bigger, in place */
+  /* Tap a photo to see it bigger: a real dialog with next/previous, arrow keys, swipe, a counter and scroll lock */
   var viewer = document.createElement('div'); viewer.className = 'viewer';
-  var vClose = el('button', null, '✕'); vClose.type = 'button'; vClose.setAttribute('aria-label', 'Close');
-  viewer.appendChild(vClose); var vImg = el('img'); vImg.alt = ''; viewer.appendChild(vImg);
+  viewer.setAttribute('role', 'dialog'); viewer.setAttribute('aria-modal', 'true'); viewer.setAttribute('aria-label', 'Photo viewer');
+  var vClose = el('button', 'v-close', '✕'); vClose.type = 'button'; vClose.setAttribute('aria-label', 'Close');
+  var vPrev = el('button', 'v-prev', '‹'); vPrev.type = 'button'; vPrev.setAttribute('aria-label', 'Previous photo');
+  var vNext = el('button', 'v-next', '›'); vNext.type = 'button'; vNext.setAttribute('aria-label', 'Next photo');
+  var vImg = el('img'); vImg.alt = '';
+  var vCount = el('div', 'v-count'); vCount.setAttribute('aria-live', 'polite');
+  [vClose, vPrev, vImg, vNext, vCount].forEach(function(n){ viewer.appendChild(n); });
   document.body.appendChild(viewer);
   var framed = false; try { framed = window.self !== window.top; } catch(x) { framed = true; }
   if(!framed) viewer.classList.add('overlay'); // own domain: full-screen overlay; inside a frame: open where tapped
-  var lastPhoto = null;
-  function closeViewer(){ if(!viewer.classList.contains('open')) return; viewer.classList.remove('open'); if(lastPhoto) lastPhoto.focus(); }
-  viewer.addEventListener('click', closeViewer);
+  var lastPhoto = null, set = [], at = 0;
+  function show(i){
+    at = (i + set.length) % set.length;
+    var im = set[at].querySelector('img'); vImg.src = im.currentSrc || im.src; vImg.alt = im.alt;
+    vCount.textContent = (at + 1) + ' / ' + set.length;
+    var many = set.length > 1; vPrev.hidden = vNext.hidden = vCount.hidden = !many;
+  }
+  function openViewer(item){
+    set = Array.prototype.slice.call(document.querySelectorAll('.gallery .gitem')).filter(function(g){ return g.querySelector('img'); });
+    lastPhoto = item; show(Math.max(0, set.indexOf(item)));
+    if(framed){ /* GoDaddy's frame is page height, so position the viewer where the tap happened */
+      var y = window.scrollY + item.getBoundingClientRect().top - 40; viewer.style.top = Math.max(0, y) + 'px';
+    } else document.documentElement.classList.add('v-lock');
+    viewer.classList.add('open'); vClose.focus();
+  }
+  function closeViewer(){
+    if(!viewer.classList.contains('open')) return;
+    viewer.classList.remove('open'); document.documentElement.classList.remove('v-lock');
+    if(lastPhoto) lastPhoto.focus();
+  }
+  vPrev.addEventListener('click', function(e){ e.stopPropagation(); show(at - 1); });
+  vNext.addEventListener('click', function(e){ e.stopPropagation(); show(at + 1); });
+  vImg.addEventListener('click', function(e){ e.stopPropagation(); });
+  viewer.addEventListener('click', closeViewer); // the backdrop and the ✕ close it
+  var sx = null;
+  viewer.addEventListener('touchstart', function(e){ sx = e.touches[0].clientX; }, { passive: true });
+  viewer.addEventListener('touchend', function(e){ if(sx === null) return; var dx = e.changedTouches[0].clientX - sx; sx = null; if(Math.abs(dx) > 40 && set.length > 1) show(at + (dx < 0 ? 1 : -1)); });
   document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape') return closeViewer();
+    if(viewer.classList.contains('open')){
+      if(e.key === 'Escape') return closeViewer();
+      if(e.key === 'ArrowRight' && set.length > 1) return show(at + 1);
+      if(e.key === 'ArrowLeft' && set.length > 1) return show(at - 1);
+      if(e.key === 'Tab'){ // keep focus inside the dialog
+        var f = [vClose, vPrev, vNext].filter(function(b){ return !b.hidden; }), i = f.indexOf(document.activeElement);
+        e.preventDefault(); f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+      }
+      return;
+    }
     // photos open from the keyboard too
     var it = e.target.closest && e.target.closest('.gallery .gitem');
-    if(it && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); it.click(); }
+    if(it && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); openViewer(it); }
   });
   // every gallery photo, including ones added later from Google, is focusable and named
   function tagPhotos(){ document.querySelectorAll('.gallery .gitem').forEach(function(it){ if(it.hasAttribute('tabindex')) return; var im = it.querySelector('img'); it.tabIndex = 0; it.setAttribute('role', 'button'); it.setAttribute('aria-label', 'View larger: ' + ((im && im.alt) || 'photo')); }); }
   tagPhotos(); if('MutationObserver' in window) document.querySelectorAll('.gallery').forEach(function(g){ new MutationObserver(tagPhotos).observe(g, { childList: true }); });
   document.addEventListener('click', function(e){
     if(!e.target.closest('.gallery') || e.target.closest('a')) return;
-    var item = e.target.closest('.gitem'), img = item && item.querySelector('img');
-    if(!img) return;
-    lastPhoto = item;
-    viewer.querySelector('img').src = img.src; viewer.querySelector('img').alt = img.alt;
-    /* GoDaddy's frame is page height, so position the viewer where the tap happened, not at the frame top */
-    var y = window.scrollY + img.getBoundingClientRect().top - 40;
-    viewer.style.top = Math.max(0, y) + 'px';
-    viewer.classList.add('open');
-    vClose.focus();
+    var item = e.target.closest('.gitem'); if(item && item.querySelector('img')) openViewer(item);
   });
 
   /* Jump links: GoDaddy runs this page in a frame, where plain #links do nothing, so scroll with code */
@@ -849,7 +879,7 @@
   });
 
     /* Deep links: /how-it-works?make=hats&method=Embroidery#create preselects the order */
-    var MAKE = { shirts: ['Apparel', 'tee'], hoodies: ['Apparel', 'hoodie'], hats: ['Hats', 'hat'], beanies: ['Beanies', 'beanie'], tumblers: ['Tumblers / Drinkware'],
+    var MAKE = { shirts: ['Apparel', 'tee'], hoodies: ['Apparel', 'hoodie'], hats: ['Hats', 'hat'], beanies: ['Beanies', 'beanie'], tumblers: ['Tumblers / Drinkware'], mugs: ['Tumblers / Drinkware'],
       wood: ['Wood (signs, puzzles, plaques)'], stickers: ['Stickers / Decals'], signs: ['Signs / Banners'], journals: ['Journals / Notebooks'], own: ['Your Own Item'] };
     window.cre8Preselect = function(make, method){
       var m = MAKE[make];
