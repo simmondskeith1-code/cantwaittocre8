@@ -130,41 +130,6 @@
   </div>
 </section>
 
-<section id="work">
-  <div class="wrap">
-    <h2 class="reveal">Examples of what we have made</h2>
-    <p class="sub reveal">Real jobs for real customers. Tap any photo to see it up close.</p>
-    <div class="filters-row reveal" id="workFilters" role="group" aria-label="Filter work">
-      <button type="button" class="on" data-filter="all">All</button>
-      <button type="button" data-filter="engrave">Laser Engraving</button>
-      <button type="button" data-filter="apparel">Apparel</button>
-    </div>
-    <!-- To add work: copy one .gitem line into the right group and change the image link, description and tag -->
-    <div class="work-group" data-group="engrave">
-    <h3 class="gsub">Laser Engraving</h3>
-    <div class="gallery" id="galleryEngrave">
-      <div class="gitem tilt reveal"><img src="/cre8/engrave-1.jpg?v=2" alt="Gold engraved &quot;Engaged&quot; date on a crystal heart dish" loading="lazy"><span class="tag">Laser Engraving</span></div>
-      <div class="gitem tilt reveal"><img src="/cre8/engrave-2.jpg?v=2" alt="Engraved cigar lighter and cutter gift set for a dad-to-be" loading="lazy"><span class="tag">Laser Engraving</span></div>
-      <div class="gitem tilt reveal"><img src="/cre8/engrave-3.jpg?v=2" alt="Laser engraved graduation message on a watch caseback" loading="lazy"><span class="tag">Laser Engraving</span></div>
-      <div class="gitem tilt reveal"><img src="/cre8/engrave-4.jpg?v=2" alt="Wedding names and date engraved on a cedar wood slice" loading="lazy"><span class="tag">Laser Engraving</span></div>
-      <div class="gitem tilt reveal"><img src="/cre8/engrave-5.jpg?v=2" alt="Business name, phone and email engraved on promotional pens" loading="lazy"><span class="tag">Laser Engraving</span></div>
-    </div>
-    </div>
-    <div class="work-group" data-group="apparel">
-    <h3 class="gsub">Apparel</h3>
-    <div class="gallery" id="gallery" data-google-photos="1">
-      <div class="gitem tilt reveal"><img src="/cre8/work-1.jpg?v=2" alt="Matching black tees with custom white designs at a vendor event" loading="lazy"><span class="tag">Apparel</span></div>
-      <div class="gitem tilt reveal"><img src="/cre8/work-2.jpg?v=2" alt="Custom white tee with a full color print worn during a workout" loading="lazy"><span class="tag">Apparel</span></div>
-      <div class="gitem tilt reveal"><img src="/cre8/work-3.jpg?v=2" alt="Black tank with a full color lotus design" loading="lazy"><span class="tag">Apparel</span></div>
-      <div class="gitem tilt reveal"><img src="/cre8/work-4.jpg?v=2" alt="Black tee with a large gothic lettering design" loading="lazy"><span class="tag">Apparel</span></div>
-      <div class="gitem tilt reveal"><img src="/cre8/work-5.jpg?v=2" alt="Grey crewneck with a custom business logo" loading="lazy"><span class="tag">Apparel</span></div>
-      <div class="gitem tilt reveal"><img src="/cre8/work-6.jpg?v=2" alt="Group of matching custom white long sleeve shirts" loading="lazy"><span class="tag">Apparel</span></div>
-    </div>
-    </div>
-    <div class="center-row reveal"><a href="#create" class="btn btn-hot">Get a Free Mockup</a></div>
-  </div>
-</section>
-
 <section id="create">
   <div class="wrap">
     <h2>What do you want to create?</h2>
@@ -185,19 +150,6 @@
             <label for="idea">Describe what you want to create <span class="req">*</span></label>
             <textarea id="idea" name="idea" required placeholder="Example: 40 black hoodies for our family reunion. Big logo on the back with the family name and year, small heart on the front left chest. Want it to look clean and premium."></textarea>
           </div>
-          <div class="field">
-            <label>What is it for?</label>
-            <div class="chips">
-              <label class="chip"><input type="radio" name="occasion" value="Business / Brand"><span>Business / Brand</span></label>
-              <label class="chip"><input type="radio" name="occasion" value="Event"><span>Event</span></label>
-              <label class="chip"><input type="radio" name="occasion" value="Family Reunion"><span>Family Reunion</span></label>
-              <label class="chip"><input type="radio" name="occasion" value="Team / School"><span>Team / School</span></label>
-              <label class="chip"><input type="radio" name="occasion" value="Church / Nonprofit"><span>Church / Nonprofit</span></label>
-              <label class="chip"><input type="radio" name="occasion" value="Gift"><span>Gift</span></label>
-              <label class="chip"><input type="radio" name="occasion" value="Memorial"><span>Memorial</span></label>
-              <label class="chip"><input type="radio" name="occasion" value="Other"><span>Other</span></label>
-            </div>
-          </div>
         </fieldset>
 
         <fieldset>
@@ -213,23 +165,6 @@
             <label for="ownItem">What are you bringing in?</label>
             <input type="text" id="ownItem" name="own_item" maxlength="200" placeholder="Example: 12 Yeti tumblers, a leather wallet, a wood cutting board">
             <p class="hint">Drop it off at 37 Center Ave, Leonardo, by appointment. We check the material first and test on a hidden spot or a spare before we brand the real thing.</p>
-          </div>
-          <div class="field" style="margin-top:16px">
-            <label>Decoration method</label>
-            <div class="chips">
-              <label class="chip"><input type="radio" name="method" value="Full Color Print"><span>Full Color Print</span></label>
-              <label class="chip"><input type="radio" name="method" value="Embroidery"><span>Embroidery</span></label>
-              <label class="chip"><input type="radio" name="method" value="Laser Engraving"><span>Laser Engraving</span></label>
-              <label class="chip"><input type="radio" name="method" value="Not sure, recommend one"><span>Not sure, recommend one</span></label>
-            </div>
-          </div>
-          <div class="field hidden" id="finishWrap" style="margin-top:16px">
-            <label>Print finish</label>
-            <div class="chips">
-              <label class="chip"><input type="radio" name="finish" value="Flat" checked><span>Flat</span></label>
-              <label class="chip"><input type="radio" name="finish" value="Raised texture"><span>Raised Texture</span></label>
-            </div>
-            <p class="hint">Raised texture builds the print up so you can feel it: fur, scales, wood grain, a logo that stands off the surface. It shines on journals, wood, leather and hard goods, takes a little longer, and costs a little more. We confirm the price in your quote.</p>
           </div>
         </fieldset>
 
@@ -320,14 +255,6 @@
           <input type="file" id="fileInput" multiple accept=".png,.jpg,.jpeg,.pdf,.svg,.ai,.eps,.psd,.heic" hidden>
           <div class="previews" id="previews"></div>
           <div class="alert hidden" id="uploadNote" role="status"></div>
-          <div class="field" style="margin-top:16px">
-            <label>Do you have a finished design?</label>
-            <div class="chips">
-              <label class="chip"><input type="radio" name="design_status" value="Print ready"><span>Yes, print ready</span></label>
-              <label class="chip"><input type="radio" name="design_status" value="Needs cleanup"><span>Rough, needs cleanup</span></label>
-              <label class="chip"><input type="radio" name="design_status" value="Design from scratch"><span>No, design it for me</span></label>
-            </div>
-          </div>
         </fieldset>
 
         <fieldset id="mockSection" class="hidden">
@@ -430,7 +357,7 @@
         </fieldset>
 
         <fieldset>
-          <legend><span class="n" data-step>5</span>Quantity, timing and budget</legend>
+          <legend><span class="n" data-step>5</span>How many, and when?</legend>
           <div class="row">
             <div class="field">
               <label for="qty">Total quantity <span class="req">*</span></label>
@@ -442,7 +369,37 @@
             </div>
           </div>
           <div id="rushNote" class="alert hidden"></div>
-          <div class="row" style="margin-top:16px">
+        </fieldset>
+
+        <details class="more-details" id="moreDetails">
+          <summary>Add details (optional)<small>Method, budget, occasion and more. Skip it and we will ask what we need.</small></summary>
+          <div class="more-body">
+          <div class="field" style="margin-top:16px">
+            <label>Decoration method</label>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="method" value="Full Color Print"><span>Full Color Print</span></label>
+              <label class="chip"><input type="radio" name="method" value="Embroidery"><span>Embroidery</span></label>
+              <label class="chip"><input type="radio" name="method" value="Laser Engraving"><span>Laser Engraving</span></label>
+              <label class="chip"><input type="radio" name="method" value="Not sure, recommend one"><span>Not sure, recommend one</span></label>
+            </div>
+          </div>
+          <div class="field hidden" id="finishWrap" style="margin-top:16px">
+            <label>Print finish</label>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="finish" value="Flat" checked><span>Flat</span></label>
+              <label class="chip"><input type="radio" name="finish" value="Raised texture"><span>Raised Texture</span></label>
+            </div>
+            <p class="hint">Raised texture builds the print up so you can feel it: fur, scales, wood grain, a logo that stands off the surface. It shines on journals, wood, leather and hard goods, takes a little longer, and costs a little more. We confirm the price in your quote.</p>
+          </div>
+          <div class="field" style="margin-top:16px">
+            <label>Do you have a finished design?</label>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="design_status" value="Print ready"><span>Yes, print ready</span></label>
+              <label class="chip"><input type="radio" name="design_status" value="Needs cleanup"><span>Rough, needs cleanup</span></label>
+              <label class="chip"><input type="radio" name="design_status" value="Design from scratch"><span>No, design it for me</span></label>
+            </div>
+          </div>
+          <div class="row">
             <div class="field">
               <label for="budget">Budget range</label>
               <select id="budget" name="budget">
@@ -466,22 +423,30 @@
               </select>
             </div>
           </div>
-        </fieldset>
-
-        <fieldset>
-          <legend><span class="n" data-step>6</span>Your contact info</legend>
           <div class="row">
-            <div class="field"><label for="name">Full name <span class="req">*</span></label><input type="text" id="name" name="name" required autocomplete="name"></div>
             <div class="field"><label for="org">Business or group name</label><input type="text" id="org" name="organization"></div>
           </div>
-          <div class="row">
-            <div class="field"><label for="email">Email <span class="req">*</span></label><input type="email" id="email" name="email" required autocomplete="email"></div>
-            <div class="field"><label for="phone">Phone</label><input type="tel" id="phone" name="phone" autocomplete="tel"></div>
+          <div class="field">
+            <label>What is it for?</label>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="occasion" value="Business / Brand"><span>Business / Brand</span></label>
+              <label class="chip"><input type="radio" name="occasion" value="Event"><span>Event</span></label>
+              <label class="chip"><input type="radio" name="occasion" value="Family Reunion"><span>Family Reunion</span></label>
+              <label class="chip"><input type="radio" name="occasion" value="Team / School"><span>Team / School</span></label>
+              <label class="chip"><input type="radio" name="occasion" value="Church / Nonprofit"><span>Church / Nonprofit</span></label>
+              <label class="chip"><input type="radio" name="occasion" value="Gift"><span>Gift</span></label>
+              <label class="chip"><input type="radio" name="occasion" value="Memorial"><span>Memorial</span></label>
+              <label class="chip"><input type="radio" name="occasion" value="Other"><span>Other</span></label>
+            </div>
           </div>
           <div class="row">
             <div class="field">
-              <label for="contactPref">Best way to reach you</label>
-              <select id="contactPref" name="contact_preference"><option>Text</option><option>Call</option><option>Email</option></select>
+              <label>Best way to reach you</label>
+              <div class="chips">
+                <label class="chip"><input type="radio" name="contact_preference" value="Text" checked><span>Text</span></label>
+                <label class="chip"><input type="radio" name="contact_preference" value="Call"><span>Call</span></label>
+                <label class="chip"><input type="radio" name="contact_preference" value="Email"><span>Email</span></label>
+              </div>
             </div>
             <div class="field">
               <label for="heard">How did you hear about us?</label>
@@ -490,6 +455,16 @@
                 <option>Instagram</option><option>Facebook</option><option>TikTok</option><option>Google</option><option>Friend or family</option><option>Saw our work in person</option><option>Other</option>
               </select>
             </div>
+          </div>
+          </div>
+        </details>
+
+        <fieldset>
+          <legend><span class="n" data-step>6</span>Your contact info</legend>
+          <div class="field"><label for="name">Full name <span class="req">*</span></label><input type="text" id="name" name="name" required autocomplete="name"></div>
+          <div class="row">
+            <div class="field"><label for="email">Email <span class="req">*</span></label><input type="email" id="email" name="email" required autocomplete="email"></div>
+            <div class="field"><label for="phone">Phone</label><input type="tel" id="phone" name="phone" autocomplete="tel"></div>
           </div>
           <div class="field">
             <label class="chip" style="display:flex;gap:10px;align-items:flex-start;font-weight:500">
@@ -513,6 +488,41 @@
         <p class="sub" style="margin:10px auto 0">Your request number is <b id="quoteNum"></b>. A confirmation is in your inbox, and your mockup and quote are coming, usually within 1 business day.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <h2 class="reveal">Examples of what we have made</h2>
+    <p class="sub reveal">Real jobs for real customers. Tap any photo to see it up close.</p>
+    <div class="filters-row reveal" id="workFilters" role="group" aria-label="Filter work">
+      <button type="button" class="on" data-filter="all">All</button>
+      <button type="button" data-filter="engrave">Laser Engraving</button>
+      <button type="button" data-filter="apparel">Apparel</button>
+    </div>
+    <!-- To add work: copy one .gitem line into the right group and change the image link, description and tag -->
+    <div class="work-group" data-group="engrave">
+    <h3 class="gsub">Laser Engraving</h3>
+    <div class="gallery" id="galleryEngrave">
+      <div class="gitem tilt reveal"><img src="/cre8/engrave-1.jpg?v=2" alt="Gold engraved &quot;Engaged&quot; date on a crystal heart dish" loading="lazy"><span class="tag">Laser Engraving</span></div>
+      <div class="gitem tilt reveal"><img src="/cre8/engrave-2.jpg?v=2" alt="Engraved cigar lighter and cutter gift set for a dad-to-be" loading="lazy"><span class="tag">Laser Engraving</span></div>
+      <div class="gitem tilt reveal"><img src="/cre8/engrave-3.jpg?v=2" alt="Laser engraved graduation message on a watch caseback" loading="lazy"><span class="tag">Laser Engraving</span></div>
+      <div class="gitem tilt reveal"><img src="/cre8/engrave-4.jpg?v=2" alt="Wedding names and date engraved on a cedar wood slice" loading="lazy"><span class="tag">Laser Engraving</span></div>
+      <div class="gitem tilt reveal"><img src="/cre8/engrave-5.jpg?v=2" alt="Business name, phone and email engraved on promotional pens" loading="lazy"><span class="tag">Laser Engraving</span></div>
+    </div>
+    </div>
+    <div class="work-group" data-group="apparel">
+    <h3 class="gsub">Apparel</h3>
+    <div class="gallery" id="gallery" data-google-photos="1">
+      <div class="gitem tilt reveal"><img src="/cre8/work-1.jpg?v=2" alt="Matching black tees with custom white designs at a vendor event" loading="lazy"><span class="tag">Apparel</span></div>
+      <div class="gitem tilt reveal"><img src="/cre8/work-2.jpg?v=2" alt="Custom white tee with a full color print worn during a workout" loading="lazy"><span class="tag">Apparel</span></div>
+      <div class="gitem tilt reveal"><img src="/cre8/work-3.jpg?v=2" alt="Black tank with a full color lotus design" loading="lazy"><span class="tag">Apparel</span></div>
+      <div class="gitem tilt reveal"><img src="/cre8/work-4.jpg?v=2" alt="Black tee with a large gothic lettering design" loading="lazy"><span class="tag">Apparel</span></div>
+      <div class="gitem tilt reveal"><img src="/cre8/work-5.jpg?v=2" alt="Grey crewneck with a custom business logo" loading="lazy"><span class="tag">Apparel</span></div>
+      <div class="gitem tilt reveal"><img src="/cre8/work-6.jpg?v=2" alt="Group of matching custom white long sleeve shirts" loading="lazy"><span class="tag">Apparel</span></div>
+    </div>
+    </div>
+    <div class="center-row reveal"><a href="#create" class="btn btn-hot">Get a Free Mockup</a></div>
   </div>
 </section>
 

@@ -965,6 +965,7 @@ function cre8Live(form){
       }
       if(method){
         document.querySelectorAll('input[name=method]').forEach(function(r){ if(r.value === method) r.checked = true; });
+        var md = document.getElementById('moreDetails'); if(md && document.querySelector('input[name=method]:checked')) md.open = true;
       }
     };
     var qp = new URLSearchParams(location.search);
@@ -1200,21 +1201,23 @@ function cre8Live(form){
       var pagesEl = builder.querySelector('.addon.pages'), pgPrice = Number(pagesEl.dataset.price), pgStd = Number(pagesEl.dataset.standard);
       var addSum = adds.reduce(function(t, a){ return t + Number(a.dataset.price); }, 0) + extraPages * pgPrice;
       var addStd = adds.reduce(function(t, a){ return t + Number(a.dataset.standard || a.dataset.price); }, 0) + extraPages * pgStd;
-      var setup = Number(pkg.dataset.price), up = setup + addSum, mo = Number(care.dataset.price);
+      var local = document.getElementById('bLocal'), hasLocal = !!(local && local.checked);
+      var setup = Number(pkg.dataset.price), up = setup + addSum, mo = hasLocal ? Number(local.dataset.price) : Number(care.dataset.price);
+      builder.querySelector('.care').classList.toggle('care-off', hasLocal);
       bump('btSetup', (pkg.value === 'signature' ? 'from ' : '') + money(setup));
       bump('btAdds', money(addSum));
       bump('btUpfront', (pkg.value === 'signature' ? 'from ' : '') + money(up));
-      bump('btCare', mo ? money(mo) + '/mo' : 'None');
-      var cm = document.getElementById('btCareM'); if(cm) cm.textContent = (mo ? '+ ' + money(mo) + '/mo care' : 'No care plan') + ', first year ' + money(up + mo * 11);
+      bump('btCare', hasLocal ? 'Local Search, from ' + money(mo) + '/mo' : mo ? money(mo) + '/mo' : 'None');
+      var cm = document.getElementById('btCareM'); if(cm) cm.textContent = (hasLocal ? '+ from ' + money(mo) + '/mo Local Search' : mo ? '+ ' + money(mo) + '/mo care' : 'No care plan') + ', first year ' + money(up + mo * 11);
       var note = document.getElementById('btNote');
       if(note) note.lastChild.textContent = mo ? '), 50% at launch. First month of care is free. Hosting and domain are in your name and billed to you directly by those providers.' : '), 50% at launch. No care plan: upkeep is yours after launch, and later fixes or edits are $85/hour, 1 hour minimum. Hosting and domain are in your name and billed to you directly.';
       bump('btYear', money(up + mo * 11));
       bump('btDeposit', money(up / 2));
-      var stdYear = Number(pkg.dataset.standard) + addStd + Number(care.dataset.standard) * 11;
+      var stdYear = Number(pkg.dataset.standard) + addStd + (hasLocal ? mo : Number(care.dataset.standard)) * 11;
       bump('btSave', money(stdYear - (up + mo * 11)));
       document.getElementById('pgCount').textContent = extraPages;
       var names = adds.map(function(a){ return a.dataset.label; }); if(extraPages) names.push(extraPages + ' extra page' + (extraPages > 1 ? 's' : ''));
-      last = { text: pkg.dataset.label + ' (' + (pkg.value === 'signature' ? 'from ' : '') + money(setup) + ') + ' + care.dataset.label + (mo ? ' (' + money(mo) + '/mo)' : '') + (names.length ? ' + ' + names.join(', ') : '') + '. Founding client pricing: estimated upfront ' + money(up) + ', first year ' + money(up + mo * 11) + '.' };
+      last = { text: pkg.dataset.label + ' (' + (pkg.value === 'signature' ? 'from ' : '') + money(setup) + ') + ' + (hasLocal ? 'Local Search (from ' + money(mo) + '/mo, includes Growth Care)' : care.dataset.label + (mo ? ' (' + money(mo) + '/mo)' : '')) + (names.length ? ' + ' + names.join(', ') : '') + '. Founding client pricing: estimated upfront ' + money(up) + ', first year ' + money(up + mo * 11) + '.' };
       var f = document.getElementById('s_pkg'); if(f) f.value = last.text;
     };
     builder.addEventListener('change', calc);
@@ -1345,6 +1348,21 @@ function cre8Live(form){
 
 /* Phone bar: keep "Free Mockup" until the order form is on screen */
 (function(){
-  var c = document.getElementById('create'); if(!c || !('IntersectionObserver' in window)) return;
+  var web = document.body.dataset.page === 'websites';
+  if(web){
+    var ms = document.querySelector('.m-bar .m-start'); if(ms){ ms.href = '#inquire'; ms.textContent = 'Discovery Call'; }
+    var nb = document.querySelector('header nav .btn-hot, #navlinks .btn-hot'); if(nb){ nb.href = '#inquire'; nb.textContent = 'Book a Discovery Call'; }
+  }
+  var c = document.getElementById(web ? 'inquire' : 'create'); if(!c || !('IntersectionObserver' in window)) return;
   new IntersectionObserver(function(es){ document.body.classList.toggle('at-form', es[0].isIntersecting); }).observe(c);
+})();
+
+/* Optional details on the order form open by themselves when something inside was already chosen (deep link or saved draft) */
+(function(){
+  var d = document.getElementById('moreDetails'); if(!d) return;
+  setTimeout(function(){
+    var used = d.querySelector('input[name=method]:checked, input[name=occasion]:checked, input[name=design_status]:checked') ||
+      ['budget', 'org', 'heard'].some(function(id){ var e = document.getElementById(id); return e && e.value; });
+    if(used) d.open = true;
+  }, 0);
 })();
