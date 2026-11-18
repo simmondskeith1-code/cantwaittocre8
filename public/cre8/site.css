@@ -183,7 +183,7 @@ input[type=range]{width:100%;accent-color:#ff3d7f}
 details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:12px}
 summary{font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:12px}
 summary::after{content:"+";font-size:22px;line-height:1;color:var(--hot)}
-details[open] summary::after{content:"-"}
+details[open] summary::after{content:"\2212"}
 details p{color:var(--muted);margin-top:10px;font-size:15px}
 
 /* CTA + FOOTER */
@@ -649,8 +649,14 @@ body[data-page="contact"] main + .cta{display:none}
 .extras summary{cursor:pointer;list-style:none;display:flex;flex-direction:column;gap:2px;padding:4px 0 10px}
 .extras summary::-webkit-details-marker{display:none}
 .extras summary small{color:var(--muted);font-size:13.5px;padding-left:2px}
+.extras summary::after{content:none}
 .extras summary .b-title::after{content:" +";color:var(--hot-text)}
 .extras[open] summary .b-title::after{content:" \2212"}
 .sc-controls button{width:36px;height:36px;position:relative}
 .sc-controls button::after{content:"";position:absolute;inset:-5px;border-radius:50%}
 .b-reset{white-space:nowrap}
+.sizes .size-more{display:none}
+.sizes.show-all .size-more{display:block}
+#siteDraftNote button,#cDraftNote button{background:none;border:0;font-weight:700;text-decoration:underline;cursor:pointer;color:var(--ink);padding:0 4px;min-height:32px}
+@media(max-width:900px){.b-total .b-head,.b-total .bt-m,.b-total .bt-local,.b-total .bt-how{display:none}.b-total{padding:10px 14px}}
+@media(max-width:900px){.b-total{flex-wrap:nowrap}.b-total .bs-long{display:none}.b-total .bt-row.big span{font-size:12px}.b-total .bt-row.big b{font-size:22px;line-height:1.1}.b-total .btn{padding:12px 14px;font-size:15px}}

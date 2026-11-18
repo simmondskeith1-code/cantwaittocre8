@@ -76,7 +76,7 @@
         <div class="tiers" role="radiogroup" aria-label="Website package">
           <label class="tier"><input type="radio" name="b_pkg" value="launch" data-price="950" data-standard="1500" data-label="Launch Site" checked>
             <span class="t-card"><b class="t-name">Launch Site</b><span class="t-was">Standard $1,500</span><span class="t-price">$950</span><span class="t-sub">Up to 3 pages &bull; about 2 weeks</span>
-              <ul><li>Mobile-first custom design</li><li>Contact form to your inbox</li><li>Google reviews and map</li><li>Search basics: titles, sitemap, business info for Google</li><li>We connect your domain without breaking your email</li></ul></span></label>
+              <ul><li>Mobile-first custom design</li><li>Contact form to your inbox</li><li>Google reviews and map</li><li>Set up so Google can find and list every page</li><li>We connect your domain without breaking your email</li></ul></span></label>
           <label class="tier pop"><input type="radio" name="b_pkg" value="grow" data-price="2000" data-standard="3200" data-label="Growth Site">
             <span class="t-card"><span class="t-flag">Recommended</span><b class="t-name">Growth Site</b><span class="t-was">Standard $3,200</span><span class="t-price">$2,000</span><span class="t-sub">Up to 6 pages &bull; 3 to 4 weeks</span>
               <ul><li>Everything in Launch</li><li>Quote or booking form with file uploads</li><li>Your own admin dashboard for leads</li><li>One interactive feature (calculator, showcase, gallery filters)</li><li>Page slide transitions and scroll effects</li><li>Google search setup, with a 30-day report</li></ul></span></label>
@@ -124,7 +124,7 @@
         <p class="bt-local hidden" id="btLocalNote">Local Search includes Plus Care, so your care plan choice is paused.</p>
         <p class="bt-note" id="btNote">50% deposit to start (<b id="btDeposit">$475</b>), 50% at launch. First month of care is free. Hosting and domain are in your name and billed to you directly by those providers.</p>
         <p class="bt-how">First year = upfront + 11 months of care (month one is free). <a href="#faq-host">Hosting</a> · <a href="#faq-time">Timeline</a></p>
-        <a href="#inquire" class="btn btn-hot" id="btSend">Use This Package &amp; Book a Call</a>
+        <a href="#inquire" class="btn btn-hot" id="btSend">Use This Package<span class="bs-long"> &amp; Book a Call</span></a>
       </aside>
     </div>
   </div>
@@ -137,7 +137,8 @@
     <div class="formcard reveal">
       <form id="siteForm" novalidate>
         <div class="row">
-          <div class="field"><label for="s_name">Name <span class="req">*</span></label><input type="text" id="s_name" name="name" required autocomplete="name" maxlength="120"></div>
+          <div class="alert hidden" id="siteDraftNote" role="status"></div>
+        <div class="field"><label for="s_name">Name <span class="req">*</span></label><input type="text" id="s_name" name="name" required autocomplete="name" maxlength="120"></div>
           <div class="field"><label for="s_biz">Business name</label><input type="text" id="s_biz" name="business" autocomplete="organization" maxlength="140"></div>
         </div>
         <div class="row">

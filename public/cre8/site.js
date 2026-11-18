@@ -273,6 +273,9 @@ function cre8Live(form){
     document.getElementById('otherGarmentWrap').classList.toggle('hidden', garment.value !== 'Other');
   });
 
+  var ms = document.getElementById('moreSizes');
+  if(ms) ms.addEventListener('click', function(){ var sz = document.getElementById('sizes'), on = !sz.classList.contains('show-all'); sz.classList.toggle('show-all', on); ms.setAttribute('aria-expanded', on ? 'true' : 'false'); ms.textContent = on ? 'Fewer sizes' : 'Youth and 2XL+ sizes'; });
+  setTimeout(function(){ var sz = document.getElementById('sizes'); if(sz && Array.prototype.some.call(sz.querySelectorAll('.size-more input'), function(i){ return i.value; })){ sz.classList.add('show-all'); if(ms){ ms.textContent = 'Fewer sizes'; ms.setAttribute('aria-expanded', 'true'); } } }, 0);
   /* Size total syncs to quantity; warn if someone edits quantity so they no longer match */
   function qtyCheck(){
     var t = 0; document.querySelectorAll('#sizes input').forEach(function(s){ t += parseInt(s.value,10) || 0; });
@@ -947,7 +950,7 @@ function cre8Live(form){
       var ub = document.createElement('button'); ub.type = 'button'; ub.textContent = 'Undo';
       ub.addEventListener('click', function(){ try{ localStorage.setItem(DKEY, keep); }catch(_){} location.reload(); });
       dn2.appendChild(ub); dn2.classList.remove('hidden');
-      setTimeout(function(){ dn2.classList.add('hidden'); }, 8000);
+      form.addEventListener('input', function hideU(){ dn2.classList.add('hidden'); form.removeEventListener('input', hideU); });
     }
     reqCount && setTimeout(reqCount, 0);
   }
@@ -960,7 +963,7 @@ function cre8Live(form){
   })();
   (function restoreDraft(){
     var d; try{ d = JSON.parse(localStorage.getItem(DKEY) || 'null'); }catch(_){}
-    if(!d || location.search.indexOf('make=') > -1) return;
+    if(!d) return;
     var any = Object.keys(d).some(function(k){ return k !== 'contact_preference' && k !== 'finish' && k !== 'delivery'; });
     if(any){ var dn = document.getElementById('draftNote'); if(dn){ dn.textContent = 'We restored your unsent request. '; var cb = document.createElement('button'); cb.type = 'button'; cb.textContent = 'Clear it'; cb.addEventListener('click', clearOrder); dn.appendChild(cb); dn.classList.remove('hidden'); } }
     form.querySelectorAll('input,select,textarea').forEach(function(el){
@@ -1036,6 +1039,13 @@ function cre8Live(form){
       wood: ['Wood (signs, puzzles, plaques)'], stickers: ['Stickers / Decals'], signs: ['Signs / Banners'], journals: ['Journals / Notebooks'], own: ['Your Own Item'] };
     window.cre8Preselect = function(make, method){
       var m = MAKE[make];
+      var lab = m && document.querySelector('input[name="product[]"][value="' + m[0] + '"]');
+      var pn = document.getElementById('draftNote');
+      if(pn && (lab || method)){
+        var txt = 'Set up for ' + [lab ? lab.closest('label').textContent.trim() : '', method || ''].filter(Boolean).join(', ') + '. Change it any time below.';
+        if(pn.classList.contains('hidden')) pn.textContent = txt; else pn.insertBefore(document.createTextNode(txt + ' '), pn.firstChild);
+        pn.classList.remove('hidden');
+      }
       if(m){
         document.querySelectorAll('input[name="product[]"]').forEach(function(b){
           if(b.value === m[0] && !b.checked){ b.checked = true; b.dispatchEvent(new Event('change', { bubbles: true })); }
@@ -1299,7 +1309,7 @@ function cre8Live(form){
       bump('btAdds', money(addSum));
       bump('btUpfront', (pkg.value === 'signature' ? 'from ' : '') + money(up));
       bump('btCare', hasLocal ? 'from ' + money(mo) + '/mo' : mo ? money(mo) + '/mo' : 'None');
-      var cm = document.getElementById('btCareM'); if(cm) cm.textContent = (hasLocal ? '+ from ' + money(mo) + '/mo Local Search' : mo ? '+ ' + money(mo) + '/mo care' : 'No care plan') + ', first year ' + money(up + mo * 11);
+      var cm = document.getElementById('btCareM'); if(cm) cm.textContent = (hasLocal ? '+ from ' + money(mo) + '/mo Local Search' : mo ? '+ ' + money(mo) + '/mo care' : 'No care plan') + ', first year ' + ((hasLocal || pkg.value === 'signature') ? 'from ' : '') + money(up + mo * 11);
       var note = document.getElementById('btNote');
       if(note) note.lastChild.textContent = mo ? '), 50% at launch. First month of care is free. Hosting and domain are in your name and billed to you directly by those providers.' : '), 50% at launch. No care plan: upkeep is yours after launch, and later fixes or edits are $85/hour, 1 hour minimum. Hosting and domain are in your name and billed to you directly.';
       var fromY = (hasLocal || pkg.value === 'signature') ? 'from ' : '';
@@ -1327,6 +1337,22 @@ function cre8Live(form){
       if(d.prevCare) builder.dataset.prevCare = d.prevCare;
       if((d.adds && d.adds.length) || d.pages){ var ex = document.getElementById('extras'); if(ex) ex.open = true; }
     })();
+    (function(){
+      var q = new URLSearchParams(location.search); if(!q.get('pkg')) return;
+      var set = function(name, v){ var i = builder.querySelector('input[name=' + name + '][value="' + v + '"]'); if(i) i.checked = true; };
+      set('b_pkg', q.get('pkg')); if(q.get('care')) set('b_care', q.get('care'));
+      (q.get('add') || '').split(',').forEach(function(v){ if(v) set('b_add', v); });
+      extraPages = parseInt(q.get('pages'), 10) || 0; var bl = document.getElementById('bLocal'); if(bl) bl.checked = q.get('local') === '1';
+      if(q.get('add') || extraPages){ var ex = document.getElementById('extras'); if(ex) ex.open = true; }
+    })();
+    var shareURL = function(){
+      var p = new URLSearchParams(); p.set('pkg', pick('b_pkg').value); p.set('care', pick('b_care').value);
+      var ad = Array.prototype.map.call(builder.querySelectorAll('input[name=b_add]:checked'), function(a){ return a.value; }); if(ad.length) p.set('add', ad.join(','));
+      if(extraPages) p.set('pages', extraPages); if((document.getElementById('bLocal') || {}).checked) p.set('local', '1');
+      try{ history.replaceState(null, '', location.pathname + '?' + p.toString() + location.hash); }catch(_){}
+    };
+    builder.addEventListener('change', shareURL);
+    builder.addEventListener('click', function(e){ if(e.target.closest('#pgPlus,#pgMinus,#bReset')) setTimeout(shareURL, 0); });
     builder.addEventListener('change', function(e){
       if(e.target.id === 'bLocal'){
         if(e.target.checked){ var cur = pick('b_care'); builder.dataset.prevCare = cur ? cur.value : 'essential'; var g = builder.querySelector('input[name=b_care][value=growth]'); if(g) g.checked = true; }
@@ -1341,7 +1367,7 @@ function cre8Live(form){
         var u = document.getElementById('bUndo'); if(!u){ u = document.createElement('p'); u.id = 'bUndo'; u.className = 'bt-local'; ln.parentNode.insertBefore(u, ln); }
         u.textContent = 'Builder reset. '; var b = document.createElement('button'); b.type = 'button'; b.className = 'b-reset'; b.textContent = 'Undo';
         b.addEventListener('click', function(){ try{ localStorage.setItem(BKEY, before); }catch(_){} location.reload(); }); u.appendChild(b); u.classList.remove('hidden');
-        setTimeout(function(){ u.classList.add('hidden'); }, 8000);
+        builder.addEventListener('change', function hideB(){ u.classList.add('hidden'); builder.removeEventListener('change', hideB); });
       }, 0);
       builder.querySelector('input[name=b_pkg][value=launch]').checked = true;
       builder.querySelector('input[name=b_care][value=essential]').checked = true;
@@ -1366,7 +1392,15 @@ function cre8Live(form){
     var serr = document.getElementById('s_error');
     cre8Live(sform);
     var SKEY = 'cre8-site-draft', sids = ['s_name', 's_email', 's_phone', 's_biz', 's_current', 's_msg'].filter(function(id){ return document.getElementById(id); });
-    try{ var sd = JSON.parse(localStorage.getItem(SKEY) || 'null'); if(sd) sids.forEach(function(id){ if(sd[id]) document.getElementById(id).value = sd[id]; }); }catch(_){}
+    try{ var sd = JSON.parse(localStorage.getItem(SKEY) || 'null');
+      if(sd && sids.some(function(id){ return sd[id]; })){
+        sids.forEach(function(id){ if(sd[id]) document.getElementById(id).value = sd[id]; });
+        var sn = document.getElementById('siteDraftNote'); sn.textContent = 'We restored your unsent request. ';
+        var sc = document.createElement('button'); sc.type = 'button'; sc.textContent = 'Clear it';
+        sc.addEventListener('click', function(){ sids.forEach(function(id){ document.getElementById(id).value = ''; }); try{ localStorage.removeItem(SKEY); }catch(_){} sn.classList.add('hidden'); });
+        sn.appendChild(sc); sn.classList.remove('hidden');
+      }
+    }catch(_){}
     sform.addEventListener('input', function(){ var d = {}; sids.forEach(function(id){ d[id] = document.getElementById(id).value; }); try{ localStorage.setItem(SKEY, JSON.stringify(d)); }catch(_){} });
     sform.addEventListener('submit', function(e){
       e.preventDefault();
@@ -1394,8 +1428,19 @@ function cre8Live(form){
     var tq = new URLSearchParams(location.search).get('topic');
     if(tq){ var tr = cform.querySelector('input[name=topic][value="' + tq.replace(/"/g, '') + '"]'); if(tr) tr.checked = true; }
     var CKEY = 'cre8-contact-draft';
-    try{ var cd = JSON.parse(localStorage.getItem(CKEY) || 'null'); if(cd) ['c_name', 'c_email', 'c_phone', 'c_msg'].forEach(function(id){ if(cd[id]) document.getElementById(id).value = cd[id]; }); }catch(_){}
-    cform.addEventListener('input', function(){ var d = {}; ['c_name', 'c_email', 'c_phone', 'c_msg'].forEach(function(id){ d[id] = document.getElementById(id).value; }); try{ localStorage.setItem(CKEY, JSON.stringify(d)); }catch(_){} });
+    var cids = ['c_name', 'c_email', 'c_phone', 'c_msg'];
+    var csave = function(){ var d = {}; cids.forEach(function(id){ d[id] = document.getElementById(id).value; }); ['topic', 'contact_preference'].forEach(function(n){ var x = cform.querySelector('input[name=' + n + ']:checked'); if(x) d[n] = x.value; }); try{ localStorage.setItem(CKEY, JSON.stringify(d)); }catch(_){} };
+    try{ var cd = JSON.parse(localStorage.getItem(CKEY) || 'null');
+      if(cd && cids.some(function(id){ return cd[id]; })){
+        cids.forEach(function(id){ if(cd[id]) document.getElementById(id).value = cd[id]; });
+        ['topic', 'contact_preference'].forEach(function(n){ if(cd[n] && !(n === 'topic' && tq)){ var x = cform.querySelector('input[name=' + n + '][value="' + cd[n] + '"]'); if(x){ x.checked = true; x.dispatchEvent(new Event('change', {bubbles:true})); } } });
+        var cn = document.getElementById('cDraftNote'); cn.textContent = 'We restored your unsent message. ';
+        var cb = document.createElement('button'); cb.type = 'button'; cb.textContent = 'Clear it';
+        cb.addEventListener('click', function(){ cform.reset(); try{ localStorage.removeItem(CKEY); }catch(_){} cn.classList.add('hidden'); phoneRule(); });
+        cn.appendChild(cb); cn.classList.remove('hidden');
+      }
+    }catch(_){}
+    cform.addEventListener('input', csave); cform.addEventListener('change', csave);
     cform.addEventListener('submit', function(e){
       e.preventDefault();
       if(!cre8Validate(cform, cerr)) return;
