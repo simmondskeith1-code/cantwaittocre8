@@ -1352,6 +1352,10 @@ function cre8Live(form){
       try{ history.replaceState(null, '', location.pathname + '?' + p.toString() + location.hash); }catch(_){}
     };
     builder.addEventListener('change', shareURL);
+    document.getElementById('bCopy').addEventListener('click', function(){
+      shareURL(); var btn = this, done = function(){ btn.textContent = 'Link copied'; setTimeout(function(){ btn.textContent = 'Copy link'; }, 2000); };
+      if(navigator.clipboard) navigator.clipboard.writeText(location.href).then(done, function(){ prompt('Copy this link', location.href); }); else prompt('Copy this link', location.href);
+    });
     builder.addEventListener('click', function(e){ if(e.target.closest('#pgPlus,#pgMinus,#bReset')) setTimeout(shareURL, 0); });
     builder.addEventListener('change', function(e){
       if(e.target.id === 'bLocal'){
@@ -1366,8 +1370,8 @@ function cre8Live(form){
         var ln = document.getElementById('btLocalNote'); if(!before || !ln) return;
         var u = document.getElementById('bUndo'); if(!u){ u = document.createElement('p'); u.id = 'bUndo'; u.className = 'bt-local'; ln.parentNode.insertBefore(u, ln); }
         u.textContent = 'Builder reset. '; var b = document.createElement('button'); b.type = 'button'; b.className = 'b-reset'; b.textContent = 'Undo';
-        b.addEventListener('click', function(){ try{ localStorage.setItem(BKEY, before); }catch(_){} location.reload(); }); u.appendChild(b); u.classList.remove('hidden');
-        builder.addEventListener('change', function hideB(){ u.classList.add('hidden'); builder.removeEventListener('change', hideB); });
+        b.addEventListener('click', function(){ try{ localStorage.setItem(BKEY, before); history.replaceState(null, '', location.pathname + '#build'); }catch(_){} location.reload(); }); u.appendChild(b); u.classList.remove('hidden');
+        setTimeout(function(){ builder.addEventListener('change', function hideB(){ u.classList.add('hidden'); builder.removeEventListener('change', hideB); }); }, 0);
       }, 0);
       builder.querySelector('input[name=b_pkg][value=launch]').checked = true;
       builder.querySelector('input[name=b_care][value=essential]').checked = true;

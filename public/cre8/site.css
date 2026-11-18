@@ -91,7 +91,7 @@ label{font-weight:600;font-size:14px}
 label .req{color:var(--hot-text)}
 input[type=text],input[type=email],input[type=tel],input[type=number],input[type=date],select,textarea{
   font:inherit;font-size:16px;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);width:100%}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--hot);box-shadow:0 0 0 3px rgba(255,61,127,.15)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--hot);box-shadow:0 0 0 3px rgba(255,61,127,.3)}
 textarea{min-height:140px;resize:vertical}
 .chips{display:flex;flex-wrap:wrap;gap:10px}
 .chip input{position:absolute;opacity:0;pointer-events:none}
@@ -658,5 +658,10 @@ body[data-page="contact"] main + .cta{display:none}
 .sizes .size-more{display:none}
 .sizes.show-all .size-more{display:block}
 #siteDraftNote button,#cDraftNote button{background:none;border:0;font-weight:700;text-decoration:underline;cursor:pointer;color:var(--ink);padding:0 4px;min-height:32px}
-@media(max-width:900px){.b-total .b-head,.b-total .bt-m,.b-total .bt-local,.b-total .bt-how{display:none}.b-total{padding:10px 14px}}
-@media(max-width:900px){.b-total{flex-wrap:nowrap}.b-total .bs-long{display:none}.b-total .bt-row.big span{font-size:12px}.b-total .bt-row.big b{font-size:22px;line-height:1.1}.b-total .btn{padding:12px 14px;font-size:15px}}
+@media(max-width:900px){.b-total .b-head #btPkgName,.b-total .bt-local,.b-total .bt-how{display:none}.b-total{padding:10px 14px}.b-total{flex-wrap:wrap!important;row-gap:4px}.b-total .b-head{flex:0 0 100%;margin:0;justify-content:flex-end}.b-total .b-reset{padding:0 4px;min-height:28px;font-size:12px}}
+@media(max-width:900px){.b-total .bs-long{display:none}.b-total .bt-row.big span{font-size:12px}.b-total .bt-row.big b{font-size:22px;line-height:1.1}.b-total .btn{padding:12px 14px;font-size:15px}}
+.b-actions{display:flex;gap:12px}
+.b-total .btn{text-align:center;line-height:1.25}
+@media(max-width:900px){.b-total .btn{white-space:nowrap}}
+#reqCount{position:sticky;top:76px;z-index:4;background:var(--card);padding:8px 0;margin:0 0 10px;border-bottom:1px solid var(--line)}
+@media(max-width:900px){.b-total{position:sticky}.b-total .bt-m{font-size:12px}}
