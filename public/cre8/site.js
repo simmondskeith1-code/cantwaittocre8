@@ -898,6 +898,7 @@
       document.getElementById('gRating').textContent = Number(d.rating).toFixed(1);
       document.getElementById('gStars').textContent = stars(d.rating);
       document.getElementById('gCount').textContent = d.count + ' Google review' + (d.count === 1 ? '' : 's');
+      var gs = document.getElementById('gScore'); if(gs) gs.classList.remove('hidden');
       var grid = document.getElementById('gReviews'); clear(grid);
       d.reviews.slice(0, 5).forEach(function(v){
         var card = el('div', 'rcard');
@@ -909,7 +910,7 @@
         card.appendChild(who); grid.appendChild(card);
       });
       var read = document.getElementById('readReviews'), mapUrl = googleUrl(d.url);
-      if(mapUrl) read.href = mapUrl; else read.classList.add('hidden');
+      if(mapUrl) read.href = mapUrl; // otherwise keep the profile link already in the page
       if(GOOGLE_REVIEW_LINK){ var lv = document.getElementById('leaveReview'); lv.href = GOOGLE_REVIEW_LINK; lv.classList.remove('hidden'); }
       document.getElementById('reviews').classList.remove('hidden');
     })

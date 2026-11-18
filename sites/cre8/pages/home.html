@@ -1,13 +1,13 @@
 <header class="hero" id="top">
-  <div class="wrap">
+  <div class="wrap hero-grid">
+   <div class="hero-copy">
     <div class="brand-stage">
       <div class="bs-runner" aria-hidden="true"><i class="bs-speed"></i><i class="bs-speed"></i><i class="bs-speed"></i><img src="{{BASE}}/cre8/logo.png?v={{V}}" alt="" width="421" height="466"></div>
       <div class="bs-text">
         <p class="bs-name"><span class="sr-only">Can't Wait to Cre8</span><span aria-hidden="true"><span style="--i:0">C</span><span style="--i:1">a</span><span style="--i:2">n</span><span style="--i:3">&rsquo;</span><span style="--i:4">t</span><span class="sp"> </span><span style="--i:5">W</span><span style="--i:6">a</span><span style="--i:7">i</span><span style="--i:8">t</span><span class="sp"> </span><span style="--i:9">t</span><span style="--i:10">o</span><span class="sp"> </span><span class="bs-cre8"><span style="--i:11">C</span><span style="--i:12">r</span><span style="--i:13">e</span><span style="--i:14">8</span></span></span></p>
-        <p class="bs-tag">Custom print shop &middot; Leonardo, NJ</p>
+        <p class="bs-tag">Printing &middot; Embroidery &middot; Laser Engraving &middot; Full Color &middot; Leonardo, NJ</p>
       </div>
     </div>
-    <span class="eyebrow">Printing &bull; Embroidery &bull; Laser Engraving &bull; Full Color</span>
     <h1>You bring the idea. We make it <em>real, fast.</em></h1>
     <p>Custom shirts, hoodies, hats, embroidery, engraved gifts and full color prints for brands, teams, events and families, made in Leonardo, NJ. Orders of 5 pieces or fewer are done in 3 days. Tell us what you want to create and we handle the rest.</p>
     <div class="hero-ctas">
@@ -20,6 +20,14 @@
       <div class="badge">From <b>1 piece</b> to bulk</div>
       <div class="badge">Free <b>mockup</b> before we print</div>
     </div>
+   </div>
+    <figure class="hero-art">
+      <picture>
+        <source type="image/webp" srcset="/cre8/hero-mockup-760.webp 760w, /cre8/hero-mockup.webp 1400w" sizes="(max-width: 900px) 100vw, 46vw">
+        <img src="/cre8/hero-mockup.jpg" srcset="/cre8/hero-mockup-760.jpg 760w, /cre8/hero-mockup.jpg 1400w" sizes="(max-width: 900px) 100vw, 46vw" width="1400" height="933" alt="A pencil sketch of a logo on paper beside the same logo printed in pink and orange on a black t-shirt" fetchpriority="high">
+      </picture>
+      <figcaption>Your sketch, our mockup, then the real thing. The mockup is free.</figcaption>
+    </figure>
   </div>
 </header>
 
@@ -84,21 +92,26 @@
   </div>
 </section>
 
-<section class="reviews hidden" id="reviews">
+<section class="reviews" id="reviews">
   <div class="wrap">
     <div class="rhead">
       <div>
         <span class="eyebrow">Google Reviews</span>
         <h2>Don't take our word for it</h2>
       </div>
-      <div class="gscore">
+      <div class="gscore hidden" id="gScore">
         <div class="g" id="gRating"></div>
         <div><div class="stars" id="gStars"></div><small id="gCount"></small></div>
       </div>
     </div>
-    <div class="rgrid" id="gReviews"></div>
+    <!-- Real Google reviews, shown as is until the live feed loads and replaces them -->
+    <div class="rgrid" id="gReviews">
+      <div class="rcard"><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><p>Working with Keith at Can’t Wait to Cre8 has been wonderful from start to finish. Our shirts came out perfectly and the turn around time was excellent. We will definitely be using Keith for all of our company apparel moving forward. 10/10, highly recommend!</p><div class="who"><div>Jen Cook<div class="src">Google review</div></div></div></div>
+      <div class="rcard"><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><p>Excellent quality and value for the price! It was a JOY working with Keith and I will gladly do again in the future!</p><div class="who"><div>Linda Maresca<div class="src">Google review</div></div></div></div>
+      <div class="rcard"><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><p>Great customer service. The product I received was exactly what I wanted.</p><div class="who"><div>Matt McManus<div class="src">Google review</div></div></div></div>
+    </div>
     <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap">
-      <a href="#" class="btn btn-ghost" id="readReviews" target="_top" rel="noopener noreferrer">Read All Reviews on Google</a>
+      <a href="https://g.page/r/CeCLkLzJXNIJEAE" class="btn btn-ghost" id="readReviews" target="_top" rel="noopener noreferrer">Read All Reviews on Google</a>
       <a href="#" class="btn btn-hot hidden" id="leaveReview" target="_top" rel="noopener noreferrer">Leave Us a Review</a>
     </div>
   </div>
