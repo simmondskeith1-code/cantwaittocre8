@@ -230,6 +230,9 @@ function cre8Live(form){
   function toggleGarment(){
     var on = Array.prototype.some.call(apparelBoxes, function(b){return b.checked;});
     garmentSection.classList.toggle('hidden', !on);
+    var app = document.querySelector('input[name="product[]"][value="Apparel"]'), shirts = !!(app && app.checked);
+    var sf = document.getElementById('sizeField'), os = document.getElementById('oneSize');
+    if(sf) sf.classList.toggle('hidden', on && !shirts); if(os) os.classList.toggle('hidden', !(on && !shirts));
     // Only show print locations that fit what was picked (no Hat Front on a shirts-only order)
     document.querySelectorAll('input[name="locations[]"][data-for]').forEach(function(l){
       var p = document.querySelector('input[name="product[]"][value="' + l.dataset.for + '"]'), show = !!(p && p.checked);
@@ -1217,7 +1220,7 @@ function cre8Live(form){
   var showcase = document.getElementById('showcase');
   if(showcase){
     var tabs = showcase.querySelectorAll('.wwd-tabs button'), scenes = showcase.querySelectorAll('.scene'), panels = showcase.querySelectorAll('.wwd-panel');
-    var swatchRow = document.getElementById('scSwatches'), current = 'apparel', auto = null, touched = false;
+    var swatchRow = document.getElementById('scSwatches') || document.createElement('div'), current = 'printing', auto = null, touched = false;
     var showScene = function(name){
       current = name;
       tabs.forEach(function(t){ var on = t.dataset.scene === name; t.classList.toggle('on', on); t.setAttribute('aria-selected', on ? 'true' : 'false'); });
@@ -1251,7 +1254,7 @@ function cre8Live(form){
         document.getElementById('scGarment').style.fill = b.style.background;
       });
     });
-    showScene('apparel');
+    showScene('printing');
     cleanups.push(function(){ clearInterval(auto); touched = true; if(typeof sio !== 'undefined' && sio) sio.disconnect(); });
     var names = Array.prototype.map.call(tabs, function(t){ return t.dataset.scene; });
     var startAuto = function(){

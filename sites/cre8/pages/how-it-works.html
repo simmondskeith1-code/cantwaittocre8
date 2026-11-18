@@ -111,7 +111,8 @@
               <label class="chip"><input type="checkbox" name="locations[]" value="Beanie Cuff" data-for="Beanies"><span>Beanie Cuff</span></label>
             </div>
           </div>
-          <div class="field">
+          <p class="hint hidden" id="oneSize">Hats and beanies are one size. Just tell us how many in quantity below.</p>
+          <div class="field" id="sizeField">
             <label>Size breakdown</label>
             <div class="sizes" id="sizes">
               <div class="field size-more"><label for="s-ys">Youth S</label><input type="number" min="0" id="s-ys" name="size_youth_s" placeholder="0"></div>
@@ -161,6 +162,21 @@
                   <label class="chip"><input type="radio" name="mk_type" value="beanie"><span>Beanie</span></label>
                 </div>
               </div>
+              <div class="field">
+                <label>Color: <span id="mockColorName">White</span></label>
+                <div class="swatches" id="mockColors" role="radiogroup" aria-label="Garment color"></div>
+                <small style="color:var(--muted);font-size:12px">Colors on screen are close, not exact. We confirm color and stock on your quote.</small>
+              </div>
+              <div class="field" id="mockPresetWrap">
+                <label>Quick placement</label>
+                <div class="chips" id="mockPresets"></div>
+              </div>
+              <div class="field" id="mockSizeWrap">
+                <label for="mockSize">Design width: <b id="mockSizeLabel"></b></label>
+                <input type="range" id="mockSize" min="1" max="12" step="0.25" value="10">
+              </div>
+              <details class="mock-more">
+                <summary>More options: brand, back side, which design</summary>
               <div class="field" id="mockBrandWrap">
                 <label>Brand: <span id="mockStyleName" style="font-weight:500;color:var(--muted)"></span></label>
                 <div class="seg seg-wrap" id="mockBrands">
@@ -169,11 +185,6 @@
                   <button type="button" data-brand="bella">Bella+Canvas</button>
                   <button type="button" data-brand="nextlevel">Next Level</button>
                 </div>
-              </div>
-              <div class="field">
-                <label>Color: <span id="mockColorName">White</span></label>
-                <div class="swatches" id="mockColors" role="radiogroup" aria-label="Garment color"></div>
-                <small style="color:var(--muted);font-size:12px">Colors on screen are close, not exact. We confirm color and stock on your quote.</small>
               </div>
               <div class="field">
                 <label>Side</label>
@@ -186,14 +197,7 @@
                 <label for="mockImage">Design on this side</label>
                 <select id="mockImage"></select>
               </div>
-              <div class="field" id="mockPresetWrap">
-                <label>Quick placement</label>
-                <div class="chips" id="mockPresets"></div>
-              </div>
-              <div class="field" id="mockSizeWrap">
-                <label for="mockSize">Design width: <b id="mockSizeLabel"></b></label>
-                <input type="range" id="mockSize" min="1" max="12" step="0.25" value="10">
-              </div>
+              </details>
               <p class="mock-readout" id="mockReadout"></p>
               <p class="hint" style="margin:0">Tip: a transparent PNG shows exactly what prints. A white box around your logo prints as a white box.</p>
             </div>
@@ -377,25 +381,13 @@
     <p class="sub reveal">Tap a service to see it in action. Every job gets a digital proof first. Nothing hits a press, a needle or a laser until you approve it.</p>
     <div class="wwd-box reveal" id="showcase">
       <div class="wwd-tabs" role="tablist" aria-label="Services">
-        <button type="button" role="tab" class="on" data-scene="apparel" aria-selected="true"><span>👕</span>Apparel</button>
-        <button type="button" role="tab" data-scene="printing" aria-selected="false"><span>🔥</span>Heat Press</button>
-        <button type="button" role="tab" data-scene="embroidery" aria-selected="false"><span>🧵</span>Embroidery</button>
-        <button type="button" role="tab" data-scene="laser" aria-selected="false"><span>✨</span>Laser Engraving</button>
-        <button type="button" role="tab" data-scene="color" aria-selected="false"><span>🎨</span>Full Color</button>
+        <button type="button" role="tab" class="on" data-scene="printing" aria-selected="true">Heat Press Printing</button>
+        <button type="button" role="tab" data-scene="embroidery" aria-selected="false">Embroidery</button>
+        <button type="button" role="tab" data-scene="laser" aria-selected="false">Laser Engraving</button>
+        <button type="button" role="tab" data-scene="color" aria-selected="false">Full Color Printing</button>
       </div>
       <div class="wwd-stage">
-        <svg class="scene play" data-scene="apparel" viewBox="0 0 400 260" role="img" aria-label="A custom t-shirt changing colors">
-          <rect class="sc-bg" x="0" y="0" width="400" height="260" rx="18"/>
-          <g class="sc-float">
-            <g transform="translate(100,22) scale(.5)">
-              <path id="scGarment" class="sc-garment" d="M152,42 Q200,78 248,42 L312,58 C330,66 352,92 374,124 L336,156 C326,146 312,138 302,134 C300,200 302,320 304,416 Q200,430 96,416 C98,320 100,200 98,134 C88,138 74,146 64,156 L26,124 C48,92 70,66 88,58 Z"/>
-              <path d="M152,42 Q200,78 248,42" fill="none" stroke="rgba(0,0,0,.18)" stroke-width="7" stroke-linecap="round"/>
-              <g class="sc-logo"><circle cx="200" cy="150" r="46" fill="url(#scGrad)"/><path d="M178,150 L196,168 L226,132" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></g>
-            </g>
-          </g>
-          <defs><linearGradient id="scGrad" x1="0" x2="1"><stop offset="0" stop-color="#ff3d7f"/><stop offset="1" stop-color="#ffb21e"/></linearGradient></defs>
-        </svg>
-        <svg class="scene" data-scene="printing" viewBox="0 0 400 260" role="img" aria-label="A heat press applying a transfer to a shirt">
+        <svg class="scene play show" data-scene="printing" viewBox="0 0 400 260" role="img" aria-label="A heat press applying a transfer to a shirt">
           <rect class="sc-bg" x="0" y="0" width="400" height="260" rx="18"/>
           <rect x="70" y="214" width="260" height="14" rx="4" fill="#3a3740"/>
           <g transform="translate(130,58) scale(.36)"><path fill="#fff" stroke="rgba(0,0,0,.18)" stroke-width="3" d="M152,42 Q200,78 248,42 L312,58 C330,66 352,92 374,124 L336,156 C326,146 312,138 302,134 C300,200 302,320 304,416 Q200,430 96,416 C98,320 100,200 98,134 C88,138 74,146 64,156 L26,124 C48,92 70,66 88,58 Z"/></g>
@@ -443,23 +435,9 @@
           <defs><linearGradient id="scSky" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff3d7f"/><stop offset=".5" stop-color="#ffb21e"/><stop offset="1" stop-color="#16c3d9"/></linearGradient></defs>
           <text class="sc-label" x="200" y="236" text-anchor="middle">Unlimited colors, gradients and photo detail</text>
         </svg>
-        <div class="sc-controls" id="scSwatches" aria-label="Try a shirt color">
-          <button type="button" style="background:#ffffff" aria-label="White"></button>
-          <button type="button" style="background:#141416" aria-label="Black"></button>
-          <button type="button" style="background:#2f55b5" aria-label="Royal"></button>
-          <button type="button" style="background:#c4222f" aria-label="Red"></button>
-          <button type="button" style="background:#5a5b3d" aria-label="Army"></button>
-          <button type="button" style="background:#f1ead8" aria-label="Natural"></button>
-        </div>
       </div>
       <div class="wwd-info">
-        <div class="wwd-panel on" data-scene="apparel">
-          <h3>Apparel</h3>
-          <p>Shirts, hoodies, crewnecks, tanks and hats in the brands you already know: AS Colour, Gildan, Bella+Canvas and Next Level. Tap a color under the shirt to try it.</p>
-          <ul><li>Business and brand merch</li><li>Teams, schools and churches</li><li>Family reunions and events</li></ul>
-          <a class="btn btn-hot" href="{{BASE}}/how-it-works?make=shirts#create" data-make="shirts">Start an Apparel Order</a>
-        </div>
-        <div class="wwd-panel" data-scene="printing">
+        <div class="wwd-panel on" data-scene="printing">
           <h3>Heat Press Printing</h3>
           <p>Your design is printed onto a transfer, then heat pressed into the garment. Bright, soft and made to survive the wash.</p>
           <ul><li>Any fabric color, light or dark</li><li>One shirt or a full run</li><li>Front, back, sleeves and neck</li></ul>
