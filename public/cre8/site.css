@@ -576,3 +576,4 @@ html.v-lock{overflow:hidden}
 .viewer .v-prev[hidden],.viewer .v-next[hidden],.viewer .v-count[hidden]{display:none}
 /* Phones: a lighter hero so the button and the mockup show sooner */
 @media(max-width:600px){.hero .bs-runner{display:none}.hero .brand-stage{margin-bottom:18px}.badge.b-more{display:none}.badges{margin-top:24px}}
+@media(max-width:600px){.make-grid>.make-tile:last-child:nth-child(odd){grid-column:1/-1}}
