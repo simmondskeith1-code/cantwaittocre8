@@ -658,10 +658,13 @@ body[data-page="contact"] main + .cta{display:none}
 .sizes .size-more{display:none}
 .sizes.show-all .size-more{display:block}
 #siteDraftNote button,#cDraftNote button{background:none;border:0;font-weight:700;text-decoration:underline;cursor:pointer;color:var(--ink);padding:0 4px;min-height:32px}
-@media(max-width:900px){.b-total .b-head #btPkgName,.b-total .bt-local,.b-total .bt-how{display:none}.b-total{padding:10px 14px}.b-total{flex-wrap:wrap!important;row-gap:4px}.b-total .b-head{flex:0 0 100%;margin:0;justify-content:flex-end}.b-total .b-reset{padding:0 4px;min-height:28px;font-size:12px}}
+@media(max-width:900px){.b-total .b-head #btPkgName,.b-total .bt-how{display:none}.b-total{padding:10px 14px}.b-total{flex-wrap:wrap!important;row-gap:4px}.b-total .b-head{flex:0 0 100%;margin:0;justify-content:flex-end}.b-total .b-reset{padding:0 4px;min-height:28px;font-size:12px}}
 @media(max-width:900px){.b-total .bs-long{display:none}.b-total .bt-row.big span{font-size:12px}.b-total .bt-row.big b{font-size:22px;line-height:1.1}.b-total .btn{padding:12px 14px;font-size:15px}}
 .b-actions{display:flex;gap:12px}
 .b-total .btn{text-align:center;line-height:1.25}
 @media(max-width:900px){.b-total .btn{white-space:nowrap}}
 #reqCount{position:sticky;top:76px;z-index:4;background:var(--card);padding:8px 0;margin:0 0 10px;border-bottom:1px solid var(--line)}
 @media(max-width:900px){.b-total{position:sticky}.b-total .bt-m{font-size:12px}}
+.b-total .btn{display:block}
+.bt-undo{font-size:12.5px;color:#ffd27a;margin:8px 0 0}
+@media(max-width:900px){.b-total .bt-local,.b-total .bt-undo{flex:0 0 100%;margin:0;font-size:12px}}

@@ -1368,7 +1368,7 @@ function cre8Live(form){
       var before = null; try{ before = localStorage.getItem(BKEY); }catch(_){}
       setTimeout(function(){
         var ln = document.getElementById('btLocalNote'); if(!before || !ln) return;
-        var u = document.getElementById('bUndo'); if(!u){ u = document.createElement('p'); u.id = 'bUndo'; u.className = 'bt-local'; ln.parentNode.insertBefore(u, ln); }
+        var u = document.getElementById('bUndo'); if(!u){ u = document.createElement('p'); u.id = 'bUndo'; u.className = 'bt-undo'; ln.parentNode.insertBefore(u, ln); }
         u.textContent = 'Builder reset. '; var b = document.createElement('button'); b.type = 'button'; b.className = 'b-reset'; b.textContent = 'Undo';
         b.addEventListener('click', function(){ try{ localStorage.setItem(BKEY, before); history.replaceState(null, '', location.pathname + '#build'); }catch(_){} location.reload(); }); u.appendChild(b); u.classList.remove('hidden');
         setTimeout(function(){ builder.addEventListener('change', function hideB(){ u.classList.add('hidden'); builder.removeEventListener('change', hideB); }); }, 0);
