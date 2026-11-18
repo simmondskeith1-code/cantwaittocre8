@@ -1,7 +1,8 @@
 /* Inline form validation shared by every Cre8 form: a message under each problem field,
    aria-invalid, a summary line, and focus on the first problem. */
 function cre8FieldMsg(el){
-  if(el.validity.valueMissing) return el.type === 'checkbox' ? 'Please check this box to continue.' : 'This one is required.';
+  var named = { idea: 'Tell us what you want made.', qty: 'Add how many pieces you need.', quantity: 'Add how many pieces you need.', name: 'Add your name.', email: 'Add an email so we can send your mockup.', message: 'Add a short message.', goals: 'Tell us a little about what the site needs to do.', business: 'Add your business name.' };
+  if(el.validity.valueMissing) return el.type === 'checkbox' ? 'Please check this box to continue.' : (named[el.name] || 'This one is required.');
   if(el.validity.typeMismatch && el.type === 'email') return 'Enter an email like name@example.com.';
   if(el.validity.rangeUnderflow) return 'Pick a later date.';
   return el.validationMessage;
@@ -946,7 +947,7 @@ function cre8Live(form){
       })
       .catch(function(err){
         note(document.getElementById('sendError'), err.message + ' Please try again, or call or text 732-720-9211.');
-        btn.disabled = false; btn.textContent = 'Send My Idea';
+        btn.disabled = false; btn.textContent = 'Send for My Free Mockup';
         status.textContent = 'We reply with a mockup and quote, usually within 1 business day.';
       });
   });
