@@ -519,3 +519,21 @@ html.demo #main{padding-bottom:70vh}
 @keyframes bsFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media(max-width:600px){.hero{padding-top:28px}.brand-stage{gap:12px;margin-bottom:26px;min-height:0}.bs-runner,.bs-runner img{width:66px}.hero .bs-tag{font-size:13px;margin-top:6px}}
 @media(prefers-reduced-motion:reduce){.bs-runner,.bs-runner img,.bs-speed,.bs-name [style],.bs-name::after,.bs-tag{animation:none!important}.bs-speed,.bs-name::after{display:none}}
+
+/* Website design, kept to one quiet line on the home page so printing leads */
+.web-note{padding:8px 0 56px}
+.web-note p{margin:0 auto;max-width:720px;text-align:center;color:var(--muted);font-size:16px;line-height:1.6}
+.web-note b{color:var(--ink)}
+.web-note a{color:var(--hot-text);font-weight:700;text-underline-offset:3px;white-space:nowrap}
+/* Phone contact bar: text, call and order within thumb reach */
+.m-bar{display:none}
+@media(max-width:600px){
+  .m-bar{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:8px;position:fixed;top:auto;left:0;right:0;bottom:0;backdrop-filter:none;z-index:60;padding:10px 12px max(10px,env(safe-area-inset-bottom));background:rgba(251,248,243,.96);border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(17,16,20,.08)}
+  .m-bar a{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;color:var(--ink);border:2px solid var(--ink)}
+  .m-bar .m-start{background:var(--grad);border-color:transparent}
+  body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+  body[data-page="how-it-works"] .m-bar{grid-template-columns:1fr 1fr}
+  body[data-page="how-it-works"] .m-bar .m-start{display:none}
+  body[data-page="websites"] .m-bar{display:none}
+  body[data-page="websites"]{padding-bottom:0}
+}
