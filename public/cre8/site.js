@@ -260,7 +260,14 @@ function cre8Live(form){
     document.getElementById('otherGarmentWrap').classList.toggle('hidden', garment.value !== 'Other');
   });
 
-  /* Size total syncs to quantity */
+  /* Size total syncs to quantity; warn if someone edits quantity so they no longer match */
+  function qtyCheck(){
+    var t = 0; document.querySelectorAll('#sizes input').forEach(function(s){ t += parseInt(s.value,10) || 0; });
+    var q = parseInt(document.getElementById('qty').value, 10) || 0, n = document.getElementById('qtyNote');
+    if(!n){ n = document.createElement('p'); n.id = 'qtyNote'; n.className = 'field-err'; n.setAttribute('role', 'status'); document.getElementById('qty').closest('.field').appendChild(n); }
+    var off = t > 0 && q !== t; n.textContent = off ? 'Your sizes add up to ' + t + ', but quantity says ' + q + '. Update one so they match.' : ''; n.classList.toggle('hidden', !off);
+  }
+  document.getElementById('qty').addEventListener('input', qtyCheck);
   var sizeInputs = document.querySelectorAll('#sizes input');
   var qty = document.getElementById('qty');
   sizeInputs.forEach(function(i){
@@ -268,6 +275,7 @@ function cre8Live(form){
       var t = 0; sizeInputs.forEach(function(s){ t += parseInt(s.value,10) || 0; });
       document.getElementById('sizeTotal').textContent = t;
       if(t > 0) qty.value = t;
+      qtyCheck();
       checkTiming();
     });
   });
@@ -896,9 +904,27 @@ function cre8Live(form){
     });
     try{ localStorage.setItem(DKEY, JSON.stringify(d)); }catch(_){}
   }
+  function clearOrder(){
+    try{ localStorage.removeItem(DKEY); }catch(_){}
+    form.reset();
+    form.querySelectorAll('input[type=checkbox],input[type=radio]').forEach(function(el){ el.dispatchEvent(new Event('change', {bubbles:true})); });
+    form.querySelectorAll('[aria-invalid]').forEach(function(el){ cre8Mark(el); });
+    var dn = document.getElementById('draftNote'); if(dn) dn.classList.add('hidden');
+    try{ localStorage.removeItem(DKEY); }catch(_){}
+    window.scrollTo({ top: document.getElementById('create').offsetTop - 80, behavior: 'smooth' });
+  }
+  document.getElementById('orderReset').addEventListener('click', clearOrder);
+  /* Same phone rule as the contact page: Text or Call needs a number */
+  (function(){
+    var ph = document.getElementById('phone'); if(!ph) return;
+    var rule = function(){ var p = form.querySelector('input[name=contact_preference]:checked'); ph.required = !!(p && p.value !== 'Email'); var l = ph.closest('.field').querySelector('label'); if(l) l.innerHTML = ph.required ? 'Phone <span class="req">*</span>' : 'Phone'; if(!ph.required) cre8Mark(ph); };
+    form.querySelectorAll('input[name=contact_preference]').forEach(function(x){ x.addEventListener('change', rule); }); rule();
+  })();
   (function restoreDraft(){
     var d; try{ d = JSON.parse(localStorage.getItem(DKEY) || 'null'); }catch(_){}
     if(!d || location.search.indexOf('make=') > -1) return;
+    var any = Object.keys(d).some(function(k){ return k !== 'contact_preference' && k !== 'finish' && k !== 'delivery'; });
+    if(any){ var dn = document.getElementById('draftNote'); if(dn){ dn.textContent = 'We restored your unsent request. '; var cb = document.createElement('button'); cb.type = 'button'; cb.textContent = 'Clear it'; cb.addEventListener('click', clearOrder); dn.appendChild(cb); dn.classList.remove('hidden'); } }
     form.querySelectorAll('input,select,textarea').forEach(function(el){
       if(!(el.name in d) || el.type === 'file') return;
       if(el.type === 'checkbox' || el.type === 'radio'){ var on = d[el.name].indexOf(el.value) > -1; if(on !== el.checked){ el.checked = on; el.dispatchEvent(new Event('change', {bubbles:true})); } }
@@ -1222,11 +1248,13 @@ function cre8Live(form){
       bump('btSetup', (pkg.value === 'signature' ? 'from ' : '') + money(setup));
       bump('btAdds', money(addSum));
       bump('btUpfront', (pkg.value === 'signature' ? 'from ' : '') + money(up));
-      bump('btCare', hasLocal ? 'Local Search, from ' + money(mo) + '/mo' : mo ? money(mo) + '/mo' : 'None');
+      bump('btCare', hasLocal ? 'from ' + money(mo) + '/mo' : mo ? money(mo) + '/mo' : 'None');
       var cm = document.getElementById('btCareM'); if(cm) cm.textContent = (hasLocal ? '+ from ' + money(mo) + '/mo Local Search' : mo ? '+ ' + money(mo) + '/mo care' : 'No care plan') + ', first year ' + money(up + mo * 11);
       var note = document.getElementById('btNote');
       if(note) note.lastChild.textContent = mo ? '), 50% at launch. First month of care is free. Hosting and domain are in your name and billed to you directly by those providers.' : '), 50% at launch. No care plan: upkeep is yours after launch, and later fixes or edits are $85/hour, 1 hour minimum. Hosting and domain are in your name and billed to you directly.';
-      bump('btYear', money(up + mo * 11));
+      var fromY = (hasLocal || pkg.value === 'signature') ? 'from ' : '';
+      bump('btYear', fromY + money(up + mo * 11));
+      var pn = document.getElementById('btPkgName'); if(pn) pn.textContent = pkg.dataset.label + ' + ' + (hasLocal ? 'Local Search' : care.dataset.label);
       bump('btDeposit', money(up / 2));
       var stdYear = Number(pkg.dataset.standard) + addStd + (hasLocal ? mo : Number(care.dataset.standard)) * 11;
       bump('btSave', money(stdYear - (up + mo * 11)));
@@ -1248,7 +1276,10 @@ function cre8Live(form){
       extraPages = d.pages || 0; var bl = document.getElementById('bLocal'); if(bl) bl.checked = !!d.local;
     })();
     builder.addEventListener('change', function(e){
-      if(e.target.id === 'bLocal' && e.target.checked){ var g = builder.querySelector('input[name=b_care][value=growth]'); if(g) g.checked = true; }
+      if(e.target.id === 'bLocal'){
+        if(e.target.checked){ var cur = pick('b_care'); builder.dataset.prevCare = cur ? cur.value : 'essential'; var g = builder.querySelector('input[name=b_care][value=growth]'); if(g) g.checked = true; }
+        else if(builder.dataset.prevCare){ var pc = builder.querySelector('input[name=b_care][value=' + builder.dataset.prevCare + ']'); if(pc) pc.checked = true; }
+      }
       calc(); saveB();
     });
     document.getElementById('bReset').addEventListener('click', function(){
@@ -1274,6 +1305,9 @@ function cre8Live(form){
   if(sform){
     var serr = document.getElementById('s_error');
     cre8Live(sform);
+    var SKEY = 'cre8-site-draft', sids = ['s_name', 's_email', 's_phone', 's_biz', 's_current', 's_msg'].filter(function(id){ return document.getElementById(id); });
+    try{ var sd = JSON.parse(localStorage.getItem(SKEY) || 'null'); if(sd) sids.forEach(function(id){ if(sd[id]) document.getElementById(id).value = sd[id]; }); }catch(_){}
+    sform.addEventListener('input', function(){ var d = {}; sids.forEach(function(id){ d[id] = document.getElementById(id).value; }); try{ localStorage.setItem(SKEY, JSON.stringify(d)); }catch(_){} });
     sform.addEventListener('submit', function(e){
       e.preventDefault();
       if(!cre8Validate(sform, serr)) return;
@@ -1284,8 +1318,8 @@ function cre8Live(form){
       var body = { name: g('name'), email: g('email'), phone: g('phone'), topic: 'Website / Brand Launch', contact_preference: '', message: message, website: g('website') };
       fetch(API + '/api/cre8/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
         .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if(!r.ok) throw new Error(j.message || 'Could not send right now.'); return j; }); })
-        .then(function(){ sform.classList.add('hidden'); document.getElementById('s_success').classList.remove('hidden'); })
-        .catch(function(err){ serr.textContent = err.message + ' You can also call or text 732-720-9211.'; serr.classList.remove('hidden'); btn.disabled = false; btn.textContent = 'Request My Discovery Call'; });
+        .then(function(){ try{ localStorage.removeItem('cre8-site-draft'); }catch(_){} sform.classList.add('hidden'); document.getElementById('s_success').classList.remove('hidden'); })
+        .catch(function(err){ serr.textContent = err.message + ' You can also call or text 732-720-9211.'; serr.classList.remove('hidden'); btn.disabled = false; btn.textContent = 'Book a Discovery Call'; });
     });
   }
 
