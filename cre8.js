@@ -30,7 +30,7 @@ const NOTIFY = () => String(process.env.CRE8_NOTIFY || 'ksimmonds@cantwaittocre8
 const FROM = () => process.env.CRE8_FROM || "Can't Wait to Cre8 <ksimmonds@cantwaittocre8.com>";
 const FALLBACK_FROM = () => process.env.BOOKING_FROM || process.env.AUTH_FROM || '';
 const REPLY_TO = () => process.env.CRE8_REPLY_TO || NOTIFY();
-const ADMIN_URL = () => process.env.CRE8_ADMIN_URL || 'https://hq.cantwaittocre8.com/';
+const ADMIN_URL = () => process.env.CRE8_ADMIN_URL || 'https://live-above-scorecard.onrender.com/admin.html#cre8';
 
 let ready = null;
 function ensureTables(pool) {
@@ -93,7 +93,7 @@ function parseDetails(b) {
   return {
     idea: text(b.idea, 4000),
     occasion: line(b.occasion, 60),
-    products: list(b.product, 12),
+    products: list(b.product, 16),
     method: line(b.method, 60),
     garment: line(b.garment, 120),
     garment_other: line(b.garment_other, 160),
@@ -106,6 +106,7 @@ function parseDetails(b) {
     contact_preference: line(b.contact_preference, 20),
     referral: line(b.referral, 60),
     own_item: line(b.own_item, 200), // customer's own product to brand
+    phone_model: line(b.phone_model, 80), // phone case orders: which phone
     finish: b.finish === 'Raised texture' ? 'Raised texture' : (b.finish ? 'Flat' : ''), // print finish
     // From the mockup tool on the site: garment, color and the design's size and position per side (in inches)
     mockup_garment: line(b.mockup_garment, 40),
@@ -127,7 +128,7 @@ function summaryRows(q) {
   return [
     ['Name', q.name], ['Business or group', q.organization], ['Email', q.email], ['Phone', q.phone],
     ['Best way to reach', d.contact_preference], ['For', d.occasion], ['Products', (d.products || []).join(', ')],
-    ['Method', d.method], ['Print finish', d.finish], ['Their own item', d.own_item], ['Garment', garment], ['Garment color', d.garment_color],
+    ['Method', d.method], ['Print finish', d.finish], ['Their own item', d.own_item], ['Phone model', d.phone_model], ['Garment', garment], ['Garment color', d.garment_color],
     ['Print locations', (d.locations || []).join(', ')], ['Sizes', sizes], ['Quantity', q.quantity],
     ['Need by', q.need_by ? new Date(q.need_by).toISOString().slice(0, 10) : ''], ['Budget', d.budget],
     ['Pickup or ship', d.delivery], ['Design status', d.design_status], ['Heard about us', d.referral],

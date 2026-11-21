@@ -259,6 +259,8 @@ function cre8Live(form){
   /* Bring your own item: ask what it is. Print finish (flat or raised texture) shows for printing */
   function toggleExtras(){
     var own = document.querySelector('input[name="product[]"][value="Your Own Item"]');
+    var pc = document.querySelector('input[name="product[]"][value="Phone Cases"]'), pmw = document.getElementById('phoneModelWrap');
+    if(pmw){ pmw.classList.toggle('hidden', !(pc && pc.checked)); if(!(pc && pc.checked)) document.getElementById('phoneModel').value = ''; }
     var ow = document.getElementById('ownItemWrap'); if(ow){ ow.classList.toggle('hidden', !(own && own.checked)); if(!(own && own.checked)) document.getElementById('ownItem').value = ''; }
     var m = document.querySelector('input[name=method]:checked'), fw = document.getElementById('finishWrap');
     if(fw){ var show = !!(m && (m.value === 'Full Color Print' || m.value === 'Not sure, recommend one')); fw.classList.toggle('hidden', !show);
@@ -918,7 +920,7 @@ function cre8Live(form){
   }
   form.addEventListener('input', reqCount); form.addEventListener('change', reqCount); setTimeout(reqCount, 0);
   /* Price guide shows the prices for what was picked */
-  var PRICES = { 'Apparel': 'shirts from $12, hoodies from $25', 'Hats': 'hats from $17', 'Beanies': 'beanies from $17', 'Tumblers / Drinkware': 'mugs from $10, tumblers from $14', 'Journals / Notebooks': 'journals from $21', 'Wood (signs, puzzles, plaques)': 'wood from $23', 'Stickers / Decals': 'stickers 25 for $22' };
+  var PRICES = { 'Apparel': 'shirts from $12, hoodies from $25', 'Hats': 'hats from $17', 'Beanies': 'beanies from $17', 'Tumblers / Drinkware': 'mugs from $10, tumblers from $14', 'Journals / Notebooks': 'journals from $21', 'Wood (signs, puzzles, plaques)': 'wood from $23', 'Stickers / Decals': 'stickers 25 for $22', 'Phone Cases': 'phone cases from $25' };
   function priceGuide(){
     var pg = document.getElementById('priceGuide'); if(!pg) return;
     var picked = Array.prototype.filter.call(form.querySelectorAll('input[name="product[]"]:checked'), function(b){ return PRICES[b.value]; }).map(function(b){ return PRICES[b.value]; });
@@ -1039,7 +1041,7 @@ function cre8Live(form){
 
     /* Deep links: /how-it-works?make=hats&method=Embroidery#create preselects the order */
     var MAKE = { shirts: ['Apparel', 'tee'], hoodies: ['Apparel', 'hoodie'], hats: ['Hats', 'hat'], beanies: ['Beanies', 'beanie'], tumblers: ['Tumblers / Drinkware'], mugs: ['Tumblers / Drinkware'],
-      wood: ['Wood (signs, puzzles, plaques)'], stickers: ['Stickers / Decals'], signs: ['Signs / Banners'], journals: ['Journals / Notebooks'], own: ['Your Own Item'] };
+      wood: ['Wood (signs, puzzles, plaques)'], stickers: ['Stickers / Decals'], signs: ['Signs / Banners'], journals: ['Journals / Notebooks'], phonecases: ['Phone Cases'], own: ['Your Own Item'] };
     window.cre8Preselect = function(make, method){
       var m = MAKE[make];
       var lab = m && document.querySelector('input[name="product[]"][value="' + m[0] + '"]');
