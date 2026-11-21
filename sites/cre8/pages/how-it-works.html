@@ -50,6 +50,11 @@
             <label for="phoneModel">Which phone is it for?</label>
             <input type="text" id="phoneModel" name="phone_model" maxlength="80" placeholder="Example: iPhone 16 Pro, Galaxy S25">
             <p class="hint">Tell us the exact model so the case fits. Ordering for a group? List each model in your idea above.</p>
+            <label style="margin-top:10px">Case style</label>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="phone_case_style" value="2D flat print" checked><span>2D flat print, $30</span></label>
+              <label class="chip"><input type="radio" name="phone_case_style" value="3D raised texture"><span>3D raised texture, $65</span></label>
+            </div>
           </div>
           <div class="field hidden" id="ownItemWrap" style="margin-top:12px">
             <label for="ownItem">What are you bringing in?</label>
