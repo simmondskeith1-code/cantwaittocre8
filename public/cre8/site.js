@@ -314,6 +314,53 @@ function cre8Live(form){
      More than 5: no promise on the page, the quote sets the date. */
   var SMALL_ORDER = 5;
   var rushNote = document.getElementById('rushNote');
+  /* Shipping: address fields when "Ship it to me", checked with USPS, plus an estimated USPS rate */
+  (function(){
+    var del = document.getElementById('delivery'), box = document.getElementById('shipBox'); if(!del || !box) return;
+    var F = ['shipLine1', 'shipLine2', 'shipCity', 'shipState', 'shipZip'].map(function(id){ return document.getElementById(id); });
+    var note = document.getElementById('shipNote'), lastKey = '', estKey = '', estTimer = null, statusText = '', estText = '', bad = false;
+    function shipping(){ return del.value === 'Ship it to me'; }
+    function addr(){ return { ship_line1: F[0].value.trim(), ship_line2: F[1].value.trim(), ship_city: F[2].value.trim(), ship_state: F[3].value, ship_zip: F[4].value.trim() }; }
+    function complete(a){ return a.ship_line1 && a.ship_city && /^[A-Z]{2}$/.test(a.ship_state) && /^\d{5}(-\d{4})?$/.test(a.ship_zip); }
+    function render(){ note.textContent = bad ? statusText : [statusText, estText].filter(Boolean).join(' '); note.classList.toggle('bad', bad); }
+    function say(t, isBad){ statusText = t; bad = !!isBad; render(); }
+    function toggle(){
+      var on = shipping(); box.classList.toggle('hidden', !on);
+      F.forEach(function(el, i){ el.disabled = !on; el.required = on && i !== 1; if(!on){ el.setCustomValidity(''); if(window.cre8Mark) cre8Mark(el); } });
+      if(on) estimate();
+    }
+    function check(){
+      var a = addr(); if(!shipping() || !complete(a)) return;
+      var k = JSON.stringify(a); if(k === lastKey) return; lastKey = k;
+      fetch(API + '/api/cre8/address/check', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: k }).then(function(r){ return r.json(); }).then(function(d){
+        if(!d) return;
+        if(!d.ok){ F[0].setCustomValidity(d.message || 'USPS could not find that address.'); cre8Mark(F[0]); say(d.message || 'USPS could not find that address.', true); lastKey = ''; return; }
+        F[0].setCustomValidity(''); cre8Mark(F[0]);
+        if(d.address && d.changed){ F[0].value = d.address.line1 || F[0].value; F[1].value = d.address.line2 || ''; F[2].value = d.address.city || F[2].value; F[3].value = d.address.state || F[3].value; F[4].value = d.address.zip || F[4].value; lastKey = JSON.stringify(addr()); }
+        if(!d.unchecked) say((d.changed ? 'Updated to the USPS format so it delivers cleanly.' : 'Address confirmed by USPS.') + (d.unitUnconfirmed ? ' Double-check the apartment or suite number.' : ''));
+        estimate();
+      }).catch(function(){ lastKey = ''; });
+    }
+    function estimate(){
+      clearTimeout(estTimer);
+      estTimer = setTimeout(function(){
+        var zip = F[4].value.trim().slice(0, 5); if(!shipping() || !/^\d{5}$/.test(zip)) return;
+        var products = Array.prototype.map.call(document.querySelectorAll('input[name="product[]"]:checked'), function(b){ return b.value; });
+        var g = document.getElementById('garment'), body = { zip: zip, products: products, quantity: document.getElementById('qty').value, garment: g ? g.value : '' };
+        var k = JSON.stringify(body); if(k === estKey) return; estKey = k;
+        fetch(API + '/api/cre8/shipping/estimate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: k }).then(function(r){ return r.json(); }).then(function(d){
+          estText = d && d.cents != null ? 'Estimated shipping: $' + (d.cents / 100).toFixed(2) + ' with USPS Ground Advantage. We confirm it on your quote.' : 'We confirm shipping on your quote.';
+          render();
+        }).catch(function(){ estKey = ''; });
+      }, 400);
+    }
+    del.addEventListener('change', toggle);
+    F.forEach(function(el){ el.addEventListener('blur', check); el.addEventListener('input', function(){ if(el === F[0] || el === F[2] || el === F[4]){ F[0].setCustomValidity(''); if(bad){ bad = false; statusText = ''; render(); } } if(el === F[4]) estimate(); }); });
+    F[3].addEventListener('change', check);
+    document.getElementById('orderForm').addEventListener('change', function(e){ if(e.target.name === 'product[]' || e.target.id === 'garment') estimate(); });
+    document.getElementById('qty').addEventListener('input', estimate);
+    setTimeout(toggle, 0);
+  })();
   function checkTiming(){
     var n = parseInt(qty.value, 10) || 0;
     if(!needBy.value){ rushNote.classList.add('hidden'); return; }

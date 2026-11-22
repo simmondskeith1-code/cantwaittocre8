@@ -65,6 +65,13 @@ else if(!/[?&]standalone=1/.test(location.search)){location.replace(/^hq\./.test
   <div id="app" hidden>
     <div class="stats" id="stats"></div>
     <div class="clear" id="clearBox"></div>
+    <div class="card" id="shipTool"><div class="name">Shipping rate (USPS Ground Advantage)</div>
+      <p class="dim" style="margin:2px 0 0">Weigh the packed order, enter the box size, and get the exact price to put on the invoice.</p>
+      <div class="row"><input id="stZip" inputmode="numeric" maxlength="10" placeholder="Ship-to ZIP" aria-label="Ship-to ZIP" style="flex:1 1 110px">
+        <input id="stLb" inputmode="decimal" placeholder="Weight (lb)" aria-label="Weight in pounds" style="flex:1 1 110px">
+        <input id="stL" inputmode="decimal" placeholder="L in" aria-label="Length in inches" style="flex:1 1 70px"><input id="stW" inputmode="decimal" placeholder="W in" aria-label="Width in inches" style="flex:1 1 70px"><input id="stH" inputmode="decimal" placeholder="H in" aria-label="Height in inches" style="flex:1 1 70px">
+        <button id="stGo">Get Rate</button></div>
+      <p id="stOut" class="dim" role="status" style="margin:10px 0 0"></p></div>
     <div class="filters" id="filters"></div>
     <div class="row"><input type="text" id="q" placeholder="Search name, email, business"><button class="ghost" id="refresh">Refresh</button></div>
     <div id="list"></div>
@@ -107,11 +114,12 @@ else if(!/[?&]standalone=1/.test(location.search)){location.replace(/^hq\./.test
       '<div class="idea">' + esc(d.idea) + '</div><div class="grid">' +
       field('Quantity', q.quantity) + field('Need by', need) + field('For', d.occasion) + field('Products', (d.products || []).join(', ')) + field('Method', d.method) +
       field('Garment', garment) + field('Color', d.garment_color) + field('Locations', (d.locations || []).join(', ')) + field('Sizes', sizes) +
-      field('Design', d.design_status) + field('Budget', d.budget) + field('Delivery', d.delivery) + field('Heard via', d.referral) +
+      field('Design', d.design_status) + field('Budget', d.budget) + field('Delivery', d.delivery) + field('Ship to', d.ship_to ? [d.ship_to.line1, d.ship_to.line2, d.ship_to.city + ', ' + d.ship_to.state + ' ' + d.ship_to.zip].filter(Boolean).join(', ') + (d.ship_to.checked ? ' (USPS checked)' : '') : '') +
+      field('Shipping estimate', d.ship_estimate_cents != null ? '$' + (d.ship_estimate_cents / 100).toFixed(2) + (d.ship_lb ? ' for about ' + d.ship_lb + ' lb' : '') : '') + field('Heard via', d.referral) +
       field('Mockup', [d.mockup_color, d.mockup_garment].filter(Boolean).join(' ')) + field('Mockup front', d.mockup_front) + field('Mockup back', d.mockup_back) + field('Print finish', d.finish) + field('Their own item', d.own_item) + field('Engraving item', d.engrave_item) + field('Engraving text', d.engrave_text) + field('Engraving font', d.engrave_font) + field('Engraving placement', d.engrave_design) + '</div>' +
       (files ? '<div class="files">' + files + '</div>' : '<div class="dim" style="margin-top:10px">No files uploaded.</div>') +
       '<div class="edit"><select data-status>' + opts + '</select><textarea data-notes placeholder="Private notes: price quoted, proof sent, payment...">' + esc(q.notes) + '</textarea></div>' +
-      '<div class="actions"><button data-save>Save</button><button class="ghost" data-del>Delete</button></div></div>';
+      '<div class="actions"><button data-save>Save</button>' + (d.ship_to ? '<button class="ghost" data-ship="' + esc(d.ship_to.zip) + '" data-lb="' + esc(d.ship_lb || '') + '">Price Shipping</button>' : '') + '<button class="ghost" data-del>Delete</button></div></div>';
   }
   function draw() {
     var all = DATA.quotes, term = $('#q').value.trim().toLowerCase();
@@ -158,6 +166,17 @@ else if(!/[?&]standalone=1/.test(location.search)){location.replace(/^hq\./.test
       .then(function (d) { loadMsgs(); DATA = d; try { sessionStorage.setItem('la_cre8_admin', KEY); } catch (e) {} $('#login').hidden = true; $('#app').hidden = false; draw(); })
       .catch(function (e) { flash(e.message); });
   }
+  /* Shipping rate tool */
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-ship]'); if (!b) return;
+    $('#stZip').value = b.getAttribute('data-ship'); $('#stLb').value = b.getAttribute('data-lb') || ''; $('#shipTool').scrollIntoView({ behavior: 'smooth', block: 'start' }); $('#stLb').focus();
+  });
+  $('#stGo').addEventListener('click', function () {
+    var out = $('#stOut'); out.textContent = 'Checking USPS...';
+    api('/api/admin/cre8/shipping/rate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ zip: $('#stZip').value.trim(), lb: $('#stLb').value, l: $('#stL').value, w: $('#stW').value, h: $('#stH').value }) })
+      .then(function (r) { return r.json(); }).then(function (d) { out.textContent = d.cents != null ? 'USPS Ground Advantage: $' + (d.cents / 100).toFixed(2) : (d.message || 'No price returned.'); })
+      .catch(function (err) { out.textContent = err.message === 'Request failed' ? 'Add a ZIP and a weight in pounds.' : err.message; });
+  });
   document.addEventListener('click', function (e) {
     var t = e.target.closest('[data-f],[data-save],[data-del],[data-file]'); if (!t) return;
     if (t.dataset.f) { FILTER = t.dataset.f; draw(); return; }

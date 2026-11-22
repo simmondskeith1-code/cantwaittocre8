@@ -20,6 +20,7 @@
 //   CRE8_REPLY_TO, CRE8_ADMIN_URL.
 const express = require('express');
 const crypto = require('crypto');
+const ship = require('./cre8ship');
 
 const MAX_FILE = 10 * 1024 * 1024, MAX_FILES = 10, MAX_TOTAL = 60 * 1024 * 1024;
 const ATTACH_LIMIT = 15 * 1024 * 1024; // attach files to the shop alert only if they fit comfortably under Resend's limit
@@ -132,7 +133,9 @@ function summaryRows(q) {
     ['Method', d.method], ['Print finish', d.finish], ['Their own item', d.own_item], ['Phone model', d.phone_model], ['Case style', d.phone_case_style], ['Garment', garment], ['Garment color', d.garment_color],
     ['Print locations', (d.locations || []).join(', ')], ['Sizes', sizes], ['Quantity', q.quantity],
     ['Need by', q.need_by ? new Date(q.need_by).toISOString().slice(0, 10) : ''], ['Budget', d.budget],
-    ['Pickup or ship', d.delivery], ['Design status', d.design_status], ['Heard about us', d.referral],
+    ['Pickup or ship', d.delivery],
+    ['Ship to', d.ship_to ? [d.ship_to.line1, d.ship_to.line2, d.ship_to.city + ', ' + d.ship_to.state + ' ' + d.ship_to.zip].filter(Boolean).join(', ') + (d.ship_to.checked ? ' (checked with USPS)' : '') : ''],
+    ['Shipping estimate', d.ship_estimate_cents != null ? '$' + (d.ship_estimate_cents / 100).toFixed(2) + ' USPS Ground Advantage' + (d.ship_packages > 1 ? ', ' + d.ship_packages + ' boxes' : '') + (d.ship_lb ? ', about ' + d.ship_lb + ' lb' : '') + ' (estimate; check the real weight before invoicing)' : ''], ['Design status', d.design_status], ['Heard about us', d.referral],
     ['Mockup', [d.mockup_color, d.mockup_garment].filter(Boolean).join(' ')], ['Mockup front', d.mockup_front], ['Mockup back', d.mockup_back],
     ['Engraving item', d.engrave_item], ['Engraving text', d.engrave_text], ['Engraving font', d.engrave_font], ['Engraving placement', d.engrave_design]
   ].filter((r) => r[1] !== '' && r[1] != null);
@@ -297,6 +300,29 @@ function routes(app, pool, ADMIN_KEY) {
   });
   const t = setInterval(() => sweep(pool), 5 * 60 * 1000); if (t.unref) t.unref();
 
+  // Shipping: address check and estimate for the quote form, exact rate for the admin when invoicing.
+  app.post('/api/cre8/address/check', async (req, res) => {
+    if (limited('addr:' + String(req.ip || ''), 120)) return res.status(429).json({ ok: false, message: 'Too many address checks. Try again in a bit.' });
+    const a = ship.cleanShipTo(req.body || {});
+    if (a.bad) return res.status(400).json({ ok: false, message: 'Add the street, city, 2-letter state and ZIP.' });
+    res.set('Cache-Control', 'no-store');
+    res.json(await ship.checkAddress(a));
+  });
+  app.post('/api/cre8/shipping/estimate', async (req, res) => {
+    if (limited('est:' + String(req.ip || ''), 240)) return res.status(429).json({ cents: null });
+    const b = req.body || {}, products = Array.isArray(b.products) ? b.products.slice(0, 16).map((p) => line(p, 80)) : [];
+    res.set('Cache-Control', 'no-store');
+    res.json(await ship.estimate(line(b.zip, 10), products, b.quantity, line(b.garment, 120)).catch(() => ({ cents: null })));
+  });
+  app.post('/api/admin/cre8/shipping/rate', async (req, res) => {
+    if (!isAdmin(req, ADMIN_KEY)) return res.status(401).json({ error: 'unauthorized' });
+    const b = req.body || {};
+    if (!ship.enabled()) return res.json({ cents: null, message: 'USPS is not connected yet. Add USPS_CLIENT_ID and USPS_CLIENT_SECRET on Render.' });
+    if (!/^\d{5}/.test(String(b.zip || '')) || !(parseFloat(b.lb) > 0)) return res.status(400).json({ cents: null, message: 'Add a ZIP and a weight in pounds.' });
+    const c = await ship.exact(String(b.zip).slice(0, 5), parseFloat(b.lb), b.l, b.w, b.h);
+    res.json(c == null ? { cents: null, message: 'USPS did not return a price. Try again in a minute.' } : { cents: c });
+  });
+
   app.post('/api/cre8/quote', async (req, res) => {
     const b = req.body || {};
     if (b.website) return res.json({ ok: true, id: 0, token: 'x' }); // honeypot: bots fill hidden fields
@@ -308,6 +334,15 @@ function routes(app, pool, ADMIN_KEY) {
     if (b.rights_confirmed !== 'yes' && b.rights_confirmed !== true) return res.status(400).json({ error: 'rights', message: 'Confirm you have permission to use the artwork.' });
     if (limited('ip:' + String(req.ip || ''), 12) || limited('em:' + email, 6)) return res.status(429).json({ error: 'busy', message: 'Too many requests. Try again in an hour or text us.' });
     const needBy = /^\d{4}-\d{2}-\d{2}$/.test(String(b.need_by || '')) ? b.need_by : null;
+    if (details.delivery === 'Ship it to me') {
+      const a = ship.cleanShipTo(b);
+      if (a.bad) return res.status(400).json({ error: 'ship', message: 'Add your shipping address: street, city, 2-letter state and ZIP.' });
+      const chk = await ship.checkAddress(a);
+      if (!chk.ok) return res.status(400).json({ error: 'ship', message: chk.message });
+      details.ship_to = Object.assign({}, chk.address, { checked: !chk.unchecked });
+      const est = await ship.estimate(details.ship_to.zip, details.products, b.quantity, details.garment).catch(() => ({ cents: null }));
+      details.ship_estimate_cents = est.cents; details.ship_packages = est.packages || 0; details.ship_lb = est.lb || null;
+    }
     const token = crypto.randomBytes(18).toString('hex');
     try {
       await ensureTables(pool);

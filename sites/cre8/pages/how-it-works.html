@@ -271,6 +271,25 @@
             </div>
           </div>
           <div id="rushNote" class="alert hidden"></div>
+          <div class="field" style="margin-top:16px">
+              <label for="delivery">Pickup or shipping?</label>
+              <select id="delivery" name="delivery">
+                <option>Local pickup</option>
+                <option>Ship it to me</option>
+                <option>Not sure yet</option>
+              </select>
+          </div>
+          <div class="ship-box hidden" id="shipBox">
+            <p class="hint" style="margin:0 0 10px">Where should we ship it? We check the address with USPS.</p>
+            <div class="field"><label for="shipLine1">Street address <span class="req">*</span></label><input type="text" id="shipLine1" name="ship_line1" autocomplete="shipping address-line1" maxlength="120"></div>
+            <div class="field"><label for="shipLine2">Apt or suite</label><input type="text" id="shipLine2" name="ship_line2" autocomplete="shipping address-line2" maxlength="120"></div>
+            <div class="row ship-row">
+              <div class="field"><label for="shipCity">City <span class="req">*</span></label><input type="text" id="shipCity" name="ship_city" autocomplete="shipping address-level2" maxlength="60"></div>
+              <div class="field"><label for="shipState">State <span class="req">*</span></label><select id="shipState" name="ship_state" autocomplete="shipping address-level1"><option value="">Choose</option><option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option><option>CO</option><option>CT</option><option>DE</option><option>DC</option><option>FL</option><option>GA</option><option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option><option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option><option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option><option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option><option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option><option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option><option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option><option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option></select></div>
+              <div class="field"><label for="shipZip">ZIP <span class="req">*</span></label><input type="text" id="shipZip" name="ship_zip" inputmode="numeric" maxlength="10" pattern="\d{5}(-\d{4})?" autocomplete="shipping postal-code"></div>
+            </div>
+            <p class="ship-note" id="shipNote" role="status"></p>
+          </div>
         </fieldset>
 
         <details class="more-details" id="moreDetails">
@@ -313,14 +332,6 @@
                 <option>$500 to $1,000</option>
                 <option>$1,000 to $2,500</option>
                 <option>$2,500+</option>
-                <option>Not sure yet</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="delivery">Pickup or shipping?</label>
-              <select id="delivery" name="delivery">
-                <option>Local pickup</option>
-                <option>Ship it to me</option>
                 <option>Not sure yet</option>
               </select>
             </div>
