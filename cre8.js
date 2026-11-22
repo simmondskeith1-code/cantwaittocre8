@@ -317,7 +317,7 @@ function routes(app, pool, ADMIN_KEY) {
   app.post('/api/admin/cre8/shipping/rate', async (req, res) => {
     if (!isAdmin(req, ADMIN_KEY)) return res.status(401).json({ error: 'unauthorized' });
     const b = req.body || {};
-    if (!ship.enabled()) return res.json({ cents: null, message: 'USPS is not connected yet. Add USPS_CLIENT_ID and USPS_CLIENT_SECRET on Render.' });
+    if (!ship.enabled()) return res.json({ cents: null, message: 'USPS is not connected yet. Add the USPS app keys on Render (USPS_CLIENT_ID and USPS_CLIENT_SECRET, or the PXP_USPS ones).' });
     if (!/^\d{5}/.test(String(b.zip || '')) || !(parseFloat(b.lb) > 0)) return res.status(400).json({ cents: null, message: 'Add a ZIP and a weight in pounds.' });
     const c = await ship.exact(String(b.zip).slice(0, 5), parseFloat(b.lb), b.l, b.w, b.h);
     res.json(c == null ? { cents: null, message: 'USPS did not return a price. Try again in a minute.' } : { cents: c });

@@ -1,10 +1,13 @@
 // USPS APIs v3: address standardization and domestic base rates. Shared by any site that ships.
 // Off until USPS_CLIENT_ID and USPS_CLIENT_SECRET are set on Render (free app at developers.usps.com).
+// Falls back to PXP_USPS_CLIENT_ID / PXP_USPS_CLIENT_SECRET so one USPS app serves both shops.
 // Every call fails soft: no keys, an outage or a timeout returns "unchecked" / null so callers fall back.
 
 const API = 'https://apis.usps.com';
 const TIMEOUT = 6000;
-const on = () => !!(process.env.USPS_CLIENT_ID && process.env.USPS_CLIENT_SECRET);
+const ID = () => process.env.USPS_CLIENT_ID || process.env.PXP_USPS_CLIENT_ID || '';
+const SECRET = () => process.env.USPS_CLIENT_SECRET || process.env.PXP_USPS_CLIENT_SECRET || '';
+const on = () => !!(ID() && SECRET());
 
 async function call(method, path, opts) {
   const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), TIMEOUT);
@@ -18,7 +21,7 @@ let tok = { v: '', exp: 0 };
 async function token() {
   if (tok.v && Date.now() < tok.exp) return tok.v;
   const r = await call('POST', '/oauth2/v3/token', { headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ client_id: process.env.USPS_CLIENT_ID, client_secret: process.env.USPS_CLIENT_SECRET, grant_type: 'client_credentials' }) });
+    body: JSON.stringify({ client_id: ID(), client_secret: SECRET(), grant_type: 'client_credentials' }) });
   if (!r.ok || !r.j.access_token) throw new Error('USPS sign-in failed (' + r.status + ')');
   tok = { v: r.j.access_token, exp: Date.now() + Math.max(60, (parseInt(r.j.expires_in, 10) || 3600) - 120) * 1000 };
   return tok.v;
