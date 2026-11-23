@@ -21,8 +21,8 @@ const SITES = {
   // Shared styles and script live in public/cre8/site.css and site.js.
   cre8: {
     domain: 'cantwaittocre8.com', aliases: ['cantwaittocre8.shop'], envHosts: 'SITE_HOSTS_CRE8', layout: true,
-    pages: { '/': 'home', '/how-it-works': 'how-it-works', '/custom-t-shirts': 'custom-t-shirts', '/custom-hoodies': 'custom-hoodies', '/custom-hats': 'custom-hats', '/custom-tumblers': 'custom-tumblers', '/laser-engraving': 'laser-engraving', '/custom-journals': 'custom-journals', '/custom-stickers': 'custom-stickers', '/custom-phone-cases': 'custom-phone-cases', '/embroidery': 'embroidery', '/websites': 'websites', '/about': 'about', '/contact': 'contact' },
-    redirects: { '/home': '/', '/about-us': '/about', '/contact-us': '/contact', '/our-work': '/how-it-works#work', '/order': '/how-it-works#create', '/t-shirts': '/custom-t-shirts', '/phone-cases': '/custom-phone-cases', '/stickers': '/custom-stickers', '/engraving': '/laser-engraving', '/hats': '/custom-hats', '/tumblers': '/custom-tumblers', '/journals': '/custom-journals', '/hoodies': '/custom-hoodies', '/web-design': '/websites', '/website': '/websites' },
+    pages: { '/': 'home', '/how-it-works': 'how-it-works', '/custom-t-shirts': 'custom-t-shirts', '/custom-hoodies': 'custom-hoodies', '/custom-hats': 'custom-hats', '/custom-tumblers': 'custom-tumblers', '/laser-engraving': 'laser-engraving', '/custom-journals': 'custom-journals', '/custom-stickers': 'custom-stickers', '/custom-phone-cases': 'custom-phone-cases', '/embroidery': 'embroidery', '/business-apparel': 'business-apparel', '/team-uniforms': 'team-uniforms', '/event-shirts': 'event-shirts', '/custom-gifts': 'custom-gifts', '/areas-we-serve': 'areas-we-serve', '/websites': 'websites', '/about': 'about', '/contact': 'contact' },
+    redirects: { '/home': '/', '/about-us': '/about', '/contact-us': '/contact', '/our-work': '/how-it-works#work', '/order': '/how-it-works#create', '/t-shirts': '/custom-t-shirts', '/phone-cases': '/custom-phone-cases', '/stickers': '/custom-stickers', '/engraving': '/laser-engraving', '/hats': '/custom-hats', '/tumblers': '/custom-tumblers', '/journals': '/custom-journals', '/hoodies': '/custom-hoodies', '/web-design': '/websites', '/website': '/websites', '/gifts': '/custom-gifts', '/uniforms': '/team-uniforms', '/team-shirts': '/team-uniforms', '/family-reunion-shirts': '/event-shirts', '/corporate-apparel': '/business-apparel', '/service-area': '/areas-we-serve' },
     meta: {
       home: ["Custom T-Shirt Printing, Embroidery &amp; Laser Engraving in Leonardo, NJ | Can't Wait to Cre8",
         'Custom shirts, hoodies, hats, tumblers, mugs, stickers, phone cases, journals, embroidery and laser engraving in Leonardo, NJ. Free mockup before we print. No minimum.'],
@@ -50,6 +50,16 @@ const SITES = {
         "Custom phone cases with your photo, art or logo in Leonardo, NJ. 2D flat print $30 or raised 3D texture you can feel $65. Free mockup first."],
       'embroidery': ["Custom Embroidery in Leonardo, NJ: Logos, Hats, Polos | Can't Wait to Cre8",
         "Custom logo embroidery on hats, polos, jackets, hoodies and uniforms in Leonardo, NJ. Premium stitched finish, free mockup, no minimum."],
+      'business-apparel': ["Custom Business Apparel &amp; Staff Uniforms in Leonardo, NJ | Can't Wait to Cre8",
+        "Logo shirts, polos, hoodies and hats for your staff, plus branded mugs, stickers and engraved gifts, made in Leonardo, NJ. Free mockup, no minimum."],
+      'team-uniforms': ["Custom Team Shirts &amp; Uniforms in Leonardo, NJ | Can't Wait to Cre8",
+        "Custom team shirts, names and numbers, hoodies and hats for youth sports, schools, churches and clubs in Leonardo, NJ. Free mockup, no minimum."],
+      'event-shirts': ["Family Reunion &amp; Event T-Shirts in Leonardo, NJ | Can't Wait to Cre8",
+        "Custom shirts for family reunions, birthdays, memorials, bachelorette trips, cookouts and charity walks in Leonardo, NJ. Photos welcome. No minimum."],
+      'custom-gifts': ["Personalized Gifts in Leonardo, NJ: Engraved, Printed | Can't Wait to Cre8",
+        "Personalized gifts in Leonardo, NJ: engraved tumblers, wood signs, cutting boards, journals, mugs and photo phone cases. Mugs from $10. Free mockup."],
+      'areas-we-serve': ["Custom Shirts &amp; Engraving Near Middletown, Red Bank &amp; Hazlet, NJ | Can't Wait to Cre8",
+        "Custom shirts, embroidery and laser engraving for Middletown, Atlantic Highlands, Keansburg, Hazlet, Holmdel, Red Bank and the Bayshore. Pickup in Leonardo."],
       contact: ["Contact Can't Wait to Cre8 | 37 Center Ave, Leonardo, NJ",
         'Call or text 732-720-9211, email ksimmonds@cantwaittocre8.com, or send us a message. Pick up at 37 Center Ave, Leonardo, NJ 07737.']
     }
@@ -215,10 +225,10 @@ function middleware() {
       return res.type('text/plain').send('User-agent: *\nAllow: /\n\nSitemap: https://' + d + '/sitemap.xml\n');
     }
     if (req.path === '/sitemap.xml' && S.pages) {
-      const day = new Date().toISOString().slice(0, 10);
+      // No lastmod: a date that changes on every request teaches Google to ignore it
       return res.type('application/xml').send(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-        Object.keys(S.pages).map((u) => '  <url><loc>https://' + d + (u === '/' ? '/' : u) + '</loc><lastmod>' + day + '</lastmod></url>\n').join('') + '</urlset>\n'
+        Object.keys(S.pages).map((u) => '  <url><loc>https://' + d + (u === '/' ? '/' : u) + '</loc></url>\n').join('') + '</urlset>\n'
       );
     }
     if (req.path === '/sitemap.xml') {
