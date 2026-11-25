@@ -39,7 +39,7 @@ const SITES = {
       'custom-hats': ["Custom Embroidered Hats &amp; Beanies in Leonardo, NJ | Can't Wait to Cre8",
         "Custom hats, trucker caps, snapbacks and beanies with your logo, embroidered or printed, in Leonardo, NJ. Free mockup, no minimum, from $17."],
       'custom-tumblers': ["Custom Engraved Tumblers &amp; Mugs in Leonardo, NJ | Can't Wait to Cre8",
-        "Laser engraved and printed tumblers and mugs with names, logos and dates in Leonardo, NJ. Great gifts for weddings, teams and staff. Mugs from $10."],
+        "Laser engraved and printed tumblers and mugs with names, logos and dates in Leonardo, NJ. Great gifts for weddings, teams and staff. Mugs from $11, tumblers from $18."],
       'laser-engraving': ["Laser Engraving in Leonardo, NJ: Wood, Glass, Metal | Can't Wait to Cre8",
         "Laser engraving on wood signs, cutting boards, glass, metal, leather and acrylic in Leonardo, NJ. Wedding gifts, plaques and business items. From $23."],
       'custom-journals': ["Custom Journals &amp; Notebooks in Leonardo, NJ | Can't Wait to Cre8",
@@ -59,7 +59,7 @@ const SITES = {
       'event-shirts': ["Family Reunion &amp; Event T-Shirts in Leonardo, NJ | Can't Wait to Cre8",
         "Custom shirts for family reunions, birthdays, memorials, bachelorette trips, cookouts and charity walks in Leonardo, NJ. Photos welcome. No minimum."],
       'custom-gifts': ["Personalized Gifts in Leonardo, NJ: Engraved, Printed | Can't Wait to Cre8",
-        "Personalized gifts in Leonardo, NJ: engraved tumblers, wood signs, cutting boards, journals, mugs and photo phone cases. Mugs from $10. Free mockup."],
+        "Personalized gifts in Leonardo, NJ: engraved tumblers, wood signs, cutting boards, journals, mugs and photo phone cases. Mugs from $11, tumblers from $18. Free mockup."],
       'areas-we-serve': ["Custom Shirts &amp; Engraving Near Middletown, Red Bank &amp; Hazlet, NJ | Can't Wait to Cre8",
         "Custom shirts, embroidery and laser engraving for Middletown, Atlantic Highlands, Keansburg, Hazlet, Holmdel, Red Bank and the Bayshore. Pickup in Leonardo."],
       contact: ["Contact Can't Wait to Cre8 | 37 Center Ave, Leonardo, NJ",
@@ -73,17 +73,25 @@ const SITES = {
       '/': 'index', '/wellness-center': 'wellness-center', '/the-live-above-app': 'the-live-above-app', '/podcast': 'podcast',
       '/shop': 'shop', '/apparel': 'apparel', '/games': 'games', '/books': 'books', '/contact-us': 'contact-us',
       '/body-mechanics-mobility-training': 'body-mechanics-mobility-training', '/vibration-plate-therapy': 'vibration-plate-therapy',
-      '/group-fitness-classes': 'group-fitness-classes',
+      '/group-fitness-classes': 'group-fitness-classes', '/personal-training': 'personal-training', '/nutrition-coaching': 'nutrition-coaching',
+      '/senior-fitness-training': 'senior-fitness-training', '/stretch-and-recovery': 'stretch-and-recovery', '/weight-loss-coaching': 'weight-loss-coaching',
+      '/online-coaching': 'online-coaching', '/corporate-wellness': 'corporate-wellness',
       // Journal posts restored at their old GoDaddy addresses so the rankings they earned carry over
       '/f/the-invisible-habit-why-people-dont-breathe-through-their-noses': 'f-the-invisible-habit-why-people-dont-breathe-through-their-noses',
       '/f/healing-nervous-systems-with-movement-when-trauma-meets-strength': 'f-healing-nervous-systems-with-movement-when-trauma-meets-strength',
       '/f/macro-vs-micronutrients': 'f-macro-vs-micronutrients',
       '/f/itis-what-does-it-mean': 'f-itis-what-does-it-mean',
-      '/f/fda-glp1-vision-loss-warning': 'f-fda-glp1-vision-loss-warning'
+      '/f/fda-glp1-vision-loss-warning': 'f-fda-glp1-vision-loss-warning',
+      // Question pages built from Search Console queries close to page one (Nov 24 2026)
+      '/f/stuck-in-fight-or-flight-mode': 'f-stuck-in-fight-or-flight-mode',
+      '/f/nervous-system-regulation-exercises': 'f-nervous-system-regulation-exercises',
+      '/f/why-cant-i-breathe-through-my-nose': 'f-why-cant-i-breathe-through-my-nose',
+      '/f/low-impact-training-for-injury-recovery': 'f-low-impact-training-for-injury-recovery',
+      '/f/corporate-wellness-programs-that-work': 'f-corporate-wellness-programs-that-work'
     },
     // Old GoDaddy Website Builder addresses Google still shows (Search Console export, Nov 5 2026) point to their new pages
     redirects: { '/home': '/', '/contact': '/contact-us', '/book': '/books',
-      '/live-above-app': '/the-live-above-app', '/the-podcast': '/podcast', '/apparel-1': '/apparel', '/blog': '/' },
+      '/live-above-app': '/the-live-above-app', '/seniors': '/senior-fitness-training', '/stretching': '/stretch-and-recovery', '/weight-loss': '/weight-loss-coaching', '/online-training': '/online-coaching', '/corporate': '/corporate-wellness', '/the-podcast': '/podcast', '/apparel-1': '/apparel', '/blog': '/' },
     // GoDaddy blog posts lived under /f/ and member account pages under /m/; both are gone, so send them somewhere useful
     prefixRedirects: [['/f/', '/'], ['/m/', '/the-live-above-app']]
   },

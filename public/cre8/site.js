@@ -967,11 +967,11 @@ function cre8Live(form){
   }
   form.addEventListener('input', reqCount); form.addEventListener('change', reqCount); setTimeout(reqCount, 0);
   /* Price guide shows the prices for what was picked */
-  var PRICES = { 'Apparel': 'shirts from $12, hoodies from $25', 'Hats': 'hats from $17', 'Beanies': 'beanies from $17', 'Tumblers / Drinkware': 'mugs from $10, tumblers from $14', 'Journals / Notebooks': 'journals from $21', 'Wood (signs, puzzles, plaques)': 'wood from $23', 'Stickers / Decals': 'stickers 25 for $22', 'Phone Cases': 'phone cases $30 (2D) or $65 (raised 3D)' };
+  var PRICES = { 'Apparel': 'shirts from $12, hoodies from $25', 'Hats': 'hats from $17', 'Beanies': 'beanies from $17', 'Tumblers / Drinkware': 'mugs from $11; tumblers 20 oz $18, 30 oz $22, 40 oz $26', 'Journals / Notebooks': 'journals from $21', 'Wood (signs, puzzles, plaques)': 'wood from $23', 'Stickers / Decals': 'stickers 25 for $22', 'Phone Cases': 'phone cases $30 (2D) or $65 (raised 3D)' };
   function priceGuide(){
     var pg = document.getElementById('priceGuide'); if(!pg) return;
     var picked = Array.prototype.filter.call(form.querySelectorAll('input[name="product[]"]:checked'), function(b){ return PRICES[b.value]; }).map(function(b){ return PRICES[b.value]; });
-    pg.firstChild.textContent = picked.length ? 'Per piece, one design: ' + picked.join('; ') + '. Bulk orders cost less per piece. ' : 'Per piece, one design, from $10. Pick what we are decorating to see your prices. ';
+    pg.firstChild.textContent = picked.length ? 'Per piece, one design: ' + picked.join('; ') + '. Bulk orders cost less per piece. ' : 'Per piece, one design, from $11. Pick what we are decorating to see your prices. ';
   }
   form.addEventListener('change', function(e){ if(e.target.name === 'product[]') priceGuide(); }); setTimeout(priceGuide, 0);
   cre8Live(form);
