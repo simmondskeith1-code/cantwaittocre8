@@ -107,6 +107,7 @@ function parseDetails(b) {
     contact_preference: line(b.contact_preference, 20),
     referral: line(b.referral, 60),
     own_item: line(b.own_item, 200), // customer's own product to brand
+    drink_sizes: list(b.drink_size, 4).filter((x) => ['11 oz mug', '20 oz tumbler', '30 oz tumbler', '40 oz tumbler'].includes(x)), // drinkware orders
     phone_model: line(b.phone_model, 80), // phone case orders: which phone
     phone_case_style: b.phone_case_style === '3D raised texture' ? '3D raised texture' : (b.phone_case_style ? '2D flat print' : ''),
     finish: b.finish === 'Raised texture' ? 'Raised texture' : (b.finish ? 'Flat' : ''), // print finish
@@ -130,7 +131,7 @@ function summaryRows(q) {
   return [
     ['Name', q.name], ['Business or group', q.organization], ['Email', q.email], ['Phone', q.phone],
     ['Best way to reach', d.contact_preference], ['For', d.occasion], ['Products', (d.products || []).join(', ')],
-    ['Method', d.method], ['Print finish', d.finish], ['Their own item', d.own_item], ['Phone model', d.phone_model], ['Case style', d.phone_case_style], ['Garment', garment], ['Garment color', d.garment_color],
+    ['Method', d.method], ['Print finish', d.finish], ['Their own item', d.own_item], ['Drinkware sizes', (d.drink_sizes || []).join(', ')], ['Phone model', d.phone_model], ['Case style', d.phone_case_style], ['Garment', garment], ['Garment color', d.garment_color],
     ['Print locations', (d.locations || []).join(', ')], ['Sizes', sizes], ['Quantity', q.quantity],
     ['Need by', q.need_by ? new Date(q.need_by).toISOString().slice(0, 10) : ''], ['Budget', d.budget],
     ['Pickup or ship', d.delivery],

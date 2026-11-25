@@ -261,6 +261,8 @@ function cre8Live(form){
     var own = document.querySelector('input[name="product[]"][value="Your Own Item"]');
     var pc = document.querySelector('input[name="product[]"][value="Phone Cases"]'), pmw = document.getElementById('phoneModelWrap');
     if(pmw){ pmw.classList.toggle('hidden', !(pc && pc.checked)); if(!(pc && pc.checked)) document.getElementById('phoneModel').value = ''; document.querySelectorAll('input[name=phone_case_style]').forEach(function(x){ x.disabled = !(pc && pc.checked); }); }
+    var dk = document.querySelector('input[name="product[]"][value="Tumblers / Drinkware"]'), dsw = document.getElementById('drinkSizeWrap');
+    if(dsw){ var dOn = !!(dk && dk.checked); dsw.classList.toggle('hidden', !dOn); document.querySelectorAll('input[name="drink_size[]"]').forEach(function(x){ x.disabled = !dOn; if(!dOn) x.checked = false; }); }
     var ow = document.getElementById('ownItemWrap'); if(ow){ ow.classList.toggle('hidden', !(own && own.checked)); if(!(own && own.checked)) document.getElementById('ownItem').value = ''; }
     var m = document.querySelector('input[name=method]:checked'), fw = document.getElementById('finishWrap');
     if(fw){ var show = !!(m && (m.value === 'Full Color Print' || m.value === 'Not sure, recommend one')); fw.classList.toggle('hidden', !show);

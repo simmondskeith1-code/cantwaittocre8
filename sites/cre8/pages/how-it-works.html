@@ -46,6 +46,16 @@
             <div class="chip-group" role="group" aria-label="Signs and stickers"><p class="cg-t">Signs and stickers</p><div class="chips"><label class="chip"><input type="checkbox" name="product[]" value="Wood (signs, puzzles, plaques)"><span>Wood signs and plaques</span></label><label class="chip"><input type="checkbox" name="product[]" value="Signs / Banners"><span>Signs and banners</span></label><label class="chip"><input type="checkbox" name="product[]" value="Stickers / Decals"><span>Stickers and decals</span></label></div></div>
             <div class="chip-group" role="group" aria-label="Something else"><p class="cg-t">Something else</p><div class="chips"><label class="chip"><input type="checkbox" name="product[]" value="Your Own Item"><span>Bring your own item</span></label><label class="chip"><input type="checkbox" name="product[]" value="Other"><span>Something else</span></label></div></div>
           </div>
+          <div class="field hidden" id="drinkSizeWrap" style="margin-top:12px">
+            <label id="drinkSizeLabel">Which sizes? Pick all that apply</label>
+            <div class="chips" role="group" aria-labelledby="drinkSizeLabel">
+              <label class="chip"><input type="checkbox" name="drink_size[]" value="11 oz mug"><span>11 oz mug, $11</span></label>
+              <label class="chip"><input type="checkbox" name="drink_size[]" value="20 oz tumbler"><span>20 oz tumbler, $18</span></label>
+              <label class="chip"><input type="checkbox" name="drink_size[]" value="30 oz tumbler"><span>30 oz tumbler, $22</span></label>
+              <label class="chip"><input type="checkbox" name="drink_size[]" value="40 oz tumbler"><span>40 oz tumbler, $26</span></label>
+            </div>
+            <p class="hint">Mixing sizes for a group? Put how many of each in your idea above.</p>
+          </div>
           <div class="field hidden" id="phoneModelWrap" style="margin-top:12px">
             <label for="phoneModel">Which phone is it for?</label>
             <input type="text" id="phoneModel" name="phone_model" maxlength="80" placeholder="Example: iPhone 16 Pro, Galaxy S25">
